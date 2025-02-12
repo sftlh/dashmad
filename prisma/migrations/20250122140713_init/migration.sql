@@ -1,0 +1,15 @@
+-- AlterTable
+ALTER TABLE "DatabaseWajibPajak" ADD COLUMN     "bentukHukum" TEXT,
+ADD COLUMN     "jenis" TEXT,
+ADD COLUMN     "kecamatan" TEXT,
+ADD COLUMN     "kelurahan" TEXT,
+ADD COLUMN     "klu" TEXT,
+ADD COLUMN     "kota" TEXT,
+ADD COLUMN     "nik" TEXT,
+ADD COLUMN     "propinsi" TEXT,
+ADD COLUMN     "status" TEXT,
+ADD COLUMN     "tanggalDaftar" TIMESTAMP(3),
+ADD COLUMN     "tanggalPKP" TIMESTAMP(3),
+ADD COLUMN     "tanggalPencabutanPKP" TIMESTAMP(3),
+ALTER COLUMN "nama" DROP NOT NULL,
+ALTER COLUMN "alamat" DROP NOT NULL;

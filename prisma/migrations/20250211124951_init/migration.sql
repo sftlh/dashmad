@@ -1,0 +1,76 @@
+/*
+  Warnings:
+
+  - Added the required column `jmlBayar10ThnKe2` to the `PembenahanWpIdentitasGanda` table without a default value. This is not possible if the table is not empty.
+
+*/
+-- AlterTable
+ALTER TABLE "PembenahanWpIdentitasGanda" ADD COLUMN     "aktaTgl" TEXT,
+ADD COLUMN     "aktaTglKe2" TEXT,
+ADD COLUMN     "aktaTmp" TEXT,
+ADD COLUMN     "aktaTmpKe2" TEXT,
+ADD COLUMN     "arKe2" TEXT,
+ADD COLUMN     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "email" TEXT,
+ADD COLUMN     "emailKe2" TEXT,
+ADD COLUMN     "hp" TEXT,
+ADD COLUMN     "hpKe2" TEXT,
+ADD COLUMN     "jalan" TEXT,
+ADD COLUMN     "jalanKe2" TEXT,
+ADD COLUMN     "jmlBayar10Thn" DOUBLE PRECISION,
+ADD COLUMN     "jmlBayar10ThnKe2" DOUBLE PRECISION NOT NULL,
+ADD COLUMN     "jmlLapor10Thn" INTEGER,
+ADD COLUMN     "jmlLapor10ThnKe2" INTEGER,
+ADD COLUMN     "jmlPh10Thn" INTEGER,
+ADD COLUMN     "jmlPhThnKe2" INTEGER,
+ADD COLUMN     "jnsWp" TEXT,
+ADD COLUMN     "jnsWp2" TEXT,
+ADD COLUMN     "kanwil" TEXT,
+ADD COLUMN     "kanwilKe2" TEXT,
+ADD COLUMN     "kdKlu" TEXT,
+ADD COLUMN     "kdKluKe2" TEXT,
+ADD COLUMN     "kdWil" TEXT,
+ADD COLUMN     "kdWilayahKe2" TEXT,
+ADD COLUMN     "kpp" TEXT,
+ADD COLUMN     "kppKe2" TEXT,
+ADD COLUMN     "namaWp" TEXT,
+ADD COLUMN     "namaWp2" TEXT,
+ADD COLUMN     "nipId" TEXT,
+ADD COLUMN     "noAkta" INTEGER,
+ADD COLUMN     "noAktaKe2" TEXT,
+ADD COLUMN     "notarisInstansi" TEXT,
+ADD COLUMN     "notarisInstansiKe2" TEXT,
+ADD COLUMN     "npwp1Id" TEXT,
+ADD COLUMN     "npwp2" TEXT,
+ADD COLUMN     "pjNama" TEXT,
+ADD COLUMN     "pjNamaKe2" TEXT,
+ADD COLUMN     "pjNoId" TEXT,
+ADD COLUMN     "pjNoIdKe2" TEXT,
+ADD COLUMN     "pjNpwp" TEXT,
+ADD COLUMN     "pjNpwpKe2" TEXT,
+ADD COLUMN     "saldoPiutang" INTEGER,
+ADD COLUMN     "saldoPiutangKe2" DOUBLE PRECISION,
+ADD COLUMN     "seksi" TEXT,
+ADD COLUMN     "seksiKe2" TEXT,
+ADD COLUMN     "skorNama" DOUBLE PRECISION,
+ADD COLUMN     "stsWp" TEXT,
+ADD COLUMN     "stsWpKe2" TEXT,
+ADD COLUMN     "telp" TEXT,
+ADD COLUMN     "telpKe2" TEXT,
+ADD COLUMN     "tglBayarTerakhir" TEXT,
+ADD COLUMN     "tglBayarTerakhirKe2" TEXT,
+ADD COLUMN     "tglBentukData" TEXT,
+ADD COLUMN     "tglDaftar" TEXT,
+ADD COLUMN     "tglDaftarKe2" TEXT,
+ADD COLUMN     "tglUpdateTerakhir" TEXT,
+ADD COLUMN     "tglUpdateTerakhirKe2" TEXT,
+ADD COLUMN     "thlLaporTerakhirKe2" INTEGER,
+ADD COLUMN     "thnLaporTerakhir" INTEGER,
+ADD COLUMN     "thnPhTerakhir" INTEGER,
+ADD COLUMN     "thnPhTerakhirKe2" INTEGER;
+
+-- AddForeignKey
+ALTER TABLE "PembenahanWpIdentitasGanda" ADD CONSTRAINT "PembenahanWpIdentitasGanda_npwp1Id_fkey" FOREIGN KEY ("npwp1Id") REFERENCES "DatabaseWajibPajak"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PembenahanWpIdentitasGanda" ADD CONSTRAINT "PembenahanWpIdentitasGanda_nipId_fkey" FOREIGN KEY ("nipId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

@@ -8,6 +8,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors:{
+        "dongker":"#005FAC",
+        "gold":"#FFC000",
+        "neon":"#1F51FF",
+        "bright":"#FFEA00",
+        "lemon":"#FFEB84",
+        "navy":"#003366",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
