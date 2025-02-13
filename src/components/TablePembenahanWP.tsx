@@ -1,7 +1,19 @@
-"use server"
+"use server";
 import React from "react";
 
-const TablePembenahanWP = ({data, renderRow}:{data?:any, renderRow: (item: any) => React.ReactNode;}) => {
+const TablePembenahanWP = ({
+  data,
+  data2,
+  data3,
+  data4,
+  renderRow,
+}: {
+  data?: any;
+  data3: any;
+  data4: any;
+  data2?: any;
+  renderRow: (item: any) => React.ReactNode;
+}) => {
   return (
     <table className="min-w-full divide-y divide-gray-300">
       <thead>
@@ -22,13 +34,13 @@ const TablePembenahanWP = ({data, renderRow}:{data?:any, renderRow: (item: any) 
             scope="col"
             className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
           >
-            Status
+            Kategori
           </th>
           <th
             scope="col"
             className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
           >
-            Total Potensi
+            Status
           </th>
           <th
             scope="col"
@@ -45,7 +57,8 @@ const TablePembenahanWP = ({data, renderRow}:{data?:any, renderRow: (item: any) 
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200 bg-white">
-        {data.map((item: any) => renderRow(item))}
+        {/* {data.map((item: any) => renderRow(item))} */}
+        {data2.map((item: any) => renderRow(item))}
       </tbody>
     </table>
   );

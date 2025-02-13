@@ -3,10 +3,16 @@ import TableSearch from "./TableSearch";
 import TablePembenahanWP from "./TablePembenahanWP";
 const ViewPembenahanWP = ({
   data,
+  data2,
+  data3,
+  data4,
   type,
   renderRow,
 }: {
   data: any;
+  data2?: any;
+  data3?: any;
+  data4?: any;
   type?: string;
   renderRow: (item: any) => React.ReactNode;
 }) => {
@@ -18,7 +24,8 @@ const ViewPembenahanWP = ({
             Data Pembenahan WP
           </h1>
           <p className="mt-2 text-sm text-gray-700">
-            Memuat Daftar Pembenahan Master File Wajib Pajak yang harus diselesaikan oleh user.
+            Memuat Daftar Pembenahan Master File Wajib Pajak yang harus
+            diselesaikan oleh user.
           </p>
         </div>
         <div>
@@ -29,7 +36,13 @@ const ViewPembenahanWP = ({
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <div className="overflow-hidden shadow ring-1 ring-black/5 sm:rounded-lg">
-              <TablePembenahanWP data={data} renderRow={renderRow}/>
+              <TablePembenahanWP
+                data={data}
+                data3={data3}
+                data4={data4}
+                data2={data2}
+                renderRow={renderRow}
+              />
             </div>
           </div>
         </div>
