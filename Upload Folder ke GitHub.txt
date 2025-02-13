@@ -18,3 +18,9 @@
 16. terus git add . lagi, dan git commit -m "ramzshop commit" lagi, terus push
 
 
+Cara Update
+1. git status
+2. git add .
+3. git commit -m "update data"
+4. git pull origin nama_origin --rebase
+5. git push origin nama_origin
