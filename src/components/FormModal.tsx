@@ -4,8 +4,7 @@ import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import React from "react";
 import FormBedahWp from "./forms/FormBedahWp";
 import FormEmpowering from "./forms/FormEmpowering";
-import EditFormBedahWp from "./editForms/EditFormBedahWp";
-import EditFormEmpoweringData from "./editForms/EditFormEmpoweringData";
+import CabangPusatBedaEntitasForm from "./questionForms/CabangPusatBedaEntitasForm";
 
 const FormModal = ({
   id,
@@ -52,6 +51,8 @@ const FormModal = ({
                   <FormBedahWp id={id} />
                 ) : type === "empowering" ? (
                   <FormEmpowering id={id} />
+                ) : type === "cabangpusatbedaentitas" ? (
+                  <CabangPusatBedaEntitasForm id={id} data={data}/>
                 ) : (
                   ""
                 )}

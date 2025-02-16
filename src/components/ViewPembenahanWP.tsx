@@ -7,14 +7,20 @@ const ViewPembenahanWP = ({
   data3,
   data4,
   type,
-  renderRow,
+  renderRowPembenahanWpIdentitasGanda,
+  renderRowPembenahanWpNikGanda,
+  renderRowPembenahanCabangPusatBedaEntitas,
+  renderRowPembenahanWpNamaTtlSama,
 }: {
   data: any;
   data2?: any;
   data3?: any;
   data4?: any;
   type?: string;
-  renderRow: (item: any) => React.ReactNode;
+  renderRowPembenahanWpIdentitasGanda: (item: any) => React.ReactNode;
+  renderRowPembenahanWpNikGanda: (item: any) => React.ReactNode;
+  renderRowPembenahanCabangPusatBedaEntitas: (item: any) => React.ReactNode;
+  renderRowPembenahanWpNamaTtlSama: (item: any) => React.ReactNode;
 }) => {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -41,7 +47,12 @@ const ViewPembenahanWP = ({
                 data3={data3}
                 data4={data4}
                 data2={data2}
-                renderRow={renderRow}
+                renderRowPembenahanWpIdentitasGanda={
+                  renderRowPembenahanWpIdentitasGanda
+                }
+                renderRowPembenahanWpNikGanda={renderRowPembenahanWpNikGanda}
+                renderRowPembenahanCabangPusatBedaEntitas={renderRowPembenahanCabangPusatBedaEntitas}
+                renderRowPembenahanWpNamaTtlSama={renderRowPembenahanWpNamaTtlSama}
               />
             </div>
           </div>

@@ -5,7 +5,6 @@ import csvParser from "csv-parser";
 import prisma from "@/lib/prisma"; // Adjust based on your setup
 import fs from "fs";
 import path from "path";
-import { getUserByNip } from "@/lib/getDataByNip";
 
 // Disable Next.js body parsing for file uploads
 export const config = {
@@ -78,7 +77,7 @@ const uploadCSV = async (filePath: fs.PathLike, res?: any) => {
       try {
         records.push({
           no: Number(data.no),
-          npwp1Id: data.npwp1,
+          npwp1Id: data.npwp1Id,
           nama1: data.nama1,
           nik1: data.nik1,
           kpp1: data.kpp1,

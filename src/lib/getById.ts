@@ -1,19 +1,16 @@
-import { BedahWPData, DatabaseWajibPajak } from "@prisma/client";
 import prisma from "./prisma";
 
 // Get User By Id
-export const getUserById = async (id: string) => {
+export const getUserById = async (id: string|undefined) => {
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma?.user?.findFirst({
       where: {
-        id: id,
+        id,
       },
     });
-
     if (!user) {
       throw new Error(`User with ID ${id} not found.`);
     }
-
     return user;
   } catch (error) {
     console.error(error);

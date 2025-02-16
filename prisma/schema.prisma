@@ -156,6 +156,7 @@ model JawabanPembenahanCabangPusatBedaEntitas {
   namaCabangPusatQuestion String?
   //Apakah Pemilik NIK Cabang dengan Nomor Ini memiliki Hubungan Dengan Pemilik Nik Pusat dengan Nomor NIK Sebagai Berikut ?
   nikCabangPusatQuestion  String?
+  keterangan              String?
   createdAt               DateTime                           @default(now())
   user                    User?                              @relation(fields: [userId], references: [id])
   userId                  String?

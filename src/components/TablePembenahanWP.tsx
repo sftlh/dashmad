@@ -6,13 +6,19 @@ const TablePembenahanWP = ({
   data2,
   data3,
   data4,
-  renderRow,
+  renderRowPembenahanWpNikGanda,
+  renderRowPembenahanWpIdentitasGanda,
+  renderRowPembenahanCabangPusatBedaEntitas,
+  renderRowPembenahanWpNamaTtlSama,
 }: {
   data?: any;
   data3: any;
   data4: any;
   data2?: any;
-  renderRow: (item: any) => React.ReactNode;
+  renderRowPembenahanWpNikGanda: (item: any) => React.ReactNode;
+  renderRowPembenahanWpIdentitasGanda: (item: any) => React.ReactNode;
+  renderRowPembenahanCabangPusatBedaEntitas: (item: any) => React.ReactNode;
+  renderRowPembenahanWpNamaTtlSama: (item: any) => React.ReactNode;
 }) => {
   return (
     <table className="min-w-full divide-y divide-gray-300">
@@ -57,8 +63,18 @@ const TablePembenahanWP = ({
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200 bg-white">
-        {/* {data.map((item: any) => renderRow(item))} */}
-        {data2.map((item: any) => renderRow(item))}
+        {data2.map((item: any) => renderRowPembenahanWpIdentitasGanda(item))}
+      </tbody>
+      <tbody className="divide-y divide-gray-200 bg-white">
+        {data.map((item: any) =>
+          renderRowPembenahanCabangPusatBedaEntitas(item)
+        )}
+      </tbody>
+      <tbody className="divide-y divide-gray-200 bg-white">
+        {data3.map((item: any) => renderRowPembenahanWpNikGanda(item))}
+      </tbody>
+      <tbody className="divide-y divide-gray-200 bg-white">
+        {data4.map((item: any) => renderRowPembenahanWpNamaTtlSama(item))}
       </tbody>
     </table>
   );

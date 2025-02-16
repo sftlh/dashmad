@@ -16,7 +16,7 @@ import {
 import InputField from "../InputField";
 import ChevronDownIcon from "@heroicons/react/24/outline/ChevronDownIcon";
 
-const EditFormBedahWp = ({ data,type, setOpen }: { data?: any, type:"update", setOpen:Dispatch<SetStateAction<boolean>> }) => {
+const WpNamaTtlSamaForm = ({ data,type, setOpen }: { data?: any, type:"create", setOpen:Dispatch<SetStateAction<boolean>> }) => {
   const {
     register,
     handleSubmit,
@@ -267,4 +267,4 @@ const EditFormBedahWp = ({ data,type, setOpen }: { data?: any, type:"update", se
   );
 };
 
-export default EditFormBedahWp;
+export default WpNamaTtlSamaForm;
