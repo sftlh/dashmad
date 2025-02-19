@@ -81,7 +81,7 @@ const PembenahanWPPage = async ({
           role === "ar_5" ||
           role === "ar_6") && (
           <>
-            <FormCreateTransition type="wpidentitasganda" />
+            <FormCreateTransition type="wpidentitasganda" data={item} />
           </>
         )}
       </td>
@@ -130,7 +130,7 @@ const PembenahanWPPage = async ({
           role === "ar_5" ||
           role === "ar_6") && (
           <>
-            <FormCreateTransition type="wpnikganda" />
+            <FormCreateTransition type="wpnikganda" data={item} />
           </>
         )}
       </td>
@@ -181,7 +181,7 @@ const PembenahanWPPage = async ({
           role === "ar_5" ||
           role === "ar_6") && (
           <>
-            <FormCreateTransition type="cabangpusatbedaentitas" data={item}/>
+            <FormCreateTransition type="cabangpusatbedaentitas" data={item} />
           </>
         )}
       </td>
@@ -232,7 +232,7 @@ const PembenahanWPPage = async ({
           role === "ar_5" ||
           role === "ar_6") && (
           <>
-            <FormCreateTransition type="wpttlsama" />
+            <FormCreateTransition type="wpttlsama" data={item} />
           </>
         )}
       </td>
@@ -252,13 +252,16 @@ const PembenahanWPPage = async ({
 
   if (currentUserId) {
     queryPembenahanWpIdentitasGanda.nip = currentUserId.nip;
+    queryPembenahanWpIdentitasGanda.currentStatus = "Progress";
     queryCabangPusatBedaEntitas.nipId = currentUserId.id;
+    queryCabangPusatBedaEntitas.currentStatus = "Progress";
     queryPembenahanWpNamaTtlSama.nipId = currentUserId.id;
+    queryPembenahanWpNamaTtlSama.currentStatus = "Progress";
     if (!queryPembenahanWpNikGanda.npwp1) {
-      queryPembenahanWpNikGanda.npwp1 = {}; // Initialize as an empty object
+      queryPembenahanWpNikGanda.npwp1 = {};
     }
-
     queryPembenahanWpNikGanda.npwp1.nipId = currentUserId.id;
+    queryPembenahanWpNikGanda.currentStatus = "Progress";
   }
 
   if (queryParams?.search) {

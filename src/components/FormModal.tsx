@@ -1,10 +1,13 @@
 "use client";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
-import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import React from "react";
 import FormBedahWp from "./forms/FormBedahWp";
 import FormEmpowering from "./forms/FormEmpowering";
 import CabangPusatBedaEntitasForm from "./questionForms/CabangPusatBedaEntitasForm";
+import WpNamaTtlSamaForm from "./questionForms/WpNamaTtlSamaForm";
+import PembenahanWpNikGandaForm from "./questionForms/PembenahanWpNikGandaForm";
+import PembenahanWpIdentitasGandaForm from "./questionForms/PembenahanWpIdentitasGandaForm";
 
 const FormModal = ({
   id,
@@ -52,7 +55,13 @@ const FormModal = ({
                 ) : type === "empowering" ? (
                   <FormEmpowering id={id} />
                 ) : type === "cabangpusatbedaentitas" ? (
-                  <CabangPusatBedaEntitasForm id={id} data={data}/>
+                  <CabangPusatBedaEntitasForm id={id} data={data} />
+                ) : type === "wpttlsama" ? (
+                  <WpNamaTtlSamaForm data={data} />
+                ) : type === "wpnikganda" ? (
+                  <PembenahanWpNikGandaForm data={data} />
+                ) : type === "wpidentitasganda" ? (
+                  <PembenahanWpIdentitasGandaForm data={data} />
                 ) : (
                   ""
                 )}

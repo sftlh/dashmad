@@ -183,11 +183,50 @@ export const jawabanPembenahanCabangPusatBedaEntitasSchema = z.object({
   npwpCabangPusatQuestion: z.string({ message: "Harus Diisi !" }),
   namaCabangPusatQuestion: z.string({ message: "Harus Diisi !" }),
   nikCabangPusatQuestion: z.string({ message: "Harus Diisi !" }),
+  jawabanLangsung: z.string({ message: "Harus Diisi !" }),
+  perluDihapus: z.string({ message: "Harus Diisi !" }),
   keterangan: z.string({ message: "Harus Diisi !" }),
-  dataId:z.string({ message: "Harus Diisi !" }).optional(),
-  userId:z.string({ message: "Harus Diisi !" }).optional(),
+  dataId: z.string({ message: "Harus Diisi !" }).optional(),
+  userId: z.string({ message: "Harus Diisi !" }).optional(),
 });
 
 export type JawabanPembenahanCabangPusatBedaEntitasSchema = z.infer<
   typeof jawabanPembenahanCabangPusatBedaEntitasSchema
+>;
+
+export const jawabanPembenahanWpNamaTtlSama = z.object({
+  jawabanLangsung: z.string({ message: "Harus Diisi !" }),
+  keterangan: z.string({ message: "Harus Diisi !" }),
+  dataId: z.string({ message: "Harus Diisi" }).optional(),
+  userId: z.string({ message: "Harus Diisi" }).optional(),
+});
+
+export type JawabanPembenahanWpNamaTtlSama = z.infer<
+  typeof jawabanPembenahanWpNamaTtlSama
+>;
+
+export const jawabanPembenahanWpNikGanda = z.object({
+  jawabanLangsung: z.string({ message: "Harus Diisi" }),
+  keterangan: z.string({ message: "Harus Diisi" }),
+  perluDihapus: z.string({ message: "Harus Diisi" }).optional(),
+  nomorLhp: z.string({ message: "Harus Diisi" }).optional(),
+  dataId: z.string({ message: "Harus Diisi" }).optional(),
+  userId: z.string({ message: "Harus Diisi" }).optional(),
+});
+
+export type JawabanPembenahanWpNikGanda = z.infer<
+  typeof jawabanPembenahanWpNikGanda
+>;
+
+export const jawabanPembenahanWpIdentitasGanda = z.object({
+  jawabanLangsung: z.string({ message: "Harus Diisi" }),
+  keterangan: z.string({ message: "Harus Diisi" }),
+  perluDihapus: z.string({ message: "Harus Diisi" }).optional(),
+  nomorLhp: z.string({ message: "Harus Diisi" }).optional(),
+  dataId: z.string({ message: "Harus Diisi" }).optional(),
+  userId: z.string({ message: "Harus Diisi" }).optional(),
+});
+
+export type JawabanPembenahanWpIdentitasGanda = z.infer<
+  typeof jawabanPembenahanWpIdentitasGanda
 >;

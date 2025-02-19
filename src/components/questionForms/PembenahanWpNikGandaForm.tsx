@@ -1,56 +1,56 @@
 "use client";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { JawabanPembenahanCabangPusatBedaEntitasSchema } from "@/lib/zod";
-import InputField from "../InputField";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import InputField from "../InputField";
+import { JawabanPembenahanWpNikGanda } from "@/lib/zod";
 
-const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
+const PembenahanWpNikGandaForm = ({ data }: { data?: any }) => {
   const {
     register,
     handleSubmit,
+    getValues,
+    watch,
     formState: { errors },
-  } = useForm<JawabanPembenahanCabangPusatBedaEntitasSchema>();
+  } = useForm<JawabanPembenahanWpNikGanda>();
 
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedKpp, setSelectedKpp] = useState("");
 
   const router = useRouter();
 
-  const onSubmit = handleSubmit(
-    async (data: JawabanPembenahanCabangPusatBedaEntitasSchema) => {
-      try {
-        const response = await fetch(`/api/createAnswerWpNikGanda`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
+  const onSubmit = handleSubmit(async (data: JawabanPembenahanWpNikGanda) => {
+    try {
+      const response = await fetch(`/api/createAnswerWpNikGanda`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log("Data NIK Ganda", data)
+      if (!response.ok) {
+        const errorData = await response.json();
+        errorData.errors.forEach((error: any) => {
+          toast.error(error.message);
         });
-        console.log("Data NIK Ganda", data);
-        if (!response.ok) {
-          const errorData = await response.json();
-          errorData.errors.forEach((error: any) => {
-            toast.error(error.message);
-          });
-        } else {
-          const result = await response.json();
-          toast.success(result.message);
-          router.refresh();
-        }
-      } catch (error) {
-        console.log("Unexpected Error", error);
-        toast.error("An Unexpected error Occurred !");
+      } else {
+        const result = await response.json();
+        toast.success(result.message);
+        router.refresh();
       }
+    } catch (error) {
+      console.log("Unexpected Error", error);
+      toast.error("An Unexpected error Occurred !");
     }
-  );
+  });
   return (
     <div className="container mx-auto px-4">
       <form className="w-full" onSubmit={onSubmit}>
         <div className="border-b border-white/10 pb-12">
           <h1 className="text-base/7 font-semibold text-navy">
-            Question Form Wajib Pajak dengan Cabang Pusat Beda Entitas
+            Question Form Wajib Pajak dengan NIK Ganda
           </h1>
           <h2 className="text-lg font-bold mt-5 text-center">Data Validasi</h2>
           <h2 className="text-sm flex font-semibold mt-5 gap-x-8">
@@ -60,69 +60,65 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
               </span>
               <div className="mt-2 text-justify">
                 <span className="text-slate-700">Nama: </span>
-                <span className="text-pretty text-dongker">
-                  {data.namaCabang}
-                </span>
+                <span className="text-pretty text-dongker">{data.nama1}</span>
                 <br />
                 <span className="text-slate-700">NPWP: </span>
-                <span className="text-pretty text-dongker">
-                  {data.npwpCabang}
-                </span>
+                <span className="text-pretty text-dongker">{data.npwp1Id}</span>
                 <br />
                 <span className="text-slate-700">NIK: </span>
-                <span className="text-pretty text-dongker">
-                  {data.nikBersihCabang}
-                </span>
+                <span className="text-pretty text-dongker">{data.nik1}</span>
                 <br />
                 <span className="text-slate-700">KPP Terdaftar: </span>
+                <span className="text-pretty text-dongker">{data.kpp1}</span>
+                <br />
+                <span className="text-slate-700">Tempat Lahir: </span>
                 <span className="text-pretty text-dongker">
-                  {data.kppCabang}
+                  {data.tempatLahir1}
+                </span>
+                <br />
+                <span className="text-slate-700">Tanggal Lahir: </span>
+                <span className="text-pretty text-dongker">
+                  {data.tanggalLahir1}
                 </span>
                 <br />
                 <span className="text-slate-700">Status: </span>
                 <span className="text-pretty text-dongker">
-                  {data.statusCabang}
-                </span>
-                <br />
-                <span className="text-slate-700">Validitas Cabang: </span>
-                <span className="text-pretty text-dongker">
-                  {data.validitasCabang}
+                  {data.statusWp1}
                 </span>
               </div>
             </div>
             <div>
-              <span className="text-pretty text-slate-800">
-                Data Wajib Pajak Lawan Validasi :
+              <span className="text-pretty mt-5 text-slate-800">
+                Data Wajib Pajak Lawan Validasi:
               </span>
               <div className="mt-2 text-justify">
-                <span className="text-slate-700">Nama: </span>
+                <span className="text-pretty text-slate-700">Nama: </span>
+                <span className="text-red-500">{data.nama2}</span>
+                <br />
+                <span className="text-pretty text-slate-700">NPWP: </span>
+                <span className="text-red-500">{data.npwp2}</span>
+                <br />
+                <span className="text-pretty text-slate-700">NIK: </span>
+                <span className="text-red-500">{data.nik2}</span>
+                <br />
+                <span className="text-pretty text-slate-700">
+                  KPP Terdaftar:{" "}
+                </span>
+                <span className="text-red-500">{data.kpp2}</span>
+                <br />
+                <span className="text-slate-700">Tempat Lahir: </span>
                 <span className="text-pretty text-red-500">
-                  {data.namaPusat}
+                  {data.tempatLahir2}
                 </span>
                 <br />
-                <span className="text-slate-700">NPWP: </span>
+                <span className="text-slate-700">Tanggal Lahir: </span>
                 <span className="text-pretty text-red-500">
-                  {data.npwpPusat}
-                </span>
-                <br />
-                <span className="text-slate-700">NIK: </span>
-                <span className="text-pretty text-red-500">
-                  {data.nikBersihPusat}
-                </span>
-                <br />
-                <span className="text-slate-700">KPP Terdaftar: </span>
-                <span className="text-pretty text-red-500">
-                  {data.kppPusat}
+                  {data.tanggalLahir2}
                 </span>
                 <br />
                 <span className="text-slate-700">Status: </span>
                 <span className="text-pretty text-red-500">
-                  {data.statusPusat}
-                </span>
-                <br />
-                <span className="text-slate-700">Validitas Pusat: </span>
-                <span className="text-pretty text-red-500">
-                  {data.validitasPusat}
+                  {data.statusWp2}
                 </span>
               </div>
             </div>
@@ -131,8 +127,8 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
             <div>
               <span className="text-pretty text-navy text-justify">
                 Wajib Pajak diatas diperkirakan memiliki dua NPWP berdasarkan
-                NIK yang Sama, apakah benar NPWP Lawan tersebut dimiliki oleh
-                satu pemilik yang sama dengan Wajib Pajak tervalidasi ?
+                NIK yang Sama, apakah benar NPWP Lawan tersebut dimiliki oleh satu
+                pemilik yang sama dengan Wajib Pajak tervalidasi ?
               </span>
             </div>
           </h2>
@@ -183,9 +179,7 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
                 </option>
               </select>
             </>
-          ) : (
-            <></>
-          )}
+          ) : (<></>)}
           {selectedKpp === "sini" && selectedOption === "ya" ? (
             <>
               <h2 className="text-sm font-semibold mt-10">
@@ -195,8 +189,8 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
                     <span className="font-bold text-orange-900 text-md">
                       NPWP KPP Sini
                     </span>
-                    , maka anda harus membuat LHP Penghapusan NPWP secara
-                    Jabatan dan Mengirimnya ke PKD
+                    , maka anda harus membuat LHP Penghapusan NPWP secara Jabatan dan
+                    Mengirimnya ke PKD
                   </span>
                 </div>
               </h2>
@@ -232,7 +226,7 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
             hidden
             label="userId"
             name="userId"
-            defaultValue={data.nipId}
+            defaultValue={data.npwp1.nipId}
             register={register}
           />
           <div className="mt-4 items-center">
@@ -258,4 +252,4 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
   );
 };
 
-export default CabangPusatBedaEntitasForm;
+export default PembenahanWpNikGandaForm;

@@ -1,56 +1,56 @@
 "use client";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { JawabanPembenahanCabangPusatBedaEntitasSchema } from "@/lib/zod";
-import InputField from "../InputField";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import InputField from "../InputField";
+import { JawabanPembenahanWpIdentitasGanda } from "@/lib/zod";
+import { useUser } from "@clerk/nextjs";
 
-const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
+const PembenahanWpIdentitasGandaForm = ({ data }: { data?: any }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<JawabanPembenahanCabangPusatBedaEntitasSchema>();
+  } = useForm<JawabanPembenahanWpIdentitasGanda>();
+
+  const {user} = useUser();
 
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedKpp, setSelectedKpp] = useState("");
 
   const router = useRouter();
 
-  const onSubmit = handleSubmit(
-    async (data: JawabanPembenahanCabangPusatBedaEntitasSchema) => {
-      try {
-        const response = await fetch(`/api/createAnswerWpNikGanda`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
+  const onSubmit = handleSubmit(async (data: JawabanPembenahanWpIdentitasGanda) => {
+    try {
+      const response = await fetch(`/api/createAnswerPembenahanWpIdentitasGanda`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        errorData.errors.forEach((error: any) => {
+          toast.error(error.message);
         });
-        console.log("Data NIK Ganda", data);
-        if (!response.ok) {
-          const errorData = await response.json();
-          errorData.errors.forEach((error: any) => {
-            toast.error(error.message);
-          });
-        } else {
-          const result = await response.json();
-          toast.success(result.message);
-          router.refresh();
-        }
-      } catch (error) {
-        console.log("Unexpected Error", error);
-        toast.error("An Unexpected error Occurred !");
+      } else {
+        const result = await response.json();
+        toast.success(result.message);
+        router.refresh();
       }
+    } catch (error) {
+      console.log("Unexpected Error", error);
+      toast.error("An Unexpected error Occurred !");
     }
-  );
+  });
   return (
     <div className="container mx-auto px-4">
       <form className="w-full" onSubmit={onSubmit}>
         <div className="border-b border-white/10 pb-12">
           <h1 className="text-base/7 font-semibold text-navy">
-            Question Form Wajib Pajak dengan Cabang Pusat Beda Entitas
+            Question Form Pembenahan Wajib Pajak dengan Identitas Ganda
           </h1>
           <h2 className="text-lg font-bold mt-5 text-center">Data Validasi</h2>
           <h2 className="text-sm flex font-semibold mt-5 gap-x-8">
@@ -58,71 +58,155 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
               <span className="text-pretty text-slate-800">
                 Data Wajib Pajak yang di Validasi :
               </span>
-              <div className="mt-2 text-justify">
+              <div className="mt-2 text-left">
                 <span className="text-slate-700">Nama: </span>
-                <span className="text-pretty text-dongker">
-                  {data.namaCabang}
-                </span>
+                <span className="text-pretty text-dongker">{data.namaWp}</span>
                 <br />
                 <span className="text-slate-700">NPWP: </span>
-                <span className="text-pretty text-dongker">
-                  {data.npwpCabang}
-                </span>
+                <span className="text-pretty text-dongker">{data.npwp1}</span>
                 <br />
-                <span className="text-slate-700">NIK: </span>
-                <span className="text-pretty text-dongker">
-                  {data.nikBersihCabang}
-                </span>
-                <br />
-                <span className="text-slate-700">KPP Terdaftar: </span>
-                <span className="text-pretty text-dongker">
-                  {data.kppCabang}
-                </span>
+                <span className="text-slate-700">Jenis: </span>
+                <span className="text-pretty text-dongker">{data.jnsWp}</span>
                 <br />
                 <span className="text-slate-700">Status: </span>
+                <span className="text-pretty text-dongker">{data.stsWp}</span>
+                <br />
+                <span className="text-slate-700">Penanggung Jawab: </span>
                 <span className="text-pretty text-dongker">
-                  {data.statusCabang}
+                  {data.pjNama}
                 </span>
                 <br />
-                <span className="text-slate-700">Validitas Cabang: </span>
+                <span className="text-slate-700">NPWP Penanggung Jawab: </span>
                 <span className="text-pretty text-dongker">
-                  {data.validitasCabang}
+                  {data.pjNpwp}
+                </span>
+                <br />
+                <span className="text-slate-700">NIK Penanggung Jawab: </span>
+                <span className="text-pretty text-dongker">
+                  {data.pjNoId}
+                </span>
+                <br />
+                <span className="text-slate-700">KPP: </span>
+                <span className="text-pretty text-dongker">
+                  {data.kpp}
+                </span>
+                <br />
+                <span className="text-slate-700">No Akta: </span>
+                <span className="text-pretty text-dongker">
+                  {data.noAkta}
+                </span>
+                <br />
+                <span className="text-slate-700">Tanggal Akta: </span>
+                <span className="text-pretty text-dongker">
+                  {data.aktaTgl}
+                </span>
+                <br />
+                <span className="text-slate-700">Tempat Akta: </span>
+                <span className="text-pretty text-dongker">
+                  {data.aktaTmp}
+                </span>
+                <br />
+                <span className="text-slate-700">Instansi Notaris: </span>
+                <span className="text-pretty text-dongker">
+                  {data.notarisInstansi}
+                </span>
+                <br />
+                <span className="text-slate-700">Handphone: </span>
+                <span className="text-pretty text-dongker">
+                  {data.hp}
+                </span>
+                <br />
+                <span className="text-slate-700">Email: </span>
+                <span className="text-pretty text-dongker">
+                  {data.email}
+                </span>
+                <br />
+                <span className="text-slate-700">Kode KLU: </span>
+                <span className="text-pretty text-dongker">
+                  {data.kdKlu}
+                </span>
+                <br />
+                <span className="text-slate-700">Thn Lapor Terakhir: </span>
+                <span className="text-pretty text-dongker">
+                  {data.thnLaporTerakhir}
                 </span>
               </div>
             </div>
             <div>
-              <span className="text-pretty text-slate-800">
-                Data Wajib Pajak Lawan Validasi :
+              <span className="text-pretty mt-5 text-slate-800">
+                Data Wajib Pajak Lawan Validasi:
               </span>
-              <div className="mt-2 text-justify">
+              <div className="mt-2 text-left">
                 <span className="text-slate-700">Nama: </span>
-                <span className="text-pretty text-red-500">
-                  {data.namaPusat}
-                </span>
+                <span className="text-pretty text-red-500">{data.namaWp2}</span>
                 <br />
                 <span className="text-slate-700">NPWP: </span>
-                <span className="text-pretty text-red-500">
-                  {data.npwpPusat}
-                </span>
+                <span className="text-pretty text-red-500">{data.npwp2}</span>
                 <br />
-                <span className="text-slate-700">NIK: </span>
-                <span className="text-pretty text-red-500">
-                  {data.nikBersihPusat}
-                </span>
-                <br />
-                <span className="text-slate-700">KPP Terdaftar: </span>
-                <span className="text-pretty text-red-500">
-                  {data.kppPusat}
-                </span>
+                <span className="text-slate-700">Jenis: </span>
+                <span className="text-pretty text-red-500">{data.jnsWp2}</span>
                 <br />
                 <span className="text-slate-700">Status: </span>
+                <span className="text-pretty text-red-500">{data.stsWpKe2}</span>
+                <br />
+                <span className="text-slate-700">Penanggung Jawab: </span>
                 <span className="text-pretty text-red-500">
-                  {data.statusPusat}
+                  {data.pjNamaKe2}
                 </span>
                 <br />
-                <span className="text-slate-700">Validitas Pusat: </span>
+                <span className="text-slate-700">NPWP Penanggung Jawab: </span>
                 <span className="text-pretty text-red-500">
-                  {data.validitasPusat}
+                  {data.pjNpwpKe2}
+                </span>
+                <br />
+                <span className="text-slate-700">NIK Penanggung Jawab: </span>
+                <span className="text-pretty text-red-500">
+                  {data.pjNoIdKe2}
+                </span>
+                <br />
+                <span className="text-slate-700">KPP: </span>
+                <span className="text-pretty text-red-500">
+                  {data.kppKe2}
+                </span>
+                <br />
+                <span className="text-slate-700">No Akta: </span>
+                <span className="text-pretty text-red-500">
+                  {data.noAktaKe2}
+                </span>
+                <br />
+                <span className="text-slate-700">Tanggal Akta: </span>
+                <span className="text-pretty text-red-500">
+                  {data.aktaTglKe2}
+                </span>
+                <br />
+                <span className="text-slate-700">Tempat Akta: </span>
+                <span className="text-pretty text-red-500">
+                  {data.aktaTmpKe2}
+                </span>
+                <br />
+                <span className="text-slate-700">Instansi Notaris: </span>
+                <span className="text-pretty text-red-500">
+                  {data.notarisInstansiKe2}
+                </span>
+                <br />
+                <span className="text-slate-700">Handphone: </span>
+                <span className="text-pretty text-red-500">
+                  {data.hpKe2}
+                </span>
+                <br />
+                <span className="text-slate-700">Email: </span>
+                <span className="text-pretty text-red-500">
+                  {data.emailKe2}
+                </span>
+                <br />
+                <span className="text-slate-700">Kode KLU: </span>
+                <span className="text-pretty text-red-500">
+                  {data.kdKluKe2}
+                </span>
+                <br />
+                <span className="text-slate-700">Thn Lapor Terakhir: </span>
+                <span className="text-pretty text-red-500">
+                  {data.thlLaporTerakhirKe2}
                 </span>
               </div>
             </div>
@@ -130,9 +214,7 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
           <h2 className="text-sm font-semibold mt-10">
             <div>
               <span className="text-pretty text-navy text-justify">
-                Wajib Pajak diatas diperkirakan memiliki dua NPWP berdasarkan
-                NIK yang Sama, apakah benar NPWP Lawan tersebut dimiliki oleh
-                satu pemilik yang sama dengan Wajib Pajak tervalidasi ?
+                Wajib Pajak tervalidasi diatas dicurigai memiliki dua NPWP yang diidentifikasi dengan data diatas, apakah benar Pemilik NPWP lawan validasi adalah pemilik yang sama dengan NPWP divalidasi ? 
               </span>
             </div>
           </h2>
@@ -183,9 +265,7 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
                 </option>
               </select>
             </>
-          ) : (
-            <></>
-          )}
+          ) : (<></>)}
           {selectedKpp === "sini" && selectedOption === "ya" ? (
             <>
               <h2 className="text-sm font-semibold mt-10">
@@ -195,8 +275,8 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
                     <span className="font-bold text-orange-900 text-md">
                       NPWP KPP Sini
                     </span>
-                    , maka anda harus membuat LHP Penghapusan NPWP secara
-                    Jabatan dan Mengirimnya ke PKD
+                    , maka anda harus membuat LHP Penghapusan NPWP secara Jabatan dan
+                    Mengirimnya ke PKD
                   </span>
                 </div>
               </h2>
@@ -232,7 +312,7 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
             hidden
             label="userId"
             name="userId"
-            defaultValue={data.nipId}
+            defaultValue={user?.id}
             register={register}
           />
           <div className="mt-4 items-center">
@@ -258,4 +338,4 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
   );
 };
 
-export default CabangPusatBedaEntitasForm;
+export default PembenahanWpIdentitasGandaForm;

@@ -2,7 +2,7 @@ import React from "react";
 import { FieldError } from "react-hook-form";
 
 type InputField = {
-  label: string;
+  label?: string;
   type?: string;
   register: any;
   name: string;
@@ -11,6 +11,7 @@ type InputField = {
   hidden?: boolean;
   defaultValue?: any;
   custom?: string;
+  placeholder?:string;
   error?: FieldError;
   error2?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -28,6 +29,7 @@ const InputField = ({
   readonly,
   onChange,
   defaultValue,
+  placeholder,
   error,
   error2,
   inputProps,
@@ -42,6 +44,7 @@ const InputField = ({
           {...register(name)}
           value={value}
           type={type}
+          placeholder={placeholder}
           onChange={onChange}
           defaultValue={defaultValue}
           readOnly={readonly}

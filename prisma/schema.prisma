@@ -28,6 +28,9 @@ model User {
   PembehananCabangPusatBedahEntitas       PembenahanCabangPusatBedahEntitas[]
   PembenahanWpNamaTtlSama                 PembenahanWpNamaTtlSama[]
   JawabanPembenahanCabangPusatBedaEntitas JawabanPembenahanCabangPusatBedaEntitas[]
+  JawabanPembenahanWpNamaTtlSama          JawabanPembenahanWpNamaTtlSama[]
+  JawabanPembenahanWpNikGanda             JawabanPembenahanWpNikGanda[]
+  JawabanPembenahanWpIdentitasGanda       JawabanPembenahanWpIdentitasGanda[]
 }
 
 model EmpoweringData {
@@ -142,7 +145,7 @@ model PembenahanCabangPusatBedahEntitas {
   nikBersihPusat                          String?
   nikBersihCabang                         String?
   tglBentukData                           String?
-  currentStatus                           String                                    @default("Progress")
+  currentStatus                           String?                                   @default("Progress")
   JawabanPembenahanCabangPusatBedaEntitas JawabanPembenahanCabangPusatBedaEntitas[]
 }
 
@@ -156,6 +159,8 @@ model JawabanPembenahanCabangPusatBedaEntitas {
   namaCabangPusatQuestion String?
   //Apakah Pemilik NIK Cabang dengan Nomor Ini memiliki Hubungan Dengan Pemilik Nik Pusat dengan Nomor NIK Sebagai Berikut ?
   nikCabangPusatQuestion  String?
+  jawabanLangsung         String?
+  perluDihapus            String?
   keterangan              String?
   createdAt               DateTime                           @default(now())
   user                    User?                              @relation(fields: [userId], references: [id])
@@ -163,177 +168,239 @@ model JawabanPembenahanCabangPusatBedaEntitas {
 }
 
 model PembenahanWpNamaTtlSama {
-  id                    Int      @id @default(autoincrement())
-  npwp                  String?
-  nama                  String?
-  nik                   String?
-  alamat                String?
-  nomorHp               String?
-  createdAt             DateTime @default(now())
-  email                 String?
-  tmpLahir              String?
-  tglLahir              String?
-  kpp                   String?
-  kanwil                String?
-  nip                   User?    @relation(fields: [nipId], references: [id])
-  nipId                 String?
-  seksi                 String?
-  status                String?
-  noKep                 Int?
-  stsValid              String?
-  thnLaporTerakhir      Int?
-  jmlLapor10Thn         Int?
-  tglBayarTerakhir      String?
-  jmlBayar10thn         Float?
-  thnPhTerakhir         Int?
-  jmlPh10Thn            Int?
-  saldoUtang            Float?
-  tglUpdateTerakhir     String?
-  npwpSama              String?
-  namaSama              String?
-  nikSama               String?
-  alamatSama            String?
-  nomorHpSama           String?
-  emailSama             String?
-  tmpLahirSama          String?
-  tglLahirSama          String?
-  kppSama               String?
-  kanwilSama            String?
-  arSama                String?
-  seksiSama             String?
-  statusSama            String?
-  noKepSama             String?
-  stsValidSama          String?
-  thnLaporTerakhirSama  Int?
-  jmlLapor10ThnSama     Int?
-  tglBayarTerakhirSama  String?
-  jmlBayar10ThnSama     Float?
-  thnPhTerakhirSama     Int?
-  jmlPh10ThnSama        Int?
-  saldoUtangSama        Float?
-  tglUpdateTerakhirSama String?
-  skorJwsNama           Int?
-  skorJwsTempat         Int?
-  skorEdsNama           Int?
-  skorEdsTempat         Int?
-  tglBentukData         String?
-  currentStatus         String   @default("Progress")
+  id                             Int                              @id @default(autoincrement())
+  npwp                           String?
+  nama                           String?
+  nik                            String?
+  alamat                         String?
+  nomorHp                        String?
+  createdAt                      DateTime                         @default(now())
+  email                          String?
+  tmpLahir                       String?
+  tglLahir                       String?
+  kpp                            String?
+  kanwil                         String?
+  nip                            User?                            @relation(fields: [nipId], references: [id])
+  nipId                          String?
+  seksi                          String?
+  status                         String?
+  noKep                          Int?
+  stsValid                       String?
+  thnLaporTerakhir               Int?
+  jmlLapor10Thn                  Int?
+  tglBayarTerakhir               String?
+  jmlBayar10thn                  Float?
+  thnPhTerakhir                  Int?
+  jmlPh10Thn                     Int?
+  saldoUtang                     Float?
+  tglUpdateTerakhir              String?
+  npwpSama                       String?
+  namaSama                       String?
+  nikSama                        String?
+  alamatSama                     String?
+  nomorHpSama                    String?
+  emailSama                      String?
+  tmpLahirSama                   String?
+  tglLahirSama                   String?
+  kppSama                        String?
+  kanwilSama                     String?
+  arSama                         String?
+  seksiSama                      String?
+  statusSama                     String?
+  noKepSama                      String?
+  stsValidSama                   String?
+  thnLaporTerakhirSama           Int?
+  jmlLapor10ThnSama              Int?
+  tglBayarTerakhirSama           String?
+  jmlBayar10ThnSama              Float?
+  thnPhTerakhirSama              Int?
+  jmlPh10ThnSama                 Int?
+  saldoUtangSama                 Float?
+  tglUpdateTerakhirSama          String?
+  skorJwsNama                    Int?
+  skorJwsTempat                  Int?
+  skorEdsNama                    Int?
+  skorEdsTempat                  Int?
+  tglBentukData                  String?
+  currentStatus                  String                           @default("Progress")
+  JawabanPembenahanWpNamaTtlSama JawabanPembenahanWpNamaTtlSama[]
+}
+
+model JawabanPembenahanWpNamaTtlSama {
+  id              Int                      @id @default(autoincrement())
+  data            PembenahanWpNamaTtlSama? @relation(fields: [dataId], references: [id])
+  dataId          Int?
+  jawabanLangsung String?
+  keterangan      String?
+  createdAt       DateTime                 @default(now())
+  user            User?                    @relation(fields: [userId], references: [id])
+  userId          String?
 }
 
 model PembenahanWpNikGanda {
-  id                     Int                 @id @default(autoincrement())
-  no                     Int?
-  npwp1                  DatabaseWajibPajak? @relation(fields: [npwp1Id], references: [id])
-  nama1                  String?
-  nik1                   String?
-  kpp1                   String?
-  kanwil1                String?
-  statusValid1           String?
-  createdAt              DateTime            @default(now())
-  statusWp1              String?
-  updatedBy1             String?
-  noKep1                 String?
-  penerimanFasilitasPen1 String?
-  dataLapor1             Int?
-  dataBayar1             Int?
-  dataTunggakan1         Int?
-  jumlahData1            String?
-  dataTransaksi1         String?
-  tempatLahir1           String?
-  tanggalLahir1          String?
-  npwp2                  String?
-  nama2                  String?
-  nik2                   String?
-  kpp2                   String?
-  kanwil2                String?
-  statusValid2           String?
-  statusWp2              String?
-  updateBy2              String?
-  noKep2                 String?
-  penerimaFasilitasPen2  String?
-  dataLapor2             Int?
-  dataBayar2             Int?
-  dataTunggakan2         Int?
-  jumlahData2            Int?
-  dataTransaksi2         String?
-  tempatLahir2           String?
-  tanggalLahir2          String?
-  kppTerdaftar1dan2      String?
-  hasilCekNikDukcapil    String?
-  namaDukcapil           String?
-  persenNamaDukcapil     Int?
-  edsSkor                Int?
-  jswSkor                Int?
-  cosSkor                Int?
-  diceSkor               Int?
-  npwp1Id                String?
-  currentStatus          String              @default("Progress")
+  id                          Int                           @id @default(autoincrement())
+  no                          Int?
+  npwp1                       DatabaseWajibPajak?           @relation(fields: [npwp1Id], references: [id])
+  nama1                       String?
+  nik1                        String?
+  kpp1                        String?
+  kanwil1                     String?
+  statusValid1                String?
+  createdAt                   DateTime                      @default(now())
+  statusWp1                   String?
+  updatedBy1                  String?
+  noKep1                      String?
+  penerimanFasilitasPen1      String?
+  dataLapor1                  Int?
+  dataBayar1                  Int?
+  dataTunggakan1              Int?
+  jumlahData1                 String?
+  dataTransaksi1              String?
+  tempatLahir1                String?
+  tanggalLahir1               String?
+  npwp2                       String?
+  nama2                       String?
+  nik2                        String?
+  kpp2                        String?
+  kanwil2                     String?
+  statusValid2                String?
+  statusWp2                   String?
+  updateBy2                   String?
+  noKep2                      String?
+  penerimaFasilitasPen2       String?
+  dataLapor2                  Int?
+  dataBayar2                  Int?
+  dataTunggakan2              Int?
+  jumlahData2                 Int?
+  dataTransaksi2              String?
+  tempatLahir2                String?
+  tanggalLahir2               String?
+  kppTerdaftar1dan2           String?
+  hasilCekNikDukcapil         String?
+  namaDukcapil                String?
+  persenNamaDukcapil          Int?
+  edsSkor                     Int?
+  jswSkor                     Int?
+  cosSkor                     Int?
+  diceSkor                    Int?
+  npwp1Id                     String?
+  currentStatus               String                        @default("Progress")
+  JawabanPembenahanWpNikGanda JawabanPembenahanWpNikGanda[]
+}
+
+model JawabanPembenahanWpNikGanda {
+  id              Int                   @id @default(autoincrement())
+  data            PembenahanWpNikGanda? @relation(fields: [dataId], references: [id])
+  dataId          Int?
+  jawabanLangsung String?
+  perluDihapus    String?
+  nomorLhp        String?
+  keterangan      String?
+  createdAt       DateTime              @default(now())
+  user            User?                 @relation(fields: [userId], references: [id])
+  userId          String?
 }
 
 model PembenahanWpIdentitasGanda {
-  id                   Int      @id @default(autoincrement())
-  npwp1                String?
-  namaWp               String?
-  jnsWp                String?
-  stsWp                String?
-  pjNpwp               String?
-  pjNama               String?
-  pjNoId               String?
-  kpp                  String?
-  kanwil               String?
-  nip                  String?
-  seksi                String?
-  noAkta               Int?
-  aktaTgl              String?
-  aktaTmp              String?
-  notarisInstansi      String?
-  tglDaftar            String?
-  kdWil                String?
-  jalan                String?
-  telp                 String?
-  hp                   String?
-  email                String?
-  kdKlu                String?
-  thnLaporTerakhir     Int?
-  jmlLapor10Thn        Int?
-  tglBayarTerakhir     String?
-  jmlBayar10Thn        Float?
-  thnPhTerakhir        Int?
-  jmlPh10Thn           Int?
-  saldoPiutang         Int?
-  tglUpdateTerakhir    String?
-  npwp2                String?
-  namaWp2              String?
-  jnsWp2               String?
-  stsWpKe2             String?
-  pjNpwpKe2            String?
-  pjNamaKe2            String?
-  pjNoIdKe2            String?
-  kppKe2               String?
-  kanwilKe2            String?
-  arKe2                String?
-  seksiKe2             String?
-  noAktaKe2            String?
-  aktaTglKe2           String?
-  aktaTmpKe2           String?
-  notarisInstansiKe2   String?
-  tglDaftarKe2         String?
-  kdWilayahKe2         String?
-  jalanKe2             String?
-  telpKe2              String?
-  hpKe2                String?
-  emailKe2             String?
-  kdKluKe2             String?
-  thlLaporTerakhirKe2  Int?
-  jmlLapor10ThnKe2     Int?
-  tglBayarTerakhirKe2  String?
-  jmlBayar10ThnKe2     Float?
-  thnPhTerakhirKe2     Int?
-  jmlPhThnKe2          Int?
-  saldoPiutangKe2      Float?
-  tglUpdateTerakhirKe2 String?
-  skorNama             Float?
-  tglBentukData        String?
-  currentStatus        String   @default("Progress")
-  createdAt            DateTime @default(now())
+  id                                Int                                 @id @default(autoincrement())
+  npwp1                             String?
+  namaWp                            String?
+  jnsWp                             String?
+  stsWp                             String?
+  pjNpwp                            String?
+  pjNama                            String?
+  pjNoId                            String?
+  kpp                               String?
+  kanwil                            String?
+  nip                               String?
+  seksi                             String?
+  noAkta                            Int?
+  aktaTgl                           String?
+  aktaTmp                           String?
+  notarisInstansi                   String?
+  tglDaftar                         String?
+  kdWil                             String?
+  jalan                             String?
+  telp                              String?
+  hp                                String?
+  email                             String?
+  kdKlu                             String?
+  thnLaporTerakhir                  Int?
+  jmlLapor10Thn                     Int?
+  tglBayarTerakhir                  String?
+  jmlBayar10Thn                     Float?
+  thnPhTerakhir                     Int?
+  jmlPh10Thn                        Int?
+  saldoPiutang                      Int?
+  tglUpdateTerakhir                 String?
+  npwp2                             String?
+  namaWp2                           String?
+  jnsWp2                            String?
+  stsWpKe2                          String?
+  pjNpwpKe2                         String?
+  pjNamaKe2                         String?
+  pjNoIdKe2                         String?
+  kppKe2                            String?
+  kanwilKe2                         String?
+  arKe2                             String?
+  seksiKe2                          String?
+  noAktaKe2                         String?
+  aktaTglKe2                        String?
+  aktaTmpKe2                        String?
+  notarisInstansiKe2                String?
+  tglDaftarKe2                      String?
+  kdWilayahKe2                      String?
+  jalanKe2                          String?
+  telpKe2                           String?
+  hpKe2                             String?
+  emailKe2                          String?
+  kdKluKe2                          String?
+  thlLaporTerakhirKe2               Int?
+  jmlLapor10ThnKe2                  Int?
+  tglBayarTerakhirKe2               String?
+  jmlBayar10ThnKe2                  Float?
+  thnPhTerakhirKe2                  Int?
+  jmlPhThnKe2                       Int?
+  saldoPiutangKe2                   Float?
+  tglUpdateTerakhirKe2              String?
+  skorNama                          Float?
+  tglBentukData                     String?
+  currentStatus                     String                              @default("Progress")
+  createdAt                         DateTime                            @default(now())
+  JawabanPembenahanWpIdentitasGanda JawabanPembenahanWpIdentitasGanda[]
+}
+
+model JawabanPembenahanWpIdentitasGanda {
+  id              Int                         @id @default(autoincrement())
+  data            PembenahanWpIdentitasGanda? @relation(fields: [dataId], references: [id])
+  dataId          Int?
+  jawabanLangsung String?
+  perluDihapus    String?
+  nomorLhp        String?
+  keterangan      String?
+  createdAt       DateTime                    @default(now())
+  user            User?                       @relation(fields: [userId], references: [id])
+  userId          String?
+}
+
+model FinalPembenahanMfwp {
+  id                                     Int      @id @default(autoincrement())
+  npwp                                   String?
+  namaWajibPajak                         String?
+  jenisTarget                            String?
+  hasilUjiValiditas                      String?
+  keteranganUjiValiditas                 String?
+  jenisMfwp                              String?
+  npwpGanda                              String?
+  detilKeterangan                        String?
+  kebutuhanKlarifikasi                   String?
+  hasilKlarifikasi                       String?
+  buktiWpTidakMemberikanKlarifikasi      String?
+  usulanTindakanPembenahan               String?
+  prognosaTindakan                       String?
+  alasanBelumDilakukanTindakanPembenahan String?
+  npwpLawan                              String?
+  usulanTindakanPembenahanLawan          String?
+  keterangan                             String?
+  createdAt                              DateTime @default(now())
 }
