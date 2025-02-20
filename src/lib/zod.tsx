@@ -180,14 +180,17 @@ export const updateEmpoweringSchema = z.object({
 export type UpdateEmpoweringSchema = z.infer<typeof updateEmpoweringSchema>;
 
 export const jawabanPembenahanCabangPusatBedaEntitasSchema = z.object({
-  npwpCabangPusatQuestion: z.string({ message: "Harus Diisi !" }),
-  namaCabangPusatQuestion: z.string({ message: "Harus Diisi !" }),
-  nikCabangPusatQuestion: z.string({ message: "Harus Diisi !" }),
   jawabanLangsung: z.string({ message: "Harus Diisi !" }),
   perluDihapus: z.string({ message: "Harus Diisi !" }),
+  nomorLhp: z.string({ message: "Harus Diisi !" }).optional(),
+  hasilKlarifikasi: z.string({ message: "Harus Diisi !" }),
+  nomorBa: z.string({ message: "Harus Diisi" }),
+  npwp: z.string({ message: "Harus Diisi" }),
+  namaWajibPajak: z.string({ message: "Harus Diisi !" }).optional(),
   keterangan: z.string({ message: "Harus Diisi !" }),
   dataId: z.string({ message: "Harus Diisi !" }).optional(),
   userId: z.string({ message: "Harus Diisi !" }).optional(),
+  npwpLawan: z.string({message:"Harus Diisi !"}),
 });
 
 export type JawabanPembenahanCabangPusatBedaEntitasSchema = z.infer<

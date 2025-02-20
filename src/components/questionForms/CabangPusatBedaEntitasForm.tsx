@@ -11,7 +11,12 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<JawabanPembenahanCabangPusatBedaEntitasSchema>();
+  } = useForm<JawabanPembenahanCabangPusatBedaEntitasSchema>({
+    defaultValues: {
+      jawabanLangsung: "",
+    },
+  });
+  console.log(data);
 
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedKpp, setSelectedKpp] = useState("");
@@ -21,13 +26,16 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
   const onSubmit = handleSubmit(
     async (data: JawabanPembenahanCabangPusatBedaEntitasSchema) => {
       try {
-        const response = await fetch(`/api/createAnswerWpNikGanda`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
+        const response = await fetch(
+          `/api/createAnswerCabangPusatBedaEntitas`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
         console.log("Data NIK Ganda", data);
         if (!response.ok) {
           const errorData = await response.json();
@@ -96,7 +104,7 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
               </span>
               <div className="mt-2 text-justify">
                 <span className="text-slate-700">Nama: </span>
-                <span className="text-pretty text-red-500">
+                <span className="text-pretty text-red-500          ">
                   {data.namaPusat}
                 </span>
                 <br />
@@ -131,8 +139,8 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
             <div>
               <span className="text-pretty text-navy text-justify">
                 Wajib Pajak diatas diperkirakan memiliki dua NPWP berdasarkan
-                NIK yang Sama, apakah benar NPWP Lawan tersebut dimiliki oleh
-                satu pemilik yang sama dengan Wajib Pajak tervalidasi ?
+                Entitas yang Sama, apakah benar, pemilik NPWP lawan validasi,
+                merupakan pemilik yang sama dengan NPWP tervalidasi ?
               </span>
             </div>
           </h2>
@@ -145,6 +153,9 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
             })}
             className="col-start-1 row-start-1 w-full mt-4 appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
           >
+            <option value="" disabled hidden>
+              -- Pilih Salah Satu --
+            </option>
             <option value={"tidak"} className="text-white">
               Tidak
             </option>
@@ -152,6 +163,51 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
               Ya
             </option>
           </select>
+          {selectedOption === "tidak" ? (
+            <>
+              <h2 className="text-sm font-semibold mt-10">
+                <div>
+                  <span className="text-pretty text-navy text-justify">
+                    Jika Jawaban anda{" "}
+                    <span className="font-bold text-red-500 text-md">
+                      Tidak{" "}
+                    </span>
+                    maka anda Perlu melakukan Klarifikasi terlebih dahulu ke
+                    Wajib Pajak ! , Kemudian anda bisa mengisi jawaban
+                    klarifikasi tersebut dikolom ini !
+                  </span>
+                </div>
+              </h2>
+              <div className="sm:col-span-2 sm:col-start-1">
+                <InputField
+                  placeholder="Input Hasil Klarifikasi "
+                  name="hasilKlarifikasi"
+                  register={register}
+                />
+              </div>
+              <h2 className="text-sm font-semibold mt-10">
+                <div>
+                  <span className="text-pretty text-navy text-justify">
+                    Jika Wajib Pajak{" "}
+                    <span className="text-red-500">
+                      Tidak Memberikan Klarifikasi{" "}
+                    </span>
+                    Anda Bisa menginputkan BA Wp Tidak Memberikan Klarifikasi
+                    dan Mengirimnya ke PKD dengan ND !
+                  </span>
+                </div>
+              </h2>
+              <div className="sm:col-span-2 sm:col-start-1">
+                <InputField
+                  placeholder="Input Nomor BA "
+                  name="nomorBa"
+                  register={register}
+                />
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
           {selectedOption === "ya" ? (
             <>
               <h2 className="text-sm font-semibold mt-10">
@@ -186,6 +242,7 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
           ) : (
             <></>
           )}
+
           {selectedKpp === "sini" && selectedOption === "ya" ? (
             <>
               <h2 className="text-sm font-semibold mt-10">
@@ -233,6 +290,34 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
             label="userId"
             name="userId"
             defaultValue={data.nipId}
+            register={register}
+          />
+          <InputField
+            hidden
+            label="nama"
+            name="nama"
+            defaultValue={data.namaCabang}
+            register={register}
+          />
+          <InputField
+            hidden
+            label="namaWajibPajak"
+            name="namaWajibPajak"
+            defaultValue={data.namaCabang}
+            register={register}
+          />
+          <InputField
+            hidden
+            label="npwp"
+            name="npwp"
+            defaultValue={data.npwpCabang}
+            register={register}
+          />
+           <InputField
+            hidden
+            label="npwpLawan"
+            name="npwpLawan"
+            defaultValue={data.npwpPusat}
             register={register}
           />
           <div className="mt-4 items-center">

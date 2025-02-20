@@ -147,24 +147,20 @@ model PembenahanCabangPusatBedahEntitas {
   tglBentukData                           String?
   currentStatus                           String?                                   @default("Progress")
   JawabanPembenahanCabangPusatBedaEntitas JawabanPembenahanCabangPusatBedaEntitas[]
+  FinalPembenahanMfwp                     FinalPembenahanMfwp[]
 }
 
 model JawabanPembenahanCabangPusatBedaEntitas {
-  id                      Int                                @id @default(autoincrement())
-  data                    PembenahanCabangPusatBedahEntitas? @relation(fields: [dataId], references: [id])
-  dataId                  Int?
-  //Apakah NPWP Cabang Memiliki NPWP Pusat dengan Nomor NPWP Sebagai Berikut ?
-  npwpCabangPusatQuestion String?
-  //Apakah Nama Cabang Memiliki Nama Pusat dengan Nama Sebagai Berikut ?
-  namaCabangPusatQuestion String?
-  //Apakah Pemilik NIK Cabang dengan Nomor Ini memiliki Hubungan Dengan Pemilik Nik Pusat dengan Nomor NIK Sebagai Berikut ?
-  nikCabangPusatQuestion  String?
-  jawabanLangsung         String?
-  perluDihapus            String?
-  keterangan              String?
-  createdAt               DateTime                           @default(now())
-  user                    User?                              @relation(fields: [userId], references: [id])
-  userId                  String?
+  id              Int                                @id @default(autoincrement())
+  data            PembenahanCabangPusatBedahEntitas? @relation(fields: [dataId], references: [id])
+  dataId          Int?
+  jawabanLangsung String?
+  nomorLhp        String?
+  perluDihapus    String?
+  keterangan      String?
+  createdAt       DateTime                           @default(now())
+  user            User?                              @relation(fields: [userId], references: [id])
+  userId          String?
 }
 
 model PembenahanWpNamaTtlSama {
@@ -224,6 +220,7 @@ model PembenahanWpNamaTtlSama {
   tglBentukData                  String?
   currentStatus                  String                           @default("Progress")
   JawabanPembenahanWpNamaTtlSama JawabanPembenahanWpNamaTtlSama[]
+  FinalPembenahanMfwp            FinalPembenahanMfwp[]
 }
 
 model JawabanPembenahanWpNamaTtlSama {
@@ -286,6 +283,7 @@ model PembenahanWpNikGanda {
   npwp1Id                     String?
   currentStatus               String                        @default("Progress")
   JawabanPembenahanWpNikGanda JawabanPembenahanWpNikGanda[]
+  FinalPembenahanMfwp         FinalPembenahanMfwp[]
 }
 
 model JawabanPembenahanWpNikGanda {
@@ -368,6 +366,7 @@ model PembenahanWpIdentitasGanda {
   currentStatus                     String                              @default("Progress")
   createdAt                         DateTime                            @default(now())
   JawabanPembenahanWpIdentitasGanda JawabanPembenahanWpIdentitasGanda[]
+  FinalPembenahanMfwp               FinalPembenahanMfwp[]
 }
 
 model JawabanPembenahanWpIdentitasGanda {
@@ -384,7 +383,15 @@ model JawabanPembenahanWpIdentitasGanda {
 }
 
 model FinalPembenahanMfwp {
-  id                                     Int      @id @default(autoincrement())
+  id                                     Int                                @id @default(autoincrement())
+  pembenahanCabangPusatBedahEntitas      PembenahanCabangPusatBedahEntitas? @relation(fields: [pembenahanCabangPusatBedahEntitasId], references: [id])
+  pembenahanCabangPusatBedahEntitasId    Int?
+  pembenahanWpIdentitasGanda             PembenahanWpIdentitasGanda?        @relation(fields: [pembenahanWpIdentitasGandaId], references: [id])
+  pembenahanWpIdentitasGandaId           Int?
+  pembenahanWpNikGanda                   PembenahanWpNikGanda?              @relation(fields: [pembenahanWpNikGandaId], references: [id])
+  pembenahanWpNikGandaId                 Int?
+  pembenahanWpNamaTtlSama                PembenahanWpNamaTtlSama?           @relation(fields: [pembenahanWpNamaTtlSamaId], references: [id])
+  pembenahanWpNamaTtlSamaId              Int?
   npwp                                   String?
   namaWajibPajak                         String?
   jenisTarget                            String?
@@ -402,5 +409,5 @@ model FinalPembenahanMfwp {
   npwpLawan                              String?
   usulanTindakanPembenahanLawan          String?
   keterangan                             String?
-  createdAt                              DateTime @default(now())
+  createdAt                              DateTime                           @default(now())
 }

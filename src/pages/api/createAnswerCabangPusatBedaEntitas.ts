@@ -9,20 +9,23 @@ export default async function handler(
     try {
       const {
         dataId,
-        npwpCabangPusatQuestion,
-        namaCabangPusatQuestion,
-        nikCabangPusatQuestion,
+        jawabanLangsung,
+        nomorLhp,
+        perluDihapus,
         keterangan,
         userId,
         npwp,
+        nomorBa,
+        hasilKlarifikasi,
         namaWajibPajak,
+        npwpLawan,
       } = req.body;
       const data = await prisma.jawabanPembenahanCabangPusatBedaEntitas.create({
         data: {
           dataId: Number(dataId),
-          npwpCabangPusatQuestion,
-          namaCabangPusatQuestion,
-          nikCabangPusatQuestion,
+          jawabanLangsung,
+          nomorLhp,
+          perluDihapus,
           keterangan,
           userId,
         },
@@ -41,29 +44,23 @@ export default async function handler(
           namaWajibPajak,
           jenisTarget:
             "Wajib Pajak Cabang dengan Entitas yang Berbeda dengan Pusat",
-          hasilUjiValiditas:
-            npwpCabangPusatQuestion === "ya" &&
-            namaCabangPusatQuestion === "ya" &&
-            nikCabangPusatQuestion === "ya"
-              ? "Valid"
-              : "Tidak Valid",
+          hasilUjiValiditas: jawabanLangsung === "ya" ? "Valid" : "Tidak Valid",
           keteranganUjiValiditas: keterangan,
           jenisMfwp: "",
           npwpGanda: "",
           detilKeterangan:
-            npwpCabangPusatQuestion === "tidak" &&
-            namaCabangPusatQuestion === "tidak" &&
-            nikCabangPusatQuestion === "tidak"
+            jawabanLangsung === "tidak"
               ? "NPWP Lawan tidak memiliki hubungan dengan NPWP tervalidasi"
-              : "",
-          kebutuhanKlarifikasi:
-            npwpCabangPusatQuestion === "tidak" &&
-            namaCabangPusatQuestion === "tidak" &&
-            nikCabangPusatQuestion === "tidak"
-              ? "Ya"
-              : "Tidak",
-          hasilKlarifikasi: "",
-          
+              : "Kedua NPWP merupakan Entitas Yang Sama",
+          kebutuhanKlarifikasi: perluDihapus === "sini" ? "Ya" : "Tidak",
+          hasilKlarifikasi: hasilKlarifikasi,
+          buktiWpTidakMemberikanKlarifikasi: nomorBa,
+          pembenahanCabangPusatBedahEntitasId:Number(dataId),
+          usulanTindakanPembenahan:
+            perluDihapus === "sini" ? "Dihapus" : "Data Residu",
+          npwpLawan,
+          usulanTindakanPembenahanLawan:
+            perluDihapus === "lawan" ? "NPWP Lawan Perlu Dihapus" : "",
           keterangan: keterangan,
         },
       });
