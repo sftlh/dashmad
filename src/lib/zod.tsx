@@ -190,7 +190,7 @@ export const jawabanPembenahanCabangPusatBedaEntitasSchema = z.object({
   keterangan: z.string({ message: "Harus Diisi !" }),
   dataId: z.string({ message: "Harus Diisi !" }).optional(),
   userId: z.string({ message: "Harus Diisi !" }).optional(),
-  npwpLawan: z.string({message:"Harus Diisi !"}),
+  npwpLawan: z.string({ message: "Harus Diisi !" }),
 });
 
 export type JawabanPembenahanCabangPusatBedaEntitasSchema = z.infer<
@@ -199,6 +199,12 @@ export type JawabanPembenahanCabangPusatBedaEntitasSchema = z.infer<
 
 export const jawabanPembenahanWpNamaTtlSama = z.object({
   jawabanLangsung: z.string({ message: "Harus Diisi !" }),
+  perluDihapus: z.string({ message: "Harus Diisi" }),
+  nomorLhp: z.string({ message: "Harus Diisi !" }),
+  hasilKlarifikasi: z.string({ message: "Harus Diisi !" }),
+  nomorBa: z.string({ message: "Harus Diisi" }),
+  npwp: z.string({ message: "Harus Diisi !" }),
+  namaWajibPajak: z.string({ message: "Harus Diisi !" }),
   keterangan: z.string({ message: "Harus Diisi !" }),
   dataId: z.string({ message: "Harus Diisi" }).optional(),
   userId: z.string({ message: "Harus Diisi" }).optional(),
@@ -214,7 +220,12 @@ export const jawabanPembenahanWpNikGanda = z.object({
   perluDihapus: z.string({ message: "Harus Diisi" }).optional(),
   nomorLhp: z.string({ message: "Harus Diisi" }).optional(),
   dataId: z.string({ message: "Harus Diisi" }).optional(),
+  hasilKlarifikasi: z.string({ message: "Harus Diisi !" }),
+  nomorBa: z.string({ message: "Harus Diisi" }),
+  npwp: z.string({ message: "Harus Diisi" }),
+  namaWajibPajak: z.string({ message: "Harus Diisi !" }).optional(),
   userId: z.string({ message: "Harus Diisi" }).optional(),
+  npwpLawan: z.string({ message: "Harus Diisi !" }),
 });
 
 export type JawabanPembenahanWpNikGanda = z.infer<
@@ -226,10 +237,24 @@ export const jawabanPembenahanWpIdentitasGanda = z.object({
   keterangan: z.string({ message: "Harus Diisi" }),
   perluDihapus: z.string({ message: "Harus Diisi" }).optional(),
   nomorLhp: z.string({ message: "Harus Diisi" }).optional(),
+  hasilKlarifikasi: z.string({ message: "Harus Diisi !" }),
+  nomorBa: z.string({ message: "Harus Diisi" }),
+  npwp: z.string({ message: "Harus Diisi !" }),
+  namaWajibPajak: z.string({ message: "Harus Diisi !" }),
   dataId: z.string({ message: "Harus Diisi" }).optional(),
   userId: z.string({ message: "Harus Diisi" }).optional(),
+  npwpLawan: z.string({ message: "Harus Diisi !" }),
 });
 
 export type JawabanPembenahanWpIdentitasGanda = z.infer<
   typeof jawabanPembenahanWpIdentitasGanda
 >;
+
+export const sendingDataToKanwil = z.object({
+  nomorNd: z.string({ message: "Harus Diisi" }),
+  tanggalKirimNd: z.coerce.date({
+    message: "Waktu Pelaksanaan Kegiatan Harus diisi",
+  }),
+});
+
+export type SendingDataToKanwil = z.infer<typeof sendingDataToKanwil>;

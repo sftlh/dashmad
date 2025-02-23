@@ -1,9 +1,10 @@
+import KirimDataSection from '@/components/KirimDataSection'
 import React from 'react'
 
 const SendingDataKanwilPage = () => {
   return (
-    <div>
-      Sending Data Kanwil Page
+    <div className='p-10'>
+      <KirimDataSection/>
     </div>
   )
 }

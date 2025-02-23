@@ -1,7 +1,7 @@
 import InputField from "@/components/InputField";
 import { JawabanPembenahanWpNamaTtlSama } from "@/lib/zod";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -10,23 +10,27 @@ const WpNamaTtlSamaForm = ({ data }: { data?: any }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<JawabanPembenahanWpNamaTtlSama>();
+  } = useForm<JawabanPembenahanWpNamaTtlSama>({
+    defaultValues: {
+      jawabanLangsung: "",
+    },
+  });
+  console.log("WP Nama Ttl Sama", data)
+  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedKpp, setSelectedKpp] = useState("");
 
   const router = useRouter();
 
   const onSubmit = handleSubmit(
     async (data: JawabanPembenahanWpNamaTtlSama) => {
       try {
-        const response = await fetch(
-          `/api/createAnswerWpNamaTtlSama`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
+        const response = await fetch(`/api/createAnswerWpNamaTtlSama`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
         if (!response.ok) {
           const errorData = await response.json();
           errorData.errors.forEach((error: any) => {
@@ -85,9 +89,7 @@ const WpNamaTtlSamaForm = ({ data }: { data?: any }) => {
                 </span>
                 <br />
                 <span className="text-slate-700">Status: </span>
-                <span className="text-pretty text-dongker">
-                  {data.status}
-                </span>
+                <span className="text-pretty text-dongker">{data.status}</span>
               </div>
             </div>
             <div>
@@ -134,15 +136,25 @@ const WpNamaTtlSamaForm = ({ data }: { data?: any }) => {
           <h2 className="text-sm font-semibold mt-10">
             <div>
               <span className="text-pretty text-navy text-justify">
-                Wajib Pajak diatas diperkirakan memiliki dua NPWP, yang dibuktikan dengan Tempat / Tanggal / Lahir serta Nama yang Sama. Atas data tersebut apakah pemilik NPWP lawan, merupakan pemilik yang sama dengan NPWP yang divalidasi ?
+                Wajib Pajak diatas diperkirakan memiliki dua NPWP, yang
+                dibuktikan dengan Tempat / Tanggal / Lahir serta Nama yang Sama.
+                Atas data tersebut apakah pemilik NPWP lawan, merupakan pemilik
+                yang sama dengan NPWP yang divalidasi ?
               </span>
             </div>
           </h2>
           <select
             id="jawabanLangsung"
-            {...register("jawabanLangsung")}
+            value={selectedOption}
+            {...register("jawabanLangsung", {
+              onChange: (e: React.ChangeEvent<HTMLSelectElement>) =>
+                setSelectedOption(e.target.value),
+            })}
             className="col-start-1 row-start-1 w-full mt-4 appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
           >
+            <option value="" disabled hidden>
+              -- Pilih Salah Satu --
+            </option>
             <option value={"ya"} className="text-white">
               Ya
             </option>
@@ -150,9 +162,113 @@ const WpNamaTtlSamaForm = ({ data }: { data?: any }) => {
               Tidak
             </option>
           </select>
+          {selectedOption === "tidak" ? (
+            <>
+              <h2 className="text-sm font-semibold mt-10">
+                <div>
+                  <span className="text-pretty text-navy text-justify">
+                    Jika Jawaban anda{" "}
+                    <span className="font-bold text-red-500 text-md">
+                      Tidak{" "}
+                    </span>
+                    maka anda Perlu melakukan Klarifikasi terlebih dahulu ke
+                    Wajib Pajak ! , Kemudian anda bisa mengisi jawaban
+                    klarifikasi tersebut dikolom ini !
+                  </span>
+                </div>
+              </h2>
+              <div className="sm:col-span-2 sm:col-start-1">
+                <InputField
+                  placeholder="Input Hasil Klarifikasi "
+                  name="hasilKlarifikasi"
+                  register={register}
+                />
+              </div>
+              <h2 className="text-sm font-semibold mt-10">
+                <div>
+                  <span className="text-pretty text-navy text-justify">
+                    Jika Wajib Pajak{" "}
+                    <span className="text-red-500">
+                      Tidak Memberikan Klarifikasi{" "}
+                    </span>
+                    Anda Bisa menginputkan BA Wp Tidak Memberikan Klarifikasi
+                    dan Mengirimnya ke PKD dengan ND !
+                  </span>
+                </div>
+              </h2>
+              <div className="sm:col-span-2 sm:col-start-1">
+                <InputField
+                  placeholder="Input Nomor BA "
+                  name="nomorBa"
+                  register={register}
+                />
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+          {selectedOption === "ya" ? (
+            <>
+              <h2 className="text-sm font-semibold mt-10">
+                <div>
+                  <span className="text-pretty text-navy text-justify">
+                    Jika Jawaban anda{" "}
+                    <span className="font-bold text-orange-900 text-md">
+                      Iya
+                    </span>
+                    , maka NPWP manakah yang perlu dihapus ?
+                  </span>
+                </div>
+              </h2>
+              <select
+                id="perluDihapus"
+                value={selectedKpp}
+                {...(register("perluDihapus"),
+                {
+                  onChange: (e: React.ChangeEvent<HTMLSelectElement>) =>
+                    setSelectedKpp(e.target.value),
+                })}
+                className="col-start-1 row-start-1 w-full mt-4 appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
+              >
+                <option value={"lawan"} className="text-white">
+                  NPWP Lawan
+                </option>
+                <option value={"sini"} className="text-white">
+                  NPWP KPP Sini
+                </option>
+              </select>
+            </>
+          ) : (
+            <></>
+          )}
+          {selectedKpp === "sini" && selectedOption === "ya" ? (
+            <>
+              <h2 className="text-sm font-semibold mt-10">
+                <div>
+                  <span className="text-pretty text-navy text-justify">
+                    Jika Jawaban anda{" "}
+                    <span className="font-bold text-orange-900 text-md">
+                      NPWP KPP Sini
+                    </span>
+                    , maka anda harus membuat LHP Penghapusan NPWP secara
+                    Jabatan dan Mengirimnya ke PKD
+                  </span>
+                </div>
+              </h2>
+              <div className="sm:col-span-2 sm:col-start-1">
+                <InputField
+                  placeholder="Input Nomor LHP secara lengkap disini ...  "
+                  name="nomorLhp"
+                  register={register}
+                />
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
           <div className="w-full mt-5 max-w-lg mx-auto">
             <label className="block text-sm font-semibold text-navy mt-10 mb-2">
-              Masukan Tambahan Keterangan di Kolom Berikut
+              Masukan Alasan Pilihan Anda Dikolom Bawah Ini !
             </label>
             <textarea
               {...register("keterangan")}
@@ -172,6 +288,27 @@ const WpNamaTtlSamaForm = ({ data }: { data?: any }) => {
             label="userId"
             name="userId"
             defaultValue={data.nipId}
+            register={register}
+          />
+          <InputField
+            hidden
+            label="namaWajibPajak"
+            name="namaWajibPajak"
+            defaultValue={data.nama}
+            register={register}
+          />
+          <InputField
+            hidden
+            label="npwp"
+            name="npwp"
+            defaultValue={data.npwp}
+            register={register}
+          />
+          <InputField
+            hidden
+            label="npwpLawan"
+            name="npwpLawan"
+            defaultValue={data.npwpSama}
             register={register}
           />
           <div className="mt-4 items-center">

@@ -51,7 +51,7 @@ export default async function handler(
           detilKeterangan:
             jawabanLangsung === "tidak"
               ? "NPWP Lawan tidak memiliki hubungan dengan NPWP tervalidasi"
-              : "Kedua NPWP merupakan Entitas Yang Sama",
+              : "Kedua NPWP merupakan hubungan satu sama lain",
           kebutuhanKlarifikasi: perluDihapus === "sini" ? "Ya" : "Tidak",
           hasilKlarifikasi: hasilKlarifikasi,
           buktiWpTidakMemberikanKlarifikasi: nomorBa,

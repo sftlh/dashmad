@@ -76,7 +76,7 @@ const navigation = [
     name: "Kirim Data",
     href: "/sendingdatakanwil",
     icon: CurrencyDollarIcon,
-    visible: ["admin"],
+    visible: ["admin","oc"],
   },
 ];
 

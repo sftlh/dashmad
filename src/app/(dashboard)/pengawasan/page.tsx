@@ -17,16 +17,43 @@ import {
   quarterThree,
   quarterTwo,
 } from "@/lib/getaction";
-import { RiNumber1, RiNumber2, RiNumber3, RiNumber4 } from "react-icons/ri";
 
 import { getUserByUserId } from "@/lib/getById";
+import {
+  getPembenahanWpCabangPusatBedaEntitas,
+  getPembenahanWpIdentitasGanda,
+  getPembenahanWpNamaTtlSama,
+  getPembenahanWpNikGanda,
+  getPemebenahanWpBelumSelesai,
+  getPemebenahanWpSelesai,
+  sendingDataToKanwil,
+} from "@/lib/getPembenahanWp";
 import { auth } from "@clerk/nextjs/server";
 import React from "react";
 
 const PengawasanPage = async () => {
   const { userId } = await auth();
-
+  const countPembenahanWPBelum = await getPemebenahanWpBelumSelesai(
+    userId as string
+  );
+  const countPembenahanWPSelesai = await getPemebenahanWpSelesai(
+    userId as string
+  );
+  const countPembenahanWPCabangBedaEntitas =
+    await getPembenahanWpCabangPusatBedaEntitas(userId as string);
+  const countPembenahanWPNikGanda = await getPembenahanWpNikGanda(
+    userId as string
+  );
+  const countPembenahanWPIdentitasGanda = await getPembenahanWpIdentitasGanda(
+    userId as string
+  );
+  const countPembenahanWPTTLSama = await getPembenahanWpNamaTtlSama(
+    userId as string
+  );
+  const countSendingDataToKanwil = await sendingDataToKanwil(userId as string);
   const userData = await getUserByUserId(userId as string);
+
+  console.log("Data Kanwil", countSendingDataToKanwil);
 
   //Jumlah BedahWP
   const countBedahWpTwI = await getCountOfBedahWpTriwulanIByUserId(
@@ -95,26 +122,19 @@ const PengawasanPage = async () => {
     },
   ];
 
-  const pembenahanMfwp = [
-    {
-      id: 1,
-      title: "Data Inputan Bedah WP",
-      href: "#",
-      preview:
-        "Cum qui rem deleniti. Suscipit in dolor veritatis sequi aut. Vero ut earum quis deleniti. Ut a sunt eum cum ut repudiandae possimus. Nihil ex tempora neque cum consectetur dolores.",
-    },
-    {
-      id: 2,
-      title: "New password policy",
-      href: "#",
-      preview:
-        "Alias inventore ut autem optio voluptas et repellendus. Facere totam quaerat quam quo laudantium cumque eaque excepturi vel. Accusamus maxime ipsam reprehenderit rerum id repellendus rerum. Culpa cum vel natus. Est sit autem mollitia.",
-    },
-  ];
-
   return (
     <div className="p-10">
-      <PengawasanDashboard data1={bedahwpinfo} userData={userData} />
+      <PengawasanDashboard
+        data1={bedahwpinfo}
+        userData={userData}
+        countPembenahanWPBelum={countPembenahanWPBelum}
+        countPembenahanWPIdentitasGanda={countPembenahanWPIdentitasGanda}
+        countPembenahanWPSelesai={countPembenahanWPSelesai}
+        countPembenahanWPNikGanda={countPembenahanWPNikGanda}
+        countPembenahanWPTTLSama={countPembenahanWPTTLSama}
+        countSendingDataToKanwil={countSendingDataToKanwil}
+        countPembenahanWPCabangBedaEntitas={countPembenahanWPCabangBedaEntitas}
+      />
     </div>
   );
 };

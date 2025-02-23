@@ -259,7 +259,7 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
               </h2>
               <div className="sm:col-span-2 sm:col-start-1">
                 <InputField
-                  placeholder="Input LHP disini ... "
+                  placeholder="Input Nomor LHP secara lengkap disini ...  "
                   name="nomorLhp"
                   register={register}
                 />
@@ -270,7 +270,7 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
           )}
           <div className="w-full mt-5 max-w-lg mx-auto">
             <label className="block text-sm font-semibold text-navy mt-10 mb-2">
-              Masukan Tambahan Keterangan di Kolom Berikut
+              Masukan Alasan Pilihan Anda Dikolom Bawah Ini !
             </label>
             <textarea
               {...register("keterangan")}
@@ -294,13 +294,6 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
           />
           <InputField
             hidden
-            label="nama"
-            name="nama"
-            defaultValue={data.namaCabang}
-            register={register}
-          />
-          <InputField
-            hidden
             label="namaWajibPajak"
             name="namaWajibPajak"
             defaultValue={data.namaCabang}
@@ -313,7 +306,7 @@ const CabangPusatBedaEntitasForm = ({ id, data }: { id?: any; data?: any }) => {
             defaultValue={data.npwpCabang}
             register={register}
           />
-           <InputField
+          <InputField
             hidden
             label="npwpLawan"
             name="npwpLawan"

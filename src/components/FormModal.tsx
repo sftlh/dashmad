@@ -8,6 +8,10 @@ import CabangPusatBedaEntitasForm from "./questionForms/CabangPusatBedaEntitasFo
 import WpNamaTtlSamaForm from "./questionForms/WpNamaTtlSamaForm";
 import PembenahanWpNikGandaForm from "./questionForms/PembenahanWpNikGandaForm";
 import PembenahanWpIdentitasGandaForm from "./questionForms/PembenahanWpIdentitasGandaForm";
+import FormKirimPembenahanTwI from "./forms/FormKirimPembenahanTwI";
+import FormKirimPembenahanTw2 from "./forms/FormKirimPembenahanTw2";
+import FormKirimPembenahanTw3 from "./forms/FormKirimPembenahanTw3";
+import FormKirimPembenahanTw4 from "./forms/FormKirimPembenahanTw4";
 
 const FormModal = ({
   id,
@@ -22,6 +26,7 @@ const FormModal = ({
   open?: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  console.log("Type Data", type);
   return (
     <Dialog open={open} onClose={setOpen} className="z-10">
       <DialogBackdrop
@@ -62,6 +67,14 @@ const FormModal = ({
                   <PembenahanWpNikGandaForm data={data} />
                 ) : type === "wpidentitasganda" ? (
                   <PembenahanWpIdentitasGandaForm data={data} />
+                ) : type === "pembenahantw1" ? (
+                  <FormKirimPembenahanTwI />
+                ) : type === "pembenahantw2" ? (
+                  <FormKirimPembenahanTw2 />
+                ) : type === "pembenahantw3" ? (
+                  <FormKirimPembenahanTw3 />
+                ) : type === "pembenahantw4" ? (
+                  <FormKirimPembenahanTw4 />
                 ) : (
                   ""
                 )}

@@ -79,16 +79,19 @@ model BedahWPData {
   userId                String?
   sendingDataToKanwil   SendingDataToKanwil? @relation(fields: [sendingDataToKanwilId], references: [id])
   sendingDataToKanwilId Int?
+
+  @@unique([npwpId,tahunPajak])
 }
 
 model SendingDataToKanwil {
-  id             Int              @id @default(autoincrement())
-  nomorNd        String
-  tanggalKirimNd DateTime
-  statusKirim    String?
-  createdAt      DateTime         @default(now())
-  bedahWpData    BedahWPData[]
-  empoweringData EmpoweringData[]
+  id                Int                   @id @default(autoincrement())
+  nomorNd           String
+  tanggalKirimNd    DateTime
+  statusKirim       String?
+  createdAt         DateTime              @default(now())
+  bedahWpData       BedahWPData[]
+  empoweringData    EmpoweringData[]
+  finalPembenahanWp FinalPembenahanMfwp[]
 }
 
 model DatabaseWajibPajak {
@@ -228,6 +231,8 @@ model JawabanPembenahanWpNamaTtlSama {
   data            PembenahanWpNamaTtlSama? @relation(fields: [dataId], references: [id])
   dataId          Int?
   jawabanLangsung String?
+  nomorLhp        String?
+  perluDihapus    String?
   keterangan      String?
   createdAt       DateTime                 @default(now())
   user            User?                    @relation(fields: [userId], references: [id])
@@ -410,4 +415,6 @@ model FinalPembenahanMfwp {
   usulanTindakanPembenahanLawan          String?
   keterangan                             String?
   createdAt                              DateTime                           @default(now())
+  SendingDataToKanwil                    SendingDataToKanwil?               @relation(fields: [sendingDataToKanwilId], references: [id])
+  sendingDataToKanwilId                  Int?
 }

@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
-import BoxOfDataPengawasanDashboard from "../BoxOfDataPengawasanDashboard";
 import EyeIcon from "@heroicons/react/24/outline/EyeIcon";
 import ShareIcon from "@heroicons/react/24/outline/ShareIcon";
 import ChatBubbleLeftEllipsisIcon from "@heroicons/react/24/outline/ChatBubbleLeftEllipsisIcon";
@@ -120,24 +119,8 @@ const OcDashboard = ({
                         }).format(user?.lastSignInAt as Date)}
                       </span>
                     </div>
-                    <div className="px-6 py-5 text-center text-sm font-medium">
-                      <span className="text-gray-900">
-                        Last Login{" "}
-                        {new Intl.DateTimeFormat("en-Us").format(
-                          user?.lastSignInAt as Date
-                        )}
-                      </span>{" "}
-                      <span>Tes</span>
-                    </div>
-                    <div className="px-6 py-5 text-center text-sm font-medium">
-                      <span className="text-gray-900">
-                        Last Login
-                        {new Intl.DateTimeFormat("en-Us").format(
-                          user?.lastSignInAt as Date
-                        )}
-                      </span>{" "}
-                      <span>Tes</span>
-                    </div>
+                    <div className="px-6 py-5 text-center text-sm font-medium"></div>
+                    <div className="px-6 py-5 text-center text-sm font-medium"></div>
                   </div>
                 </div>
               </section>
@@ -180,102 +163,6 @@ const OcDashboard = ({
                       </div>
                     </div>
                   ))}
-                </div>
-              </section>
-              <section>
-                <div className="bg-white px-4 py-6 shadow sm:rounded-lg sm:p-6">
-                  <article aria-labelledby={"question-title-"}>
-                    <div>
-                      <div className="flex space-x-3">
-                        <div className="shrink-0">
-                          {/* <img
-                        alt=""
-                        src={question.author.imageUrl}
-                        className="size-10 rounded-full"
-                      /> */}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-gray-900">
-                            <a className="hover:underline">Joko</a>
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            {/* <a href={question.href} className="hover:underline">
-                          <time dateTime={question.datetime}>
-                            {question.date}
-                          </time>
-                        </a> */}
-                          </p>
-                        </div>
-                        <div className="flex shrink-0 self-center"></div>
-                      </div>
-                      <h2
-                        id={"question-title-"}
-                        className="mt-4 text-base font-medium text-gray-900"
-                      >
-                        {/* {question.title} */}
-                      </h2>
-                    </div>
-                    <div className="mt-2 space-y-4 text-sm text-gray-700" />
-                    <div className="mt-6 flex justify-between space-x-8">
-                      <div className="flex space-x-6">
-                        <span className="inline-flex items-center text-sm">
-                          <button
-                            type="button"
-                            className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
-                          >
-                            <HandThumbUpIcon
-                              aria-hidden="true"
-                              className="size-5"
-                            />
-                            <span className="font-medium text-gray-900">
-                              {/* {question.likes} */} tes
-                            </span>
-                            <span className="sr-only">likes</span>
-                          </button>
-                        </span>
-                        <span className="inline-flex items-center text-sm">
-                          <button
-                            type="button"
-                            className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
-                          >
-                            <ChatBubbleLeftEllipsisIcon
-                              aria-hidden="true"
-                              className="size-5"
-                            />
-                            <span className="font-medium text-gray-900">
-                              {/* {question.replies} */} Tes
-                            </span>
-                            <span className="sr-only">replies</span>
-                          </button>
-                        </span>
-                        <span className="inline-flex items-center text-sm">
-                          <button
-                            type="button"
-                            className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
-                          >
-                            <EyeIcon aria-hidden="true" className="size-5" />
-                            <span className="font-medium text-gray-900">
-                              {/* {question.views} */}
-                            </span>
-                            <span className="sr-only">views</span>
-                          </button>
-                        </span>
-                      </div>
-                      <div className="flex text-sm">
-                        <span className="inline-flex items-center text-sm">
-                          <button
-                            type="button"
-                            className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
-                          >
-                            <ShareIcon aria-hidden="true" className="size-5" />
-                            <span className="font-medium text-gray-900">
-                              Share
-                            </span>
-                          </button>
-                        </span>
-                      </div>
-                    </div>
-                  </article>
                 </div>
               </section>
             </div>
