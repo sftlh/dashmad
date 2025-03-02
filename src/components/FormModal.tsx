@@ -12,6 +12,15 @@ import FormKirimPembenahanTwI from "./forms/FormKirimPembenahanTwI";
 import FormKirimPembenahanTw2 from "./forms/FormKirimPembenahanTw2";
 import FormKirimPembenahanTw3 from "./forms/FormKirimPembenahanTw3";
 import FormKirimPembenahanTw4 from "./forms/FormKirimPembenahanTw4";
+import FormKirimBedahWpTw1 from "./forms/FormKirimBedahWpTw1";
+import { Form } from "react-hook-form";
+import FormKirimBedahWpTw2 from "./forms/FormKirimBedahWpTw2";
+import FormKirimBedahWpTw3 from "./forms/FormKirimBedahWpTw3";
+import FormKirimBedahWpTw4 from "./forms/FormKirimBedahWpTw4";
+import FormKirimEmpoweringWajibPajakTw1 from "./forms/FormKirimEmpoweringWajibPajakTw1";
+import FormKirimEmpoweringWajibPajakTw2 from "./forms/FormKirimEmpoweringWajibPajakTw2";
+import FormKirimEmpoweringWajibPajakTw3 from "./forms/FormKirimEmpoweringWajibPajakTw3";
+import FormKirimEmpoweringWajibPajakTw4 from "./forms/FormKirimEmpoweringWajibPajakTw4";
 
 const FormModal = ({
   id,
@@ -75,6 +84,22 @@ const FormModal = ({
                   <FormKirimPembenahanTw3 />
                 ) : type === "pembenahantw4" ? (
                   <FormKirimPembenahanTw4 />
+                ) : type === "bedahwptw1" ? (
+                  <FormKirimBedahWpTw1 />
+                ) : type === "bedahwptw2" ? (
+                  <FormKirimBedahWpTw2 />
+                ) : type === "bedahwptw3" ? (
+                  <FormKirimBedahWpTw3 />
+                ) : type === "bedahwptw4" ? (
+                  <FormKirimBedahWpTw4 />
+                ) : type === "empoweringtw1" ? (
+                  <FormKirimEmpoweringWajibPajakTw1 />
+                ) : type === "empoweringtw2" ? (
+                  <FormKirimEmpoweringWajibPajakTw2 />
+                ) : type === "empoweringtw3" ? (
+                  <FormKirimEmpoweringWajibPajakTw3 />
+                ) : type === "empoweringtw4" ? (
+                  <FormKirimEmpoweringWajibPajakTw4 />
                 ) : (
                   ""
                 )}

@@ -1,7 +1,4 @@
-import {
-  quarterFour,
-  quarterThree,
-} from "@/lib/getaction";
+import { quarterFour, quarterThree } from "@/lib/getaction";
 import prisma from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -10,7 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const dataKirim = await prisma.finalPembenahanMfwp.findMany({
+    const dataKirim = await prisma.bedahWPData.findMany({
       where: {
         createdAt: {
           lte: quarterFour,
@@ -27,9 +24,9 @@ export default async function handler(
         console.log("Tidak Ada Data Empowering !")
     }
     const selectedId = dataKirim.map((item) => item.id);
-    let pembenahanDataConnection = {};
+    let bedahDataConnection = {};
     if (selectedId && selectedId.length > 0) {
-      pembenahanDataConnection = {
+      bedahDataConnection = {
         connect: selectedId.map((id) => ({ id })),
       };
     }
@@ -41,8 +38,8 @@ export default async function handler(
           tanggalKirimNd,
           statusKirim: "sudah",
           ...(selectedId.length > 0 && {
-            finalPembenahanWp: pembenahanDataConnection,
-          }),
+            bedahWpData: bedahDataConnection,
+          })
         },
       });
       res.status(201).json({ message: "Data Berhasil di Input", data: data });

@@ -22,6 +22,12 @@ const Table = ({data, renderRow}:{data?:any, renderRow: (item: any) => React.Rea
             scope="col"
             className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
           >
+            Tahun Pajak
+          </th>
+          <th
+            scope="col"
+            className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
+          >
             Status
           </th>
           <th

@@ -250,11 +250,171 @@ export type JawabanPembenahanWpIdentitasGanda = z.infer<
   typeof jawabanPembenahanWpIdentitasGanda
 >;
 
-export const sendingDataToKanwil = z.object({
-  nomorNd: z.string({ message: "Harus Diisi" }),
-  tanggalKirimNd: z.coerce.date({
-    message: "Waktu Pelaksanaan Kegiatan Harus diisi",
-  }),
-});
+export const sendingDataToKanwil = z
+  .object({
+    nomorNd: z.string({ message: "Harus Diisi" }),
+    tanggalKirimNd: z.coerce.date({
+      message: "Waktu Pelaksanaan Kegiatan Harus diisi",
+    }),
+    id: z.string().optional(),
+  })
+  .refine(
+    async (data) => {
+      if (data.id === "empoweringtw1") {
+        const response = await fetch(`/api/findEmpoweringDataTw1`);
+        const result = await response.json();
+        return result.exists.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Tidak Ada Daftar Empowering Triwulan I yang Dikirim",
+      path: ["nomorNd"],
+    }
+  )
+  .refine(
+    async (data) => {
+      if (data.id === "empoweringtw2") {
+        const response2 = await fetch(`/api/findEmpoweringDataTw2`);
+        const result2 = await response2.json();
+        return result2.exists.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Tidak Ada Daftar Empowering Triwulan II yang Dikirim",
+      path: ["nomorNd"],
+    }
+  ).refine(
+    async (data) => {
+      if (data.id === "empoweringtw3") {
+        const response = await fetch(`/api/findEmpoweringDataTw3`);
+        const result = await response.json();
+        return result.exists.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Tidak Ada Daftar Empowering Triwulan III yang Dikirim",
+      path: ["nomorNd"],
+    }
+  ).refine(
+    async (data) => {
+      if (data.id === "empoweringtw4") {
+        const response = await fetch(`/api/findEmpoweringDataTw4`);
+        const result = await response.json();
+        return result.exists.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Tidak Ada Daftar Empowering Triwulan IV yang Dikirim",
+      path: ["nomorNd"],
+    }
+  ).refine(
+    async (data) => {
+      if (data.id === "bedahtw1") {
+        const response = await fetch(`/api/findBedahDataTw1`);
+        const result = await response.json();
+        return result.exists.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Tidak Ada Daftar Bedah WP Triwulan I yang Dikirim",
+      path: ["nomorNd"],
+    }
+  ).refine(
+    async (data) => {
+      if (data.id === "bedahtw2") {
+        const response = await fetch(`/api/findBedahDataTw2`);
+        const result = await response.json();
+        return result.exists.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Tidak Ada Daftar Bedah WP Triwulan II yang Dikirim",
+      path: ["nomorNd"],
+    }
+  ).refine(
+    async (data) => {
+      if (data.id === "bedahtw3") {
+        const response = await fetch(`/api/findBedahDataTw3`);
+        const result = await response.json();
+        return result.exists.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Tidak Ada Daftar Bedah WP Triwulan III yang Dikirim",
+      path: ["nomorNd"],
+    }
+  ).refine(
+    async (data) => {
+      if (data.id === "bedahtw4") {
+        const response = await fetch(`/api/findBedahDataTw4`);
+        const result = await response.json();
+        return result.exists.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Tidak Ada Daftar Bedah WP Triwulan IV yang Dikirim",
+      path: ["nomorNd"],
+    }
+  ).refine(
+    async (data) => {
+      if (data.id === "pembenahantw1") {
+        const response = await fetch(`/api/findPembenahanDataTw1`);
+        const result = await response.json();
+        return result.exists.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Tidak Ada Daftar Pembenahan MFWP Triwulan I yang Dikirim",
+      path: ["nomorNd"],
+    }
+  ).refine(
+    async (data) => {
+      if (data.id === "pembenahantw2") {
+        const response = await fetch(`/api/findPembenahanDataTw2`);
+        const result = await response.json();
+        return result.exists.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Tidak Ada Daftar Pembenahan MFWP Triwulan II yang Dikirim",
+      path: ["nomorNd"],
+    }
+  ).refine(
+    async (data) => {
+      if (data.id === "pembenahantw3") {
+        const response = await fetch(`/api/findPembenahanDataTw3`);
+        const result = await response.json();
+        return result.exists.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Tidak Ada Daftar Pembenahan MFWP Triwulan III yang Dikirim",
+      path: ["nomorNd"],
+    }
+  ).refine(
+    async (data) => {
+      if (data.id === "pembenahantw4") {
+        const response = await fetch(`/api/findPembenahanDataTw4`);
+        const result = await response.json();
+        return result.exists.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Tidak Ada Daftar Pembenahan MFWP Triwulan IV yang Dikirim",
+      path: ["nomorNd"],
+    }
+  );
 
 export type SendingDataToKanwil = z.infer<typeof sendingDataToKanwil>;

@@ -1,6 +1,6 @@
 import React from "react";
 
-const BoxOfDataPengawasanDashboard = ({
+const BoxOfDashboardOc = ({
   data1,
 }: {
   data1?: any;
@@ -18,7 +18,7 @@ const BoxOfDataPengawasanDashboard = ({
           </h2>
           <div className="mt-6 flow-root">
             <ul role="list" className="grid grid-cols-1 gap-y-8">
-              {data1.map((item: any) => (
+              {data1?.map((item: any) => (
                 <li
                   key={item.id}
                   className="overflow-hidden rounded-xl border border-gray-200"
@@ -88,4 +88,4 @@ const BoxOfDataPengawasanDashboard = ({
   );
 };
 
-export default BoxOfDataPengawasanDashboard;
+export default BoxOfDashboardOc;

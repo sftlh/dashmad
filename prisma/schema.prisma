@@ -55,6 +55,7 @@ model EmpoweringData {
   userId                String?
   sendingDataToKanwil   SendingDataToKanwil? @relation(fields: [sendingDataToKanwilId], references: [id])
   sendingDataToKanwilId Int?
+  @@unique([npwpId,tahunPajak])
 }
 
 model BedahWPData {

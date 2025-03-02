@@ -1,6 +1,6 @@
 import prisma from "./prisma";
 
-const todayYear = new Date().getFullYear();
+export const todayYear = new Date().getFullYear();
 
 export const firstDateOfTheYear = new Date(todayYear, 0, 0);
 
@@ -248,9 +248,14 @@ export const getBedahWpKirimTwI = async (userId: string) => {
           lte: quarterOne,
           gte: firstDateOfTheYear,
         },
-        sendingDataToKanwil: {
-          statusKirim: "Sudah Kirim",
+        createdAt: {
+          lte: quarterOne,
+          gte: firstDateOfTheYear,
         },
+        sendingDataToKanwil: {
+          statusKirim: "sudah",
+        },
+        userId,
       },
     });
     return dataSudahKirim;
@@ -267,8 +272,12 @@ export const getBedahWpKirimTwII = async (userId: string) => {
           lte: quarterTwo,
           gte: quarterOne,
         },
+        createdAt: {
+          lte: quarterTwo,
+          gte: quarterOne,
+        },
         sendingDataToKanwil: {
-          statusKirim: "Sudah Kirim",
+          statusKirim: "sudah",
         },
         userId,
       },
@@ -287,8 +296,12 @@ export const getBedahWpKirimTwIII = async (userId: string) => {
           lte: quarterThree,
           gte: quarterTwo,
         },
+        createdAt: {
+          lte: quarterThree,
+          gte: quarterTwo,
+        },
         sendingDataToKanwil: {
-          statusKirim: "Sudah Kirim",
+          statusKirim: "sudah",
         },
         userId,
       },
@@ -307,8 +320,12 @@ export const getBedahWpKirimTwIV = async (userId: string) => {
           lte: quarterFour,
           gte: quarterThree,
         },
+        createdAt: {
+          lte: quarterFour,
+          gte: quarterThree,
+        },
         sendingDataToKanwil: {
-          statusKirim: "Sudah Kirim",
+          statusKirim: "sudah",
         },
         userId,
       },
@@ -405,3 +422,74 @@ export const getBedahWpTelatTwIV = async (userId: string) => {
   }
 };
 
+export const belumKirimTwI = async (userId: string) => {
+  try {
+    const data = await prisma.bedahWPData.count({
+      where: {
+        userId,
+        pelaksanaanKegiatan: {
+          lte: quarterOne,
+          gte: firstDateOfTheYear,
+        },
+        sendingDataToKanwilId: null,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const belumKirimTwII = async (userId: string) => {
+  try {
+    const data = await prisma.bedahWPData.count({
+      where: {
+        userId,
+        pelaksanaanKegiatan: {
+          lte: quarterTwo,
+          gte: quarterOne,
+        },
+        sendingDataToKanwilId: null,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const belumKirimTwIII = async (userId: string) => {
+  try {
+    const data = await prisma.bedahWPData.count({
+      where: {
+        userId,
+        pelaksanaanKegiatan: {
+          lte: quarterThree,
+          gte: quarterTwo,
+        },
+        sendingDataToKanwilId: null,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const belumKirimTwIV = async (userId: string) => {
+  try {
+    const data = await prisma.bedahWPData.count({
+      where: {
+        userId,
+        pelaksanaanKegiatan: {
+          lte: quarterFour,
+          gte: quarterThree,
+        },
+        sendingDataToKanwilId: null,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

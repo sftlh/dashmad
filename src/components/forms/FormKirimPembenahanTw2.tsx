@@ -68,6 +68,7 @@ const FormKirimPembenahanTw2 = () => {
                 register={register}
               />
             </div>
+            <InputField hidden register={register} name='id' defaultValue={"pembenahantw2"}/>
           </div>
         </div>
         <div className="flex items-center justify-end gap-x-6">

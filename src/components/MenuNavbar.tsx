@@ -1,6 +1,7 @@
 import CurrencyDollarIcon from "@heroicons/react/24/outline/CurrencyDollarIcon";
 import HomeIcon from "@heroicons/react/24/outline/HomeIcon";
 import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
+import { PlusCircleIcon, PaperAirplaneIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 import React from "react";
 
 const navigation = [
@@ -30,19 +31,19 @@ const navigation = [
   {
     name: "Bedah WP",
     href: "/bedahwp",
-    icon: CurrencyDollarIcon,
+    icon: PlusCircleIcon,
     visible: ["ar_1", "ar_2", "ar_3", "ar_4", "ar_5", "admin", "ar_6"],
   },
   {
     name: "Pembenahan WP",
     href: "/pembenahanwp",
-    icon: TrashIcon,
+    icon: ArrowPathIcon,
     visible: ["ar_1", "ar_2", "ar_3", "ar_4", "admin", "ar_5", "ar_6", "suki"],
   },
   {
     name: "Empowering",
     href: "/empowering",
-    icon: CurrencyDollarIcon,
+    icon: PlusCircleIcon,
     visible: [
       "admin",
       "kasipw2",
@@ -57,26 +58,26 @@ const navigation = [
   {
     name: "Create User",
     href: "/createuser",
-    icon: CurrencyDollarIcon,
+    icon: PlusCircleIcon,
     visible: ["admin", "oc"],
   },
   {
     name: "Create Wajib Pajak",
     href: "/createwp",
-    icon: CurrencyDollarIcon,
+    icon: PlusCircleIcon,
     visible: ["admin", "oc"],
   },
   {
     name: "Create Pembenahan Wajib Pajak",
     href: "/uploadpembenahanwp",
-    icon: CurrencyDollarIcon,
+    icon: PlusCircleIcon,
     visible: ["oc"],
   },
   {
     name: "Kirim Data",
     href: "/sendingdatakanwil",
-    icon: CurrencyDollarIcon,
-    visible: ["admin","oc"],
+    icon: PaperAirplaneIcon,
+    visible: ["admin", "oc"],
   },
 ];
 

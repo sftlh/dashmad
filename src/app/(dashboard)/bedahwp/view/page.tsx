@@ -34,6 +34,9 @@ const BedahWPViewPage = async ({
         {item.npwp.nama}
       </td>
       <td className="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
+        {item.tahunPajak}
+      </td>
+      <td className="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
         {item.kunci === true ? (
           <p className="text-green-600">Data Siap Dikirim</p>
         ) : item.kunci === false ? (

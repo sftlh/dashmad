@@ -1,5 +1,9 @@
 import PengawasanDashboard from "@/components/dashboard/PengawasanDashboard";
 import {
+  belumKirimTwI,
+  belumKirimTwII,
+  belumKirimTwIII,
+  belumKirimTwIV,
   getBedahWpKirimTwI,
   getBedahWpKirimTwII,
   getBedahWpKirimTwIII,
@@ -77,6 +81,14 @@ const PengawasanPage = async () => {
   );
   const getBedahWpSudahKirimTwIV = await getBedahWpKirimTwIV(userId as string);
 
+  //Jumlah BedahWp Belum Kirim
+  const getBedahWpBelumKirimTwI = await belumKirimTwI(userId as string);
+  const getBedahWpBelumKirimTwII = await belumKirimTwII(userId as string);
+  const getBedahWpBelumKirimTwIII = await belumKirimTwIII(userId as string);
+  const getBedahWpBelumKirimTwIV = await belumKirimTwIV(userId as string);
+
+  console.log("Belum Kirim TW I", getBedahWpBelumKirimTwI)
+
   //Jumlah BedahWP Telat Input
   const getBedahWPTelatTwI = await getBedahWpTelatTwI(userId as string);
   const getBedahWPTelatTwII = await getBedahWpTelatTwII(userId as string);
@@ -90,6 +102,7 @@ const PengawasanPage = async () => {
       numeral: "I",
       total: countBedahWpTwI,
       kirim: getBedahWpSudahKirimTwI,
+      belum: getBedahWpBelumKirimTwI,
       telat: getBedahWPTelatTwI,
       jt: quarterOne,
     },
@@ -99,6 +112,7 @@ const PengawasanPage = async () => {
       numeral: "II",
       total: countBedahWpTwII,
       kirim: getBedahWpSudahKirimTwII,
+      belum: getBedahWpBelumKirimTwII,
       telat: getBedahWPTelatTwII,
       jt: quarterTwo,
     },
@@ -108,6 +122,7 @@ const PengawasanPage = async () => {
       numeral: "III",
       total: countBedahWpTwIII,
       kirim: getBedahWpSudahKirimTwIII,
+      belum: getBedahWpBelumKirimTwIII,
       telat: getBedahWPTelatTwIII,
       jt: quarterThree,
     },
@@ -117,6 +132,7 @@ const PengawasanPage = async () => {
       numeral: "IV",
       total: countBedahWpTwIV,
       kirim: getBedahWpSudahKirimTwIV,
+      belum: getBedahWpBelumKirimTwIV,
       telat: getBedahWPTelatTwIV,
       jt: quarterFour,
     },

@@ -1,7 +1,4 @@
-import {
-  quarterFour,
-  quarterThree,
-} from "@/lib/getaction";
+import { firstDateOfTheYear, quarterOne } from "@/lib/getaction";
 import prisma from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -10,11 +7,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const dataKirim = await prisma.finalPembenahanMfwp.findMany({
+    const dataKirim = await prisma.empoweringData.findMany({
       where: {
         createdAt: {
-          lte: quarterFour,
-          gte: quarterThree,
+          lte: quarterOne,
+          gte: firstDateOfTheYear,
         },
         sendingDataToKanwilId: null,
       },
@@ -22,17 +19,20 @@ export default async function handler(
         id: true,
       },
     });
+
     console.log("Data Kirim", dataKirim)
     if(!dataKirim || dataKirim.length === 0) {
         console.log("Tidak Ada Data Empowering !")
     }
+
     const selectedId = dataKirim.map((item) => item.id);
-    let pembenahanDataConnection = {};
+    let empoweringDataConnection = {};
     if (selectedId && selectedId.length > 0) {
-      pembenahanDataConnection = {
+      empoweringDataConnection = {
         connect: selectedId.map((id) => ({ id })),
       };
     }
+
     try {
       const { nomorNd, tanggalKirimNd } = req.body;
       const data = await prisma.sendingDataToKanwil.create({
@@ -41,7 +41,7 @@ export default async function handler(
           tanggalKirimNd,
           statusKirim: "sudah",
           ...(selectedId.length > 0 && {
-            finalPembenahanWp: pembenahanDataConnection,
+            empoweringData: empoweringDataConnection,
           }),
         },
       });

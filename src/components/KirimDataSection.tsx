@@ -234,6 +234,111 @@ const KirimDataSection = () => {
               />
             )}
           </li>
+
+          <li className="rounded-2xl bg-green-600 px-8 py-10">
+            <h3 className="mt-2 text-base/7 font-semibold tracking-tight text-white">
+              Empowering Wajib Pajak
+            </h3>
+            <h3 className="mt-2 text-base/7 font-semibold tracking-tight text-navy">
+              Triwulan I
+            </h3>
+            <ul role="list" className="mt-6 flex justify-center gap-x-6">
+              <li>
+                <button
+                  type="button"
+                  onClick={() => handleOpenModal("empoweringtw1")}
+                  className="rounded-md bg-yellow-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Input Kirim Data
+                </button>
+              </li>
+            </ul>
+            {open && modalType && (
+              <FormModal
+                setOpen={setOpen}
+                open={open}
+                type={modalType as string}
+              />
+            )}
+          </li>
+          <li className="rounded-2xl bg-green-600 px-8 py-10">
+            <h3 className="mt-2 text-base/7 font-semibold tracking-tight text-white">
+              Empowering Wajib Pajak
+            </h3>
+            <h3 className="mt-2 text-base/7 font-semibold tracking-tight text-navy">
+              Triwulan II
+            </h3>
+            <ul role="list" className="mt-6 flex justify-center gap-x-6">
+              <li>
+                <button
+                  type="button"
+                  onClick={() => handleOpenModal("empoweringtw2")}
+                  className="rounded-md bg-yellow-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Input Kirim Data
+                </button>
+              </li>
+            </ul>
+            {open && modalType && (
+              <FormModal
+                setOpen={setOpen}
+                open={open}
+                type={modalType as string}
+              />
+            )}
+          </li>
+          <li className="rounded-2xl bg-green-600 px-8 py-10">
+            <h3 className="mt-2 text-base/7 font-semibold tracking-tight text-white">
+              Empowering Wajib Pajak
+            </h3>
+            <h3 className="mt-2 text-base/7 font-semibold tracking-tight text-navy">
+              Triwulan III
+            </h3>
+            <ul role="list" className="mt-6 flex justify-center gap-x-6">
+              <li>
+                <button
+                  type="button"
+                  onClick={() => handleOpenModal("empoweringtw3")}
+                  className="rounded-md bg-yellow-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Input Kirim Data
+                </button>
+              </li>
+            </ul>
+            {open && modalType && (
+              <FormModal
+                setOpen={setOpen}
+                open={open}
+                type={modalType as string}
+              />
+            )}
+          </li>
+          <li className="rounded-2xl bg-green-600 px-8 py-10">
+            <h3 className="mt-2 text-base/7 font-semibold tracking-tight text-white">
+              Empowering Wajib Pajak
+            </h3>
+            <h3 className="mt-2 text-base/7 font-semibold tracking-tight text-navy">
+              Triwulan IV
+            </h3>
+            <ul role="list" className="mt-6 flex justify-center gap-x-6">
+              <li>
+                <button
+                  type="button"
+                  onClick={() => handleOpenModal("empoweringtw4")}
+                  className="rounded-md bg-yellow-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Input Kirim Data
+                </button>
+              </li>
+            </ul>
+            {open && modalType && (
+              <FormModal
+                setOpen={setOpen}
+                open={open}
+                type={modalType as string}
+              />
+            )}
+          </li>
         </ul>
       </div>
     </div>

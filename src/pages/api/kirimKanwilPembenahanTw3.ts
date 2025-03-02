@@ -19,7 +19,17 @@ export default async function handler(
         id: true,
       },
     });
+    console.log("Data Kirim", dataKirim)
+    if(!dataKirim || dataKirim.length === 0) {
+        console.log("Tidak Ada Data Empowering !")
+    }
     const selectedId = dataKirim.map((item) => item.id);
+    let pembenahanDataConnection = {};
+    if (selectedId && selectedId.length > 0) {
+      pembenahanDataConnection = {
+        connect: selectedId.map((id) => ({ id })),
+      };
+    }
     try {
       const { nomorNd, tanggalKirimNd } = req.body;
       const data = await prisma.sendingDataToKanwil.create({
@@ -27,9 +37,9 @@ export default async function handler(
           nomorNd,
           tanggalKirimNd,
           statusKirim: "sudah",
-          finalPembenahanWp: {
-            connect: selectedId.map((id) => ({ id })),
-          },
+          ...(selectedId.length > 0 && {
+            finalPembenahanWp: pembenahanDataConnection,
+          }),
         },
       });
       res.status(201).json({ message: "Data Berhasil di Input", data: data });

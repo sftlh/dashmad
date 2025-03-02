@@ -2,16 +2,11 @@
 import React from "react";
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
-import EyeIcon from "@heroicons/react/24/outline/EyeIcon";
-import ShareIcon from "@heroicons/react/24/outline/ShareIcon";
-import ChatBubbleLeftEllipsisIcon from "@heroicons/react/24/outline/ChatBubbleLeftEllipsisIcon";
-import HandThumbUpIcon from "@heroicons/react/24/outline/HandThumbUpIcon";
+import BoxOfDashboardOc from "../BoxDashboardOc";
+import { todayYear } from "@/lib/getaction";
 
 const OcDashboard = ({
   data1,
-  data2,
-  userData,
-  dataPembenahanWp,
 }: {
   data1?: any;
   data2?: any;
@@ -19,44 +14,81 @@ const OcDashboard = ({
   dataPembenahanWp?: any;
 }) => {
   const { user } = useUser();
-  const actions = [
-    {
-      name: "Request time off",
-      href: "#",
-      iconForeground: "text-teal-700",
-      iconBackground: "bg-teal-50",
-    },
-    {
-      name: "Benefits",
-      href: "#",
-      iconForeground: "text-purple-700",
-      iconBackground: "bg-purple-50",
-    },
-    {
-      name: "Schedule a one-on-one",
-      href: "#",
-      iconForeground: "text-sky-700",
-      iconBackground: "bg-sky-50",
-    },
-    {
-      name: "Payroll",
-      href: "#",
-      iconForeground: "text-yellow-700",
-      iconBackground: "bg-yellow-50",
-    },
-    {
-      name: "Submit an expense",
-      href: "#",
-      iconForeground: "text-rose-700",
-      iconBackground: "bg-rose-50",
-    },
-    {
-      name: "Training",
-      href: "#",
-      iconForeground: "text-indigo-700",
-      iconBackground: "bg-indigo-50",
-    },
-  ];
+  const handleExportBedahWpTw1 = async () => {
+    const response = await fetch("/api/exportBedahWpTw1", {
+      method: "GET",
+    });
+
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `bedahwptw1_${todayYear}`; // Specify the file name
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } else {
+      console.error("Error exporting data");
+    }
+  };
+
+  const handleExportBedahWpTw2 = async () => {
+    const response = await fetch("/api/exportBedahWpTw2", {
+      method: "GET",
+    });
+
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `bedahwptw2_${todayYear}`; // Specify the file name
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } else {
+      console.error("Error exporting data");
+    }
+  };
+
+  const handleExportBedahWpTw3 = async () => {
+    const response = await fetch("/api/exportBedahWpTw3", {
+      method: "GET",
+    });
+
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `bedahwptw3_${todayYear}`; // Specify the file name
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } else {
+      console.error("Error exporting data");
+    }
+  };
+
+  const handleExportBedahWpTw4 = async () => {
+    const response = await fetch("/api/exportBedahWpTw4", {
+      method: "GET",
+    });
+
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `bedahwptw4_${todayYear}`; // Specify the file name
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } else {
+      console.error("Error exporting data");
+    }
+  };
 
   const capitalizeFirstLatter = (input: string) => {
     if (input?.length === 0) return input;
@@ -129,40 +161,118 @@ const OcDashboard = ({
                   <h2 id="quick-links-title" className="sr-only">
                     Quick links
                   </h2>
-                  {actions.map((action) => (
-                    <div
-                      key={action.name}
-                      className={classNames("group relative bg-white p-6")}
-                    >
-                      <div>
-                        <span
-                          className={classNames(
-                            action.iconBackground,
-                            action.iconForeground,
-                            "inline-flex rounded-lg p-3 ring-4 ring-white"
-                          )}
-                        >
-                          {action.name}
-                        </span>
-                      </div>
-                      <div className="mt-8">
-                        <h3 className="text-lg font-medium">
-                          <a href={action.href} className="focus:outline-none">
-                            <span
-                              aria-hidden="true"
-                              className="absolute inset-0"
-                            />
-                            {action.name}
-                          </a>
-                        </h3>
-                        <p className="mt-2 text-sm text-gray-500">
-                          Doloribus dolores nostrum quia qui natus officia quod
-                          et dolorem. Sit repellendus qui ut at blanditiis et
-                          quo et molestiae.
-                        </p>
-                      </div>
+                  <div className={classNames("group relative bg-white p-6")}>
+                    <div>
+                      <span
+                        className={classNames(
+                          "inline-flex rounded-md p-2 ring-4 ring-white",
+                          "text-teal-50",
+                          "bg-teal-500"
+                        )}
+                      >
+                        Bedah Wajib Pajak Triwulan I
+                      </span>
                     </div>
-                  ))}
+                    <div className="mt-8">
+                      <h3 className="text-sm text-lemon font-medium">
+                        <button
+                          onClick={handleExportBedahWpTw1}
+                          className="focus:outline-none bg-navy rounded-md p-2"
+                        >
+                          <span aria-hidden="true" className="inset-0" />
+                          Download
+                        </button>
+                      </h3>
+                      <p className="mt-2 text-sm text-gray-500">
+                        Download Bedah Wajib Pajak Triwulan I dalam bentuk Excel
+                        untuk tahun berjalan
+                      </p>
+                    </div>
+                  </div>
+                  <div className={classNames("group relative bg-white p-6")}>
+                    <div>
+                      <span
+                        className={classNames(
+                          "inline-flex rounded-md p-2 ring-4 ring-white",
+                          "text-teal-50",
+                          "bg-teal-500"
+                        )}
+                      >
+                        Bedah Wajib Pajak Triwulan II
+                      </span>
+                    </div>
+                    <div className="mt-8">
+                      <h3 className="text-sm text-lemon font-medium">
+                        <button
+                          onClick={handleExportBedahWpTw2}
+                          className="focus:outline-none bg-navy rounded-md p-2"
+                        >
+                          <span aria-hidden="true" className="inset-0" />
+                          Download
+                        </button>
+                      </h3>
+                      <p className="mt-2 text-sm text-gray-500">
+                        Download Bedah Wajib Pajak Triwulan II dalam bentuk
+                        Excel untuk tahun berjalan
+                      </p>
+                    </div>
+                  </div>
+                  <div className={classNames("group relative bg-white p-6")}>
+                    <div>
+                      <span
+                        className={classNames(
+                          "inline-flex rounded-md p-2 ring-4 ring-white",
+                          "text-teal-50",
+                          "bg-teal-500"
+                        )}
+                      >
+                        Bedah Wajib Pajak Triwulan III
+                      </span>
+                    </div>
+                    <div className="mt-8">
+                      <h3 className="text-sm text-lemon font-medium">
+                        <button
+                          onClick={handleExportBedahWpTw3}
+                          className="focus:outline-none bg-navy rounded-md p-2"
+                        >
+                          <span aria-hidden="true" className="inset-0" />
+                          Download
+                        </button>
+                      </h3>
+                      <p className="mt-2 text-sm text-gray-500">
+                        Download Bedah Wajib Pajak Triwulan III dalam bentuk
+                        Excel untuk tahun berjalan
+                      </p>
+                    </div>
+                  </div>
+                  <div className={classNames("group relative bg-white p-6")}>
+                    <div>
+                      <span
+                        className={classNames(
+                          "inline-flex rounded-md p-2 ring-4 ring-white",
+                          "text-teal-50",
+                          "bg-teal-500"
+                        )}
+                      >
+                        Bedah Wajib Pajak Triwulan IV
+                      </span>
+                    </div>
+                    <div className="mt-8">
+                      <h3 className="text-sm text-lemon font-medium">
+                        <button
+                          onClick={handleExportBedahWpTw4}
+                          className="focus:outline-none bg-navy rounded-md p-2"
+                        >
+                          <span aria-hidden="true" className="inset-0" />
+                          Download
+                        </button>
+                      </h3>
+                      <p className="mt-2 text-sm text-gray-500">
+                        Download Bedah Wajib Pajak Triwulan IV dalam bentuk
+                        Excel untuk tahun berjalan
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </section>
             </div>
@@ -170,7 +280,7 @@ const OcDashboard = ({
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
               {/* announcement */}
               <div className="grid grid-cols-1 gap-4 lg:col-span-2">
-                {/* <BoxOfDataPengawasanDashboard data1={data1} /> */}
+                <BoxOfDashboardOc data1={data1} />
               </div>
             </div>
           </div>
