@@ -24,3 +24,8 @@ Cara Update
 3. git commit -m "update data"
 4. git pull origin nama_origin --rebase
 5. git push origin nama_origin
+
+Cara Update Repository Local
+1. git fetch origin
+2. git pull origin nama_origin
+3. git log --oneline -5 -> verify update
