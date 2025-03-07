@@ -9,6 +9,7 @@ import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { createUser } from "@/lib/action";
+import { todayYear } from "@/lib/getaction";
 
 const FormCreateUser = () => {
   const {
@@ -19,6 +20,25 @@ const FormCreateUser = () => {
   } = useForm<UserSchema>({
     resolver: zodResolver(userSchema),
   });
+
+  const handleExportUser = async () => {
+    const response = await fetch("/api/exportUser", {
+      method: "GET",
+    });
+
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `user_${todayYear}`; // Specify the file name
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } else {
+      console.error("Error exporting data");
+    }
+  };
 
   const [state, formAction] = useFormState(createUser, {
     success: false,
@@ -42,11 +62,19 @@ const FormCreateUser = () => {
   return (
     <form onSubmit={onSubmit}>
       <div className="border-b border-gray-900/10 pb-12">
-        <h2 className="text-base/7 font-semibold text-gray-900">Create User</h2>
-        <p className="mt-1 text-sm/6 text-gray-600">
-          form untuk membuat user pada aplikasi dashboard pkd madya dua surabaya
-        </p>
-
+        <div className="flex items-center gap-x-5 justify-between">
+          <div>
+            <h2 className="text-base/7 font-semibold text-gray-900">Create User</h2>
+            <p className="text-sm/6 text-gray-600">
+              form untuk membuat user pada aplikasi dashboard pkd madya dua surabaya
+            </p>
+          </div>
+          <a onClick={handleExportUser}
+            className="rounded-md bg-navy cursor-pointer p-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Download User
+          </a>
+        </div>
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
           <InputField
             label="NIP Pendek"
