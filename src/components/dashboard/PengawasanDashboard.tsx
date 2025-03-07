@@ -1,12 +1,6 @@
 "use client";
 import React from "react";
-import Image from "next/image";
-import { useUser } from "@clerk/nextjs";
 import BoxOfDataPengawasanDashboard from "../BoxOfDataPengawasanDashboard";
-import EyeIcon from "@heroicons/react/24/outline/EyeIcon";
-import ShareIcon from "@heroicons/react/24/outline/ShareIcon";
-import ChatBubbleLeftEllipsisIcon from "@heroicons/react/24/outline/ChatBubbleLeftEllipsisIcon";
-import HandThumbUpIcon from "@heroicons/react/24/outline/HandThumbUpIcon";
 import LeftColumnPengawasan from "../LeftColumnPengawasan";
 
 const PengawasanDashboard = ({
