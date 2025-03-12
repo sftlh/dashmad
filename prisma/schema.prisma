@@ -55,7 +55,8 @@ model EmpoweringData {
   userId                String?
   sendingDataToKanwil   SendingDataToKanwil? @relation(fields: [sendingDataToKanwilId], references: [id])
   sendingDataToKanwilId Int?
-  @@unique([npwpId,tahunPajak])
+
+  @@unique([npwpId, tahunPajak])
 }
 
 model BedahWPData {
@@ -80,8 +81,9 @@ model BedahWPData {
   userId                String?
   sendingDataToKanwil   SendingDataToKanwil? @relation(fields: [sendingDataToKanwilId], references: [id])
   sendingDataToKanwilId Int?
+  pdfFile               String?
 
-  @@unique([npwpId,tahunPajak])
+  @@unique([npwpId, tahunPajak])
 }
 
 model SendingDataToKanwil {
@@ -93,6 +95,7 @@ model SendingDataToKanwil {
   bedahWpData       BedahWPData[]
   empoweringData    EmpoweringData[]
   finalPembenahanWp FinalPembenahanMfwp[]
+
 }
 
 model DatabaseWajibPajak {

@@ -273,6 +273,106 @@ const OcDashboard = ({
                       </p>
                     </div>
                   </div>
+                  <div className={classNames("group relative bg-white p-6")}>
+                    <div>
+                      <span
+                        className={classNames(
+                          "inline-flex rounded-md p-2 ring-4 ring-white",
+                          "text-red-900",
+                          "bg-orange-500"
+                        )}
+                      >
+                        Download Laporan Bedah WP Triwulan I
+                      </span>
+                    </div>
+                    <div className="mt-8">
+                      <h3 className="text-sm text-lemon font-medium">
+                        <button className="focus:outline-none bg-navy rounded-md p-2">
+                          <a href="/api/downloadBedahWpTw1" download>
+                            Download Data
+                          </a>
+                        </button>
+                      </h3>
+                      <p className="mt-2 text-sm text-gray-500">
+                        Download Lampiran Laporan Bedah WP Triwulan I dalam bentuk PDF
+                      </p>
+                    </div>
+                  </div>
+                  <div className={classNames("group relative bg-white p-6")}>
+                    <div>
+                      <span
+                        className={classNames(
+                          "inline-flex rounded-md p-2 ring-4 ring-white",
+                          "text-red-900",
+                          "bg-orange-500"
+                        )}
+                      >
+                        Download Laporan Bedah WP Triwulan II
+                      </span>
+                    </div>
+                    <div className="mt-8">
+                      <h3 className="text-sm text-lemon font-medium">
+                        <button className="focus:outline-none bg-navy rounded-md p-2">
+                          <a href="/api/downloadBedahWpTw2" download>
+                            Download Data
+                          </a>
+                        </button>
+                      </h3>
+                      <p className="mt-2 text-sm text-gray-500">
+                        Download Lampiran Laporan Bedah WP Triwulan II dalam bentuk PDF
+                      </p>
+                    </div>
+                  </div>
+                  <div className={classNames("group relative bg-white p-6")}>
+                    <div>
+                      <span
+                        className={classNames(
+                          "inline-flex rounded-md p-2 ring-4 ring-white",
+                          "text-red-900",
+                          "bg-orange-500"
+                        )}
+                      >
+                        Download Laporan Bedah WP Triwulan III
+                      </span>
+                    </div>
+                    <div className="mt-8">
+                      <h3 className="text-sm text-lemon font-medium">
+                        <button className="focus:outline-none bg-navy rounded-md p-2">
+                          <a href="/api/downloadBedahWpTw3" download>
+                            Download Data
+                          </a>
+                        </button>
+                      </h3>
+                      <p className="mt-2 text-sm text-gray-500">
+                        Download Lampiran Laporan Bedah WP Triwulan III dalam bentuk PDF
+                      </p>
+                    </div>
+                  </div>
+                  <div className={classNames("group relative bg-white p-6")}>
+                    <div>
+                      <span
+                        className={classNames(
+                          "inline-flex rounded-md p-2 ring-4 ring-white",
+                          "text-red-900",
+                          "bg-orange-500"
+                        )}
+                      >
+                        Download Laporan Bedah WP Triwulan IV
+                      </span>
+                    </div>
+                    <div className="mt-8">
+                      <h3 className="text-sm text-lemon font-medium">
+                        <button className="focus:outline-none bg-navy rounded-md p-2">
+                          <a href="/api/downloadBedahWpTw4" download>
+                            Download Data
+                          </a>
+                        </button>
+                      </h3>
+                      <p className="mt-2 text-sm text-gray-500">
+                        Download Lampiran Laporan Bedah WP Triwulan IV dalam bentuk PDF
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </section>
             </div>

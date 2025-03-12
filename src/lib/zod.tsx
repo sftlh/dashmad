@@ -28,7 +28,6 @@ export type UserSchema = z.infer<typeof userSchema>;
 
 export const bedahWpSchema = z
   .object({
-    id: z.union([z.string(), z.undefined()]).optional(),
     userId: z.string().optional(),
     npwpId: z
       .string()
@@ -48,6 +47,13 @@ export const bedahWpSchema = z
     ppn: z.coerce.number().optional(),
     pajakLainnya: z.coerce.number().optional(),
     kunci: z.boolean().optional(),
+    pdf: z
+    .any()
+    .refine((files) => files && files.length === 1, { message: 'PDF file is required' })
+    .refine(
+      (files) => files[0]?.type === 'application/pdf',
+      { message: 'Only PDF files are accepted' }
+    ),
   })
   .refine(
     async (data) => {
@@ -77,7 +83,7 @@ export const bedahWpSchema = z
       path: ["npwpId"],
     }
   );
-
+  
 export type BedahWpSchema = z.infer<typeof bedahWpSchema>;
 
 export const bedahWpUpdateSchema = z.object({
