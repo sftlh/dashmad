@@ -40,6 +40,9 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=cache,target=/root/.npm \
     npm ci
 
+# Create the cache directory and adjust permissions
+RUN mkdir -p .next/cache/images && chown -R node:node .next
+
 # Copy the rest of the source files into the image.
 COPY . .
 # Run the build script.
