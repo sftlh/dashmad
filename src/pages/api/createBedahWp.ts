@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from 'next-connect';
 import multer from "multer";
 import prisma from "@/lib/prisma";
+import path from "path";
 
 //Extend NextApiRequest to include file from Multer
 interface MulterRequest extends NextApiRequest {
@@ -14,7 +15,10 @@ function stringToBoolean(str: string): boolean {
 //Configure Multer storage and file filter
 const upload = multer({
   storage: multer.diskStorage({
-    destination: './public/uploads/',
+    destination: (req, file, cb) => {
+      // Use relative path from your WORKDIR or an absolute path if needed
+      cb(null, path.join(process.cwd(), 'public/uploads'));
+    },
     filename: (req, file, cb) => {
       cb(null, `${Date.now()}-${file.originalname}`)
     },

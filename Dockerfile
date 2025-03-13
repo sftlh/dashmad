@@ -42,6 +42,7 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 
 # Create the cache directory and adjust permissions
 RUN mkdir -p .next/cache/images && chown -R node:node .next
+RUN mkdir -p public/uploads/ && chown -R node:node public/uploads
 
 # Copy the rest of the source files into the image.
 COPY . .
