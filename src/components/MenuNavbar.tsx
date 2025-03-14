@@ -1,7 +1,7 @@
 import CurrencyDollarIcon from "@heroicons/react/24/outline/CurrencyDollarIcon";
 import HomeIcon from "@heroicons/react/24/outline/HomeIcon";
 import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
-import { PlusCircleIcon, PaperAirplaneIcon, ArrowPathIcon, TrophyIcon } from "@heroicons/react/24/outline";
+import { PlusCircleIcon, PaperAirplaneIcon, TableCellsIcon, ArrowPathIcon, TrophyIcon } from "@heroicons/react/24/outline";
 import React from "react";
 
 const navigation = [
@@ -32,6 +32,18 @@ const navigation = [
     name: "Rank AR",
     href: "/pengawasan/rank",
     icon: TrophyIcon,
+    visible: ["ar_1", "ar_2", "ar_3", "ar_4", "ar_5", "oc", "ar_6", "kasipw2",
+      "kasipw1",
+      "kasipw3",
+      "kasipw4",
+      "kasipw5",
+      "kasipw6",
+      "kasipkd",],
+  },
+  {
+    name: "PPM By WP",
+    href: "/kodemapperwp",
+    icon: TableCellsIcon,
     visible: ["ar_1", "ar_2", "ar_3", "ar_4", "ar_5", "oc", "ar_6", "kasipw2",
       "kasipw1",
       "kasipw3",

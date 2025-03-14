@@ -98,6 +98,7 @@ const BedahWPViewPage = async ({
       )}
     </tr>
   ));
+  
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
 
