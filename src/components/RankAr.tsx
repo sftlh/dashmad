@@ -56,7 +56,7 @@ const RankAr = () => {
                                                 Nama
                                             </th>
                                             <th scope="col" className="relative py-3.5 pl-3 pr-4 text-right sm:pr-10">
-                                                Total PKM
+                                                Total PPM
                                             </th>
                                         </tr>
                                     </thead>
