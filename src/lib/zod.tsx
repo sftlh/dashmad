@@ -11,6 +11,10 @@ export const userSchema = z.object({
     .string()
     .min(9, { message: "NIP Pendek is Required" })
     .max(9, { message: "Maximum 9 Karakter" }),
+  nipPanjang: z
+    .string()
+    .min(18, { message: "NIP Panjang is Required" })
+    .max(18, { message: "Maximum 18 Karakter" }),
   firstName: z
     .string()
     .min(1, { message: "Minimum Character is 3" })
@@ -35,8 +39,23 @@ export const bedahWpSchema = z
     pelaksanaanKegiatan: z.coerce.date({
       message: "Waktu Pelaksanaan Kegiatan Harus diisi",
     }),
+    // statusSpt: z.enum(["Non RTLB", "RTLB"], { message: "Status SPT harus dipilih" }),
     klasifikasi: z.enum(["1", "2"], { message: "Klasifikasi harus dipilih" }),
     tahunPajak: z.string({ message: "harus diisi, Contoh: 2024" }),
+    // peserta:z.string({ message: "harus diisi" }),
+    // kluPenompangPenerimaan:z.string({ message: "harus diisi" }),
+    // potensiTambahan:z.string({ message: "harus diisi" }),
+    // kesimpulan:z.string({ message: "harus diisi" }),
+    // masukDpp:z.string({ message: "harus diisi" }),
+    // analisisLaporanKeuangan:z.string({ message: "harus diisi" }),
+    // analisisTransferPricing:z.string({ message: "harus diisi" }),
+    // mirroring:z.string({ message: "harus diisi" }),
+    // analisisWpGroup:z.string({ message: "harus diisi" }),
+    // alket:z.string({ message: "harus diisi" }),
+    // kolaborasiDenganPenilai:z.string({ message: "harus diisi" }),
+    // dataVisit:z.string({ message: "harus diisi" }),
+    // pemanfaatanDataEksternal:z.string({ message: "harus diisi" }),
+    // bobotKegiatan:z.string({ message: "harus diisi" }),
     pph21: z.coerce.number().optional(),
     pph22: z.coerce.number().optional(),
     pph23: z.coerce.number().optional(),
@@ -48,12 +67,12 @@ export const bedahWpSchema = z
     pajakLainnya: z.coerce.number().optional(),
     kunci: z.boolean().optional(),
     pdf: z
-    .any()
-    .refine((files) => files && files.length === 1, { message: 'PDF file is required' })
-    .refine(
-      (files) => files[0]?.type === 'application/pdf',
-      { message: 'Only PDF files are accepted' }
-    ),
+      .any()
+      .refine((files) => files && files.length === 1, { message: 'PDF file is required' })
+      .refine(
+        (files) => files?.[0]?.type === 'application/pdf',
+        { message: 'Only PDF files are accepted' }
+      ),
   })
   .refine(
     async (data) => {
@@ -83,7 +102,7 @@ export const bedahWpSchema = z
       path: ["npwpId"],
     }
   );
-  
+
 export type BedahWpSchema = z.infer<typeof bedahWpSchema>;
 
 export const bedahWpUpdateSchema = z.object({
@@ -95,6 +114,7 @@ export const bedahWpUpdateSchema = z.object({
   pelaksanaanKegiatan: z.coerce.date({
     message: "Waktu Pelaksanaan Kegiatan Harus diisi",
   }),
+  statusSpt: z.enum(["Non RTLB", "RTLB"], { message: "Status SPT harus dipilih" }),
   klasifikasi: z.enum(["1", "2"], { message: "Klasifikasi harus dipilih" }),
   tahunPajak: z.string({ message: "harus diisi, Contoh: 2024" }),
   pph21: z.coerce.number().optional(),

@@ -24,6 +24,7 @@ export const routeAccessMap: RouteAccessMap = {
     "kasipw5",
     "kasipw6",
   ],
+  
   "kodemapperwp": ["ar_2", "ar_1", "ar_3", "ar_4", "ar_5", "oc", "ar_6", "kasipw2",
     "kasipw1",
     "kasipw3",
@@ -31,7 +32,15 @@ export const routeAccessMap: RouteAccessMap = {
     "kasipw5",
     "kasipw6",
     "kasipkd"],
-    
+
+  "pkmperwp": ["ar_2", "ar_1", "ar_3", "ar_4", "ar_5", "oc", "ar_6", "kasipw2",
+    "kasipw1",
+    "kasipw3",
+    "kasipw4",
+    "kasipw5",
+    "kasipw6",
+    "kasipkd"],
+
   "/sendingdatakanwil": ["oc", "admin"],
   "/bedahwp": ["admin", "ar_2", "ar_1", "ar_3", "ar_4", "ar_5", "ar_6"],
   "/pembenahanwp": ["ar_1", "ar_2", "ar_3", "ar_4", "ar_5", "admin", "ar_6"],

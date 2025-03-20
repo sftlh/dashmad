@@ -83,6 +83,12 @@ const FormCreateUser = () => {
             error={errors.nip}
           />
           <InputField
+            label="NIP Panjang"
+            name="nipPanjang"
+            register={register}
+            error={errors.nipPanjang}
+          />
+          <InputField
             label="Username"
             name="username"
             register={register}

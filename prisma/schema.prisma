@@ -16,6 +16,7 @@ datasource db {
 model User {
   id                                      String                                    @id
   nip                                     String                                    @unique
+  nipPanjang                              String?
   username                                String
   password                                String?
   firstName                               String?
@@ -60,28 +61,43 @@ model EmpoweringData {
 }
 
 model BedahWPData {
-  id                    Int                  @id @default(autoincrement())
-  npwp                  DatabaseWajibPajak?  @relation(fields: [npwpId], references: [id])
-  npwpId                String?
-  pelaksanaanKegiatan   DateTime?
-  klasifikasi           String?
-  tahunPajak            Int?
-  createdAt             DateTime             @default(now())
-  pph21                 Float?
-  pph22                 Float?
-  pph23                 Float?
-  pph2529               Float?
-  pph26                 Float?
-  pphFinal              Float?
-  pph15                 Float?
-  kunci                 Boolean?             @default(false)
-  ppn                   Float?
-  pajakLainnya          Float?
-  user                  User?                @relation(fields: [userId], references: [id])
-  userId                String?
-  sendingDataToKanwil   SendingDataToKanwil? @relation(fields: [sendingDataToKanwilId], references: [id])
-  sendingDataToKanwilId Int?
-  pdfFile               String?
+  id                       Int                  @id @default(autoincrement())
+  npwp                     DatabaseWajibPajak?  @relation(fields: [npwpId], references: [id])
+  npwpId                   String?
+  pelaksanaanKegiatan      DateTime?
+  klasifikasi              String?
+  tahunPajak               Int?
+  statusSpt                String?
+  peserta                  Int?
+  kluPenompangPenerimaan   Int?
+  potensiTambahan          Int?
+  kesimpulan               Int?
+  bobotKegiatan            String?
+  masukDpp                 Int?
+  analisisLaporanKeuangan  Int?
+  analisisTransferPricing  Int?
+  mirroring                Int?
+  analisisWpGroup          Int?
+  kolaborasiDenganPenilai  Int?
+  pemanfaatanDataEksternal Int?
+  dataVisit                Int?
+  alket                    Int?
+  createdAt                DateTime             @default(now())
+  pph21                    Float?
+  pph22                    Float?
+  pph23                    Float?
+  pph2529                  Float?
+  pph26                    Float?
+  pphFinal                 Float?
+  pph15                    Float?
+  kunci                    Boolean?             @default(false)
+  ppn                      Float?
+  pajakLainnya             Float?
+  user                     User?                @relation(fields: [userId], references: [id])
+  userId                   String?
+  sendingDataToKanwil      SendingDataToKanwil? @relation(fields: [sendingDataToKanwilId], references: [id])
+  sendingDataToKanwilId    Int?
+  pdfFile                  String?
 
   @@unique([npwpId, tahunPajak])
 }
@@ -95,7 +111,6 @@ model SendingDataToKanwil {
   bedahWpData       BedahWPData[]
   empoweringData    EmpoweringData[]
   finalPembenahanWp FinalPembenahanMfwp[]
-
 }
 
 model DatabaseWajibPajak {

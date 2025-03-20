@@ -1,5 +1,4 @@
 import KodeMapPerWp from '@/components/KodeMapPerWp'
-import { Prisma } from '@prisma/client';
 import React from 'react'
 
 const KodeMapPerWpPage = ({searchParams}:{searchParams:{[key:string]:string | undefined}}) => {

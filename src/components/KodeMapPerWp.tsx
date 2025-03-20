@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 
 type DataType = {
+    npwp: string;
     nama: string;
     kdmap: string;
     _sum: {
@@ -157,6 +158,9 @@ const KodeMapPerWp = () => {
                                     <thead className="bg-gray-50">
                                         <tr>
                                             <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 ">
+                                                NPWP
+                                            </th>
+                                            <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 ">
                                                 Nama WP
                                             </th>
                                             {
@@ -169,18 +173,24 @@ const KodeMapPerWp = () => {
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 bg-white">
-                                        {paginatedRows.map((nama, rowIndex) => (
-                                            <tr key={rowIndex}>
-                                                <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                    {nama}
-                                                </td>
-                                                {kdmapHeaders.map((kdmap, colIndex) => (
-                                                    <td key={colIndex} className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                                        Rp {new Intl.NumberFormat("id-ID").format(pivotData[nama][kdmap])}
+                                        {paginatedRows.map((nama, rowIndex) => {
+                                            const wpData = dataWp.find((wp) => wp.nama === nama);
+                                            return (
+                                                <tr key={rowIndex}>
+                                                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                        {wpData?.npwp || "-"}
                                                     </td>
-                                                ))}
-                                            </tr>
-                                        ))}
+                                                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                        {nama}
+                                                    </td>
+                                                    {kdmapHeaders.map((kdmap, colIndex) => (
+                                                        <td key={colIndex} className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                            Rp {new Intl.NumberFormat("id-ID").format(pivotData[nama][kdmap])}
+                                                        </td>
+                                                    ))}
+                                                </tr>
+                                            )
+                                        })}
                                     </tbody>
                                 </table>
                             </div>

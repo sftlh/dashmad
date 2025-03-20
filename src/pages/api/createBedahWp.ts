@@ -51,7 +51,8 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
     const fileUrl = `/uploads/${multerReq.file.filename}`
 
     //Extract additional fields from the request body
-    const { npwpId, klasifikasi, tahunPajak, pelaksanaanKegiatan, pph21, userId, pph22, pph23, pph2529, pph26, pphFinal, pph15, ppn, pajakLainnya, kunci } = req.body;
+    const { npwpId, klasifikasi, tahunPajak, pelaksanaanKegiatan, pph21, userId, pph22, pph23, pph2529, pph26, pphFinal, pph15, ppn, pajakLainnya, kunci,  peserta, kluPenompangPenerimaan, potensiTambahan, kesimpulan, masukDpp, analisisLaporanKeuangan, analisisTransferPricing, mirroring, analisisWpGroup, alket, kolaborasiDenganPenilai, dataVisit, pemanfaatanDataEksternal, bobotKegiatan } = req.body;
+    console.log("fileUrl ", fileUrl)
     const newRecord = await prisma.bedahWPData.create({
       data: {
         npwpId: npwpId || undefined,
@@ -59,6 +60,20 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
         tahunPajak: tahunPajak ? parseInt(tahunPajak, 10) : undefined,
         pdfFile: fileUrl,
         pelaksanaanKegiatan: pelaksanaanKegiatan,
+        // kluPenompangPenerimaan: kluPenompangPenerimaan ? parseInt(kluPenompangPenerimaan) : undefined,
+        // potensiTambahan: potensiTambahan ? parseInt(potensiTambahan) : undefined,
+        // kesimpulan: kesimpulan ? parseInt(kesimpulan) : undefined,
+        // bobotKegiatan: bobotKegiatan,
+        // peserta: peserta ? parseInt(peserta) : undefined,
+        // masukDpp: masukDpp ? parseInt(masukDpp) : undefined,
+        // analisisLaporanKeuangan: analisisLaporanKeuangan ? parseInt(analisisLaporanKeuangan) : undefined,
+        // analisisTransferPricing: analisisTransferPricing ? parseInt(analisisTransferPricing) : undefined,
+        // mirroring: mirroring ? parseInt(mirroring) : undefined,
+        // analisisWpGroup: analisisWpGroup ? parseInt(analisisWpGroup) : undefined,
+        // kolaborasiDenganPenilai: kolaborasiDenganPenilai ? parseInt(kolaborasiDenganPenilai) : undefined,
+        // pemanfaatanDataEksternal: pemanfaatanDataEksternal ? parseInt(pemanfaatanDataEksternal) : undefined,
+        // dataVisit: dataVisit ? parseInt(dataVisit) : undefined,
+        // alket: alket ? parseInt(alket) : undefined,
         pph21: pph21 ? parseFloat(pph21) : undefined,
         pph22: pph22 ? parseFloat(pph22) : undefined,
         pph23: pph23 ? parseFloat(pph23) : undefined,

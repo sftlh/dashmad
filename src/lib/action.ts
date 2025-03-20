@@ -26,6 +26,7 @@ export const createUser = async (
           data: {
             id: user.id,
             nip: data.nip,
+            nipPanjang: data.nipPanjang,
             password: data.password,
             username: data.username,
             firstName: data.firstName,

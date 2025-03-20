@@ -41,7 +41,7 @@ const navigation = [
       "kasipkd",],
   },
   {
-    name: "PPM By WP",
+    name: "PPM By Kdmap per WP",
     href: "/kodemapperwp",
     icon: TableCellsIcon,
     visible: ["ar_1", "ar_2", "ar_3", "ar_4", "ar_5", "oc", "ar_6", "kasipw2",
@@ -52,6 +52,20 @@ const navigation = [
       "kasipw6",
       "kasipkd",],
   },
+
+  {
+    name: "PKM Per WP",
+    href: "/pkmperwp",
+    icon: TableCellsIcon,
+    visible: ["ar_1", "ar_2", "ar_3", "ar_4", "ar_5", "oc", "ar_6", "kasipw2",
+      "kasipw1",
+      "kasipw3",
+      "kasipw4",
+      "kasipw5",
+      "kasipw6",
+      "kasipkd",],
+  },
+
   {
     name: "Bedah WP",
     href: "/bedahwp",
