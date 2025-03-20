@@ -1,17 +1,7 @@
 /* eslint-disable react/no-children-prop */
 import React from "react";
 import MenuClient from "./MenuClient";
-import { auth, currentUser } from "@clerk/nextjs/server";
-
-const teams = [
-  { id: 1, name: "Heroicons", href: "#", initial: "H", current: false },
-  { id: 2, name: "Tailwind Labs", href: "#", initial: "T", current: false },
-  { id: 3, name: "Workcation", href: "#", initial: "W", current: false },
-];
-
-function classNames(...classes: unknown[]) {
-  return classes.filter(Boolean).join(" ");
-}
+import { auth } from "@clerk/nextjs/server";
 
 const Menu = async ({ children }: { children: React.ReactNode }) => {
   const {sessionClaims} = await auth();

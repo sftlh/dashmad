@@ -39,13 +39,13 @@ export const bedahWpSchema = z
     pelaksanaanKegiatan: z.coerce.date({
       message: "Waktu Pelaksanaan Kegiatan Harus diisi",
     }),
-    // statusSpt: z.enum(["Non RTLB", "RTLB"], { message: "Status SPT harus dipilih" }),
+    statusSpt: z.enum(["Non RTLB", "RTLB"], { message: "Status SPT harus dipilih" }),
     klasifikasi: z.enum(["1", "2"], { message: "Klasifikasi harus dipilih" }),
     tahunPajak: z.string({ message: "harus diisi, Contoh: 2024" }),
-    // peserta:z.string({ message: "harus diisi" }),
-    // kluPenompangPenerimaan:z.string({ message: "harus diisi" }),
-    // potensiTambahan:z.string({ message: "harus diisi" }),
-    // kesimpulan:z.string({ message: "harus diisi" }),
+    peserta:z.string({ message: "harus diisi" }),
+    kluPenompangPenerimaan:z.string({ message: "harus diisi" }),
+    potensiTambahan:z.string({ message: "harus diisi" }),
+    kesimpulan:z.string({ message: "harus diisi" }),
     // masukDpp:z.string({ message: "harus diisi" }),
     // analisisLaporanKeuangan:z.string({ message: "harus diisi" }),
     // analisisTransferPricing:z.string({ message: "harus diisi" }),
@@ -70,7 +70,7 @@ export const bedahWpSchema = z
       .any()
       .refine((files) => files && files.length === 1, { message: 'PDF file is required' })
       .refine(
-        (files) => files?.[0]?.type === 'application/pdf',
+        (files) => files[0]?.type === 'application/pdf',
         { message: 'Only PDF files are accepted' }
       ),
   })
