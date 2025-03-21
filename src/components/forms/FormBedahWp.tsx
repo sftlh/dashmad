@@ -25,6 +25,7 @@ const FormBedahWp = ({ id }: { id?: any }) => {
     handleSubmit,
     reset,
     trigger,
+    watch,
     formState: { errors },
   } = useForm<BedahWpSchema>({
     resolver: zodResolver(bedahWpSchema),
@@ -37,22 +38,116 @@ const FormBedahWp = ({ id }: { id?: any }) => {
   });
 
   const { user } = useUser();
+  //watch
+  const npwp = watch("npwpId");
+  const bobotKegiatan = watch("bobotKegiatan");
+  let iku;
+
+  const pesertaBedahWp = watch("peserta");
+  const kluPenompang = watch("kluPenompangPenerimaan");
+  const potensiTmbhn = watch("potensiTambahan");
+
+  const validasiDpp = watch("masukDpp");
+  const validasiAlk = watch("analisisLaporanKeuangan");
+  const validasiTp = watch("analisisTransferPricing");
+  const validasiMirror = watch("mirroring");
+  const validasiGroup = watch("analisisWpGroup");
+  const validasiPenilai = watch("kolaborasiDenganPenilai");
+  const validasiDataEks = watch("pemanfaatanDataEksternal");
+  const validasiDataVisit = watch("dataVisit");
+  const validasiAlket = watch("alket");
+
+
+  let validasiStatusLengkap = "";
+
+  if (pesertaBedahWp === "1" && potensiTmbhn === "1") {
+    validasiStatusLengkap = "1"
+  } else {
+    validasiStatusLengkap = "0"
+  }
+
+  if (pesertaBedahWp === "1" && kluPenompang === "1" && potensiTmbhn === "1") {
+    iku = "Data Bisa Diakui Sebagai IKU"
+  } else {
+    iku = "Data Tidak Bisa diakui Sebagai IKU"
+  }
+
+  let realisasiKuantitas;
+
+
+  let totalSkorDPP;
+  let totalSkorAlk;
+  let totalSkorTp;
+  let totalSkorMirroring;
+  let totalSkorWpGroup;
+  let totalSkorPenilai;
+  let totalSkorDataEksternal;
+  let totalSkorDataVisit;
+  let totalSkorAlket;
+
+  let totalKomponenKualitas;
+
+  totalSkorDPP = parseInt(validasiDpp) * 0.60;
+  totalSkorAlk = parseInt(validasiAlk) * 0.20;
+  totalSkorTp = parseInt(validasiTp) * 0.40;
+  totalSkorMirroring = parseInt(validasiMirror) * 0.10;
+  totalSkorWpGroup = parseInt(validasiGroup) * 0.40;
+  totalSkorPenilai = parseInt(validasiPenilai) * 0.15;
+  totalSkorDataEksternal = parseInt(validasiDataEks) * 0.10;
+  totalSkorDataVisit = parseInt(validasiDataVisit) * 0.20;
+  totalSkorAlket = parseInt(validasiAlket) * 0.15
+
+  totalKomponenKualitas = totalSkorDPP + totalSkorAlk + totalSkorTp + totalSkorMirroring + totalSkorWpGroup + totalSkorPenilai + totalSkorDataEksternal + totalSkorDataVisit + totalSkorAlket;
+
+  if (bobotKegiatan !== "0%" && iku === "Data Bisa Diakui Sebagai IKU") {
+    realisasiKuantitas = parseInt(validasiStatusLengkap) * 1;
+    totalKomponenKualitas;
+  } else {
+    realisasiKuantitas = 0;
+    totalKomponenKualitas = 0;
+  }
 
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [key, setKey] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+  const [openPeserta, setOpenPeserta] = useState<boolean>(false);
   const [openKlu, setOpenKlu] = useState<boolean>(false);
   const [openStatusSpt, setOpenStatusSpt] = useState<boolean>(false);
 
-  const nextStep = async () => {
+  const nextStep1 = async () => {
     const isValid = await trigger([
       "npwpId",
       "pelaksanaanKegiatan",
       "klasifikasi",
       "statusSpt",
       "tahunPajak",
-      "pdf"
+    ]); // ✅ Validasi hanya field di Step 1
+
+    if (!isValid) {
+      console.log("Validasi gagal, tidak bisa lanjut ke Step 2");
+      return; // 🚨 Stop, tidak bisa lanjut ke Step 2
+    }
+    setStep((prev) => prev + 1);
+  };
+
+
+  const nextStep2 = async () => {
+    const isValid = await trigger([
+      "peserta",
+      "kluPenompangPenerimaan",
+      "potensiTambahan",
+      "kesimpulan",
+      "bobotKegiatan",
+      "masukDpp",
+      "analisisLaporanKeuangan",
+      "analisisTransferPricing",
+      "mirroring",
+      "analisisWpGroup",
+      "mirroring",
+      "kolaborasiDenganPenilai",
+      "pemanfaatanDataEksternal",
+      "dataVisit"
     ]); // ✅ Validasi hanya field di Step 1
 
     if (!isValid) {
@@ -64,7 +159,7 @@ const FormBedahWp = ({ id }: { id?: any }) => {
   const prevStep = () => setStep((prev) => prev - 1);
 
   const onSubmit = async (data: BedahWpSchema) => {
-    if (step < 2) return;
+    if (step < 3) return;
     const formData = new FormData();
     if (data.userId) formData.append("userId", data.userId.toString());
     if (data.npwpId) formData.append("npwpId", data.npwpId);
@@ -75,6 +170,7 @@ const FormBedahWp = ({ id }: { id?: any }) => {
       );
     formData.append("statusSpt", data.statusSpt);
     formData.append("klasifikasi", data.klasifikasi);
+    formData.append("bobotKegiatan", data.bobotKegiatan);
     if (data.tahunPajak) formData.append("tahunPajak", data.tahunPajak);
     if (data.peserta) formData.append("peserta", data.peserta.toString());
     if (data.kluPenompangPenerimaan)
@@ -86,6 +182,15 @@ const FormBedahWp = ({ id }: { id?: any }) => {
       formData.append("potensiTambahan", data.potensiTambahan.toString());
     if (data.kesimpulan)
       formData.append("kesimpulan", data.kesimpulan.toString());
+    if (data.masukDpp) formData.append('masukDpp', data.masukDpp.toString());
+    if (data.analisisLaporanKeuangan) formData.append('analisisLaporanKeuangan', data.analisisLaporanKeuangan.toString());
+    if (data.analisisTransferPricing) formData.append('analisisTransferPricing', data.analisisTransferPricing.toString());
+    if (data.mirroring) formData.append('mirroring', data.mirroring.toString());
+    if (data.analisisWpGroup) formData.append('analisisWpGroup', data.analisisWpGroup.toString());
+    if (data.kolaborasiDenganPenilai) formData.append('kolaborasiDenganPenilai', data.kolaborasiDenganPenilai.toString());
+    if (data.pemanfaatanDataEksternal) formData.append('pemanfaatanDataEksternal', data.pemanfaatanDataEksternal.toString());
+    if (data.dataVisit) formData.append('dataVisit', data.dataVisit.toString());
+    if (data.alket) formData.append('alket', data.alket.toString());
     if (data.pph21) formData.append("pph21", data.pph21.toString());
     if (data.pph22) formData.append("pph22", data.pph22.toString());
     if (data.pph23) formData.append("pph23", data.pph23.toString());
@@ -97,21 +202,6 @@ const FormBedahWp = ({ id }: { id?: any }) => {
     if (data.pajakLainnya)
       formData.append("pajakLainnya", data.pajakLainnya.toString());
     if (data.kunci) formData.append("kunci", data.kunci.toString());
-
-    // if (data.kluPenompangPenerimaan) formData.append('kluPenompangPenerimaan', data.kluPenompangPenerimaan.toString());
-
-    // if (data.kesimpulan) formData.append('kesimpulan', data.kesimpulan.toString());
-    // if (data.masukDpp) formData.append('masukDpp', data.masukDpp.toString());
-    // if (data.analisisLaporanKeuangan) formData.append('analisisLaporanKeuangan', data.analisisLaporanKeuangan.toString());
-    // if (data.analisisTransferPricing) formData.append('analisisTransferPricing', data.analisisTransferPricing.toString());
-    // if (data.mirroring) formData.append('mirroring', data.mirroring.toString());
-    // if (data.analisisWpGroup) formData.append('analisisWpGroup', data.analisisWpGroup.toString());
-    // if (data.kolaborasiDenganPenilai) formData.append('kolaborasiDenganPenilai', data.kolaborasiDenganPenilai.toString());
-    // if (data.dataVisit) formData.append('dataVisit', data.dataVisit.toString());
-    // if (data.pemanfaatanDataEksternal) formData.append('pemanfaatanDataEksternal', data.pemanfaatanDataEksternal.toString());
-    // if (data.bobotKegiatan) formData.append('bobotKegiatan', data.bobotKegiatan.toString());
-    // if (data.alket) formData.append('alket', data.alket.toString());
-    // Append the PDF file using the field name expected by the API: "file"
     formData.append("file", data.pdf[0]);
 
     console.log("Status NPWP", data.npwpId);
@@ -148,12 +238,12 @@ const FormBedahWp = ({ id }: { id?: any }) => {
             {today < quarterOne && today > firstDateOfTheYear
               ? "Triwulan I"
               : today < quarterTwo && today > quarterOne
-              ? "Triwulan II"
-              : today < quarterThree && today > quarterTwo
-              ? "Triwulan III"
-              : today < quarterFour && today > quarterThree
-              ? "Triwulan IV"
-              : ""}
+                ? "Triwulan II"
+                : today < quarterThree && today > quarterTwo
+                  ? "Triwulan III"
+                  : today < quarterFour && today > quarterThree
+                    ? "Triwulan IV"
+                    : ""}
           </h1>
           <div className="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-3">
@@ -232,6 +322,11 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                   className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
                 />
               </div>
+              {errors.statusSpt && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.statusSpt.message}
+                </p>
+              )}
             </div>
 
             <div className="sm:col-span-2 sm:col-start-1">
@@ -274,30 +369,7 @@ const FormBedahWp = ({ id }: { id?: any }) => {
               />
             </div>
 
-            <div className="sm:col-span-4">
-              <div className="flex flex-col gap-y-10">
-                <div className="w-full flex flex-col gap-y-3">
-                  <label>Upload Laporan Kegiatan Bedah WP (.pdf):</label>
-                  <input
-                    type="file"
-                    {...register("pdf")}
-                    accept="application/pdf"
-                  />
-                  {errors.pdf && <p>{errors.pdf.message?.toString()}</p>}
-                </div>
-                <div className="flex gap-x-2">
-                  <input
-                    type="checkbox"
-                    checked={key}
-                    onClick={toggleActive}
-                    {...register("kunci")}
-                  />
-                  <h1 className="text-xs text-red-500">
-                    <span className="font-bold text-navy">Kunci Data</span>
-                  </h1>
-                </div>
-              </div>
-            </div>
+
             <InputField
               hidden
               label="userId"
@@ -490,10 +562,10 @@ const FormBedahWp = ({ id }: { id?: any }) => {
             </h1> */}
           </div>
           <div className="mt-6 flex items-center justify-end gap-x-6">
-            {step < 3 && (
+            {step < 3 && step === 1 && (
               <button
                 type="submit"
-                onClick={nextStep}
+                onClick={nextStep1}
                 className="rounded-md bg-navy px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-navy/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dongker"
               >
                 Next
@@ -512,12 +584,12 @@ const FormBedahWp = ({ id }: { id?: any }) => {
             {today < quarterOne && today > firstDateOfTheYear
               ? "Triwulan I"
               : today < quarterTwo && today > quarterOne
-              ? "Triwulan II"
-              : today < quarterThree && today > quarterTwo
-              ? "Triwulan III"
-              : today < quarterFour && today > quarterThree
-              ? "Triwulan IV"
-              : ""}
+                ? "Triwulan II"
+                : today < quarterThree && today > quarterTwo
+                  ? "Triwulan III"
+                  : today < quarterFour && today > quarterThree
+                    ? "Triwulan IV"
+                    : ""}
           </h1>
           <div className="mt-5 items-center grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-3">
@@ -549,6 +621,11 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                   className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
                 />
               </div>
+              {errors.peserta && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.peserta.message}
+                </p>
+              )}
             </div>
             <div className="sm:col-span-3">
               <label
@@ -579,6 +656,11 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                   className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
                 />
               </div>
+              {errors.kluPenompangPenerimaan && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.kluPenompangPenerimaan.message}
+                </p>
+              )}
             </div>
             <div className="sm:col-span-3">
               <label
@@ -611,6 +693,11 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                   className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
                 />
               </div>
+              {errors.potensiTambahan && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.potensiTambahan.message}
+                </p>
+              )}
             </div>
             <div className="sm:col-span-3">
               <label
@@ -642,23 +729,379 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                 />
               </div>
               {errors.kesimpulan && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.kesimpulan.message}
-              </p>
-            )}
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.kesimpulan.message}
+                </p>
+              )}
             </div>
-            
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="bobotKegiatan"
+                className="block text-sm/6 font-medium text-navy"
+              >
+                Bobot Kegiatan Bedah Wajib Pajak ?
+              </label>
+              <div className="mt-2 grid grid-cols-1">
+                <select
+                  id="bobotKegiatan"
+                  defaultValue=""
+                  {...register("bobotKegiatan")}
+                  className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
+                >
+                  <option value="" disabled>
+                    -- Pilih Jawaban --
+                  </option>
+                  <option value={"100%"} className="text-white">
+                    WP yang dibedah belum pernah dilakukan kegiatan bedah WP
+                  </option>
+                  <option value={"75%"} className="text-white">
+                    WP yang dibedah sudah pernah dilakukan kegiatan bedah WP di tahun sebelumnya
+                  </option>
+                  <option value={"0%"} className="text-white">
+                    WP yang dibedah sudah pernah dilakukan kegiatan bedah WP di tahun yang sama
+                  </option>
+                </select>
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
+                />
+              </div>
+              {errors.bobotKegiatan && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.bobotKegiatan.message}
+                </p>
+              )}
+            </div>
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="masukDpp"
+                className="block text-sm/6 font-medium text-navy"
+              >
+                Apakah Wajib Pajak tersebut masuk kedalam DPP ?
+              </label>
+              <div className="mt-2 grid grid-cols-1">
+                <select
+                  id="masukDpp"
+                  defaultValue=""
+                  {...register("masukDpp")}
+                  className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
+                >
+                  <option value="" disabled>
+                    -- Pilih Jawaban --
+                  </option>
+                  <option value={"1"} className="text-white">
+                    Wajib Pajak termasuk kedalam Daftar DPP
+                  </option>
+                  <option value={"0"} className="text-white">
+                    Wajib Pajak tidak masuk kedalam Daftar DPP
+                  </option>
+                </select>
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
+                />
+              </div>
+              {errors.masukDpp && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.masukDpp.message}
+                </p>
+              )}
+            </div>
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="analisisLaporanKeuangan"
+                className="block text-sm/6 font-medium text-navy"
+              >
+                Apakah Terdapat Analisis Laporan Keuangan ?
+              </label>
+              <div className="mt-2 grid grid-cols-1">
+                <select
+                  id="analisisLaporanKeuangan"
+                  defaultValue=""
+                  {...register("analisisLaporanKeuangan")}
+                  className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
+                >
+                  <option value="" disabled>
+                    -- Pilih Jawaban --
+                  </option>
+                  <option value={"1"} className="text-white">
+                    Ya terdapat Analisis Laporan Keuangan
+                  </option>
+                  <option value={"0"} className="text-white">
+                    Tidak memiliki Analisis Laporan Keuangan
+                  </option>
+                </select>
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
+                />
+              </div>
+              {errors.analisisLaporanKeuangan && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.analisisLaporanKeuangan.message}
+                </p>
+              )}
+            </div>
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="analisisTransferPricing"
+                className="block text-sm/6 font-medium text-navy"
+              >
+                Apakah Terdapat Analisis Transfer Pricing ?
+              </label>
+              <div className="mt-2 grid grid-cols-1">
+                <select
+                  id="analisisTransferPricing"
+                  defaultValue=""
+                  {...register("analisisTransferPricing")}
+                  className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
+                >
+                  <option value="" disabled>
+                    -- Pilih Jawaban --
+                  </option>
+                  <option value={"1"} className="text-white">
+                    Ya terdapat Analisis Transfer Pricing
+                  </option>
+                  <option value={"0"} className="text-white">
+                    Tidak memiliki Analisis Transfer Pricing
+                  </option>
+                </select>
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
+                />
+              </div>
+              {errors.analisisLaporanKeuangan && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.analisisLaporanKeuangan.message}
+                </p>
+              )}
+            </div>
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="mirroring"
+                className="block text-sm/6 font-medium text-navy"
+              >
+                Apakah Terdapat Mirroring hasil Pemeriksaan, Keputusan
+                Keberatan, Banding, dan/atau PK ?
+              </label>
+              <div className="mt-2 grid grid-cols-1">
+                <select
+                  id="mirroring"
+                  defaultValue=""
+                  {...register("mirroring")}
+                  className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
+                >
+                  <option value="" disabled>
+                    -- Pilih Jawaban --
+                  </option>
+                  <option value={"1"} className="text-white">
+                    Ya terdapat Mirroring
+                  </option>
+                  <option value={"0"} className="text-white">
+                    Tidak terdapat Mirroring
+                  </option>
+                </select>
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
+                />
+              </div>
+              {errors.analisisLaporanKeuangan && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.analisisLaporanKeuangan.message}
+                </p>
+              )}
+            </div>
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="analisisWpGroup"
+                className="block text-sm/6 font-medium text-navy"
+              >
+                Apakah Terdapat Analisis WP Group ?
+              </label>
+              <div className="mt-2 grid grid-cols-1">
+                <select
+                  id="analisisWpGroup"
+                  defaultValue=""
+                  {...register("analisisWpGroup")}
+                  className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
+                >
+                  <option value="" disabled>
+                    -- Pilih Jawaban --
+                  </option>
+                  <option value={"1"} className="text-white">
+                    Ya terdapat Analisis WP Group
+                  </option>
+                  <option value={"0"} className="text-white">
+                    Tidak terdapat Analisis WP Group
+                  </option>
+                </select>
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
+                />
+              </div>
+              {errors.analisisLaporanKeuangan && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.analisisLaporanKeuangan.message}
+                </p>
+              )}
+            </div>
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="kolaborasiDenganPenilai"
+                className="block text-sm/6 font-medium text-navy"
+              >
+                Apakah Terdapat Kolaborasi dengan Penilai ?
+              </label>
+              <div className="mt-2 grid grid-cols-1">
+                <select
+                  id="kolaborasiDenganPenilai"
+                  defaultValue=""
+                  {...register("kolaborasiDenganPenilai")}
+                  className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
+                >
+                  <option value="" disabled>
+                    -- Pilih Jawaban --
+                  </option>
+                  <option value={"1"} className="text-white">
+                    Ya terdapat Kolaborasi dengan Penilai
+                  </option>
+                  <option value={"0"} className="text-white">
+                    Tidak terdapat Kolaborasi dengan Penilai
+                  </option>
+                </select>
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
+                />
+              </div>
+              {errors.kolaborasiDenganPenilai && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.kolaborasiDenganPenilai.message}
+                </p>
+              )}
+            </div>
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="pemanfaatanDataEksternal"
+                className="block text-sm/6 font-medium text-navy"
+              >
+                Apakah Terdapat Pemanfaatan Data Eksternal ?
+              </label>
+              <div className="mt-2 grid grid-cols-1">
+                <select
+                  id="pemanfaatanDataEksternal"
+                  defaultValue=""
+                  {...register("pemanfaatanDataEksternal")}
+                  className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
+                >
+                  <option value="" disabled>
+                    -- Pilih Jawaban --
+                  </option>
+                  <option value={"1"} className="text-white">
+                    Ya terdapat Pemanfaatan Data Eksternal
+                  </option>
+                  <option value={"0"} className="text-white">
+                    Tidak terdapat Pemanfaatan Data Eksternal
+                  </option>
+                </select>
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
+                />
+              </div>
+              {errors.pemanfaatanDataEksternal && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.pemanfaatanDataEksternal.message}
+                </p>
+              )}
+            </div>
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="dataVisit"
+                className="block text-sm/6 font-medium text-navy"
+              >
+                Apakah Terdapat Analisis data & informasi dari hasil kunjungan ke
+                Wajib Pajak ?
+              </label>
+              <div className="mt-2 grid grid-cols-1">
+                <select
+                  id="dataVisit"
+                  defaultValue=""
+                  {...register("dataVisit")}
+                  className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
+                >
+                  <option value="" disabled>
+                    -- Pilih Jawaban --
+                  </option>
+                  <option value={"1"} className="text-white">
+                    Ya terdapat Analisis data & informasi dari hasil kunjungan ke
+                    Wajib Pajak
+                  </option>
+                  <option value={"0"} className="text-white">
+                    Tidak terdapat Analisis data & informasi dari hasil kunjungan ke
+                    Wajib Pajak
+                  </option>
+                </select>
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
+                />
+              </div>
+              {errors.dataVisit && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.dataVisit.message}
+                </p>
+              )}
+            </div>
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="alket"
+                className="block text-sm/6 font-medium text-navy"
+              >
+                Apakah Terdapat Alat Keterangan ?
+              </label>
+              <div className="mt-2 grid grid-cols-1">
+                <select
+                  id="alket"
+                  defaultValue=""
+                  {...register("alket")}
+                  className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
+                >
+                  <option value="" disabled>
+                    -- Pilih Jawaban --
+                  </option>
+                  <option value={"1"} className="text-white">
+                    Terdapat Produksi Alket dari Kegiatan Bedah WP
+                  </option>
+                  <option value={"0"} className="text-white">
+                    Tidak Ada
+                  </option>
+                </select>
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
+                />
+              </div>
+              {errors.alket && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.alket.message}
+                </p>
+              )}
+            </div>
           </div>
           <div className="mt-10 flex gap-x-5 w-full items-center">
             <h1 className="text-xs text-justify text-red-500">
               <a
-                onClick={() => setOpen(true)}
+                onClick={() => setOpenPeserta(true)}
                 className="cursor-pointer px-3 py-2 bg-dongker rounded-md text-sm text-white font-semibold"
               >
-                Klasifikasi Kegiatan
+                Peserta ?
               </a>
-              {open && (
-                <Dialog open={open} onClose={setOpen} className="z-10">
+              {openPeserta && (
+                <Dialog open={openPeserta} onClose={setOpenPeserta} className="z-10">
                   <DialogBackdrop
                     transition
                     className="fixed inset-0 hidden bg-gray-500/75 z-50 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in md:block"
@@ -679,7 +1122,7 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                           <div className="relative flex w-full items-center rounded-lg overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
                             <button
                               type="button"
-                              onClick={() => setOpen(false)}
+                              onClick={() => setOpenPeserta(false)}
                               className="absolute right-4 top-4 text-gray-400 hover:text-gray-500 sm:right-6 sm:top-8 md:right-6 md:top-6 lg:right-8 lg:top-8"
                             >
                               <span className="sr-only">Close</span>
@@ -692,12 +1135,8 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                               <div className="flex flex-col gap-y-10">
                                 <div className="">
                                   <h1 className="font-semibold">
-                                    Kegiatan Bedah Wajib Pajak Strategis yang{" "}
-                                    <span className="text-red-700">
-                                      bersifat lengkap
-                                    </span>{" "}
-                                    harus memenuhi persyaratan akumulatif yang
-                                    terdiri dari:
+                                    Kegiatan Bedah Wajib Pajak Strategis yang bersifat lengkap harus memenuhi persyaratan
+                                    akumulatif yang terdiri dari:
                                   </h1>
                                   <ol className="list-decimal text-justify ml-5 mt-2">
                                     <li className="text-sm">
@@ -715,16 +1154,6 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                                       Pajak, Fungsional Penilai Pajak, AR yang
                                       lain, Jurusita Pajak dan pelaksana lain;
                                     </li>
-                                    <li className="text-sm mt-2">
-                                      Merupakan WP yang termasuk dalam KLU
-                                      penopang penerimaan KPP; dan
-                                    </li>
-                                    <li className="text-sm mt-2">
-                                      Menghasilkan potensi tambahan dengan nilai
-                                      minimal tertentu berdasarkan segmentasi
-                                      KPP, termasuk Wajib Pajak dengan status
-                                      SPT Rugi Tidak Lebih Bayar (RTLB){" "}
-                                    </li>
                                   </ol>
                                 </div>
                               </div>
@@ -739,15 +1168,15 @@ const FormBedahWp = ({ id }: { id?: any }) => {
             </h1>
             <h1 className="text-xs text-justify text-navy">
               <a
-                onClick={() => setOpenStatusSpt(true)}
+                onClick={() => setOpenKlu(true)}
                 className="cursor-pointer px-3 py-2 bg-dongker rounded-md text-sm text-white font-semibold"
               >
-                Penjelasan RTLB
+                Penjelasan KLU Penompang Penerimaan
               </a>
-              {openStatusSpt && (
+              {openKlu && (
                 <Dialog
-                  open={openStatusSpt}
-                  onClose={setOpenStatusSpt}
+                  open={openKlu}
+                  onClose={setOpenKlu}
                   className="z-10"
                 >
                   <DialogBackdrop
@@ -770,7 +1199,7 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                           <div className="relative flex w-full items-center rounded-lg overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
                             <button
                               type="button"
-                              onClick={() => setOpenStatusSpt(false)}
+                              onClick={() => setOpenKlu(false)}
                               className="absolute right-4 top-4 text-gray-400 hover:text-gray-500 sm:right-6 sm:top-8 md:right-6 md:top-6 lg:right-8 lg:top-8"
                             >
                               <span className="sr-only">Close</span>
@@ -783,35 +1212,37 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                               <div className="flex flex-col gap-y-10">
                                 <div className="">
                                   <h1 className="font-semibold">
-                                    {" "}
-                                    Wajib Pajak dengan status SPT Rugi Tidak
-                                    Lebih Bayar (RTLB),{" "}
+                                    Wajib Pajak Strategis yang dibedah adalah Wajib Pajak Orang Pribadi dan/atau Wajib
+                                    Pajak Badan yang termasuk dalam KLU Penopang Penerimaan KPP dan/atau WP dengan kriteria
+                                    sebagai berikut:
                                   </h1>
                                   <ol className="list-decimal text-justify ml-5 mt-2">
                                     <li className="text-sm">
-                                      WP Strategis KPP Pratama dengan potensi
-                                      tambahan paling sedikit Rp10 juta, atau
-                                      pengurangan kerugian fiskal minimal 10%
-                                      dari SPT WP status RTLB.
+                                      Wajib Pajak sektoral sesuai prioritas nasional, antara lain :
+                                      <ul className="list-disc ml-6 mt-1">
+                                        <li className="text-sm">sektor perdagangan</li>
+                                        <li className="text-sm">sektor pertambangan dan penggalian</li>
+                                        <li className="text-sm">sektor sawit</li>
+                                        <li className="text-sm">sektor industri farmasi</li>
+                                        <li className="text-sm">sektor industri pengolahan non sawit</li>
+                                        <li className="text-sm">sektor informasi dan komunikasi; dan</li>
+                                        <li className="text-sm">sektor jasa kesehatan</li>
+                                      </ul>
                                     </li>
                                     <li className="text-sm mt-2">
-                                      WP Strategis KPP Madya dengan potensi
-                                      tambahan paling sedikit Rp50 juta, atau
-                                      pengurangan kerugian fiskal minimal 10%
-                                      dari SPT WP status RTLB.
+                                      Dalam hal tidak memiliki sektor dan KLU prioritas, Kantor Wilayah menentukan sektor dan
+                                      KLU prioritas lainnya guna menjadi bahan kegiatan bedah Wajib Pajak Strategis.
                                     </li>
                                     <li className="text-sm mt-2">
-                                      WP Strategis KPP Wajib Pajak Besar dengan
-                                      potensi tambahan paling sedikit Rp100
-                                      juta, atau pengurangan kerugian fiskal
-                                      minimal 10% dari SPT WP status RTLB. KPP
-                                      Wajib Pajak Besar meliputi KPP yang berada
-                                      di Kanwil DJP Wajib Pajak Besar dan Kanwil
-                                      DJP Jakarta Khusus kecuali untuk WP
-                                      Strategis KPP Badan dan Orang Asing dengan
-                                      potensi tambahan paling sedikit Rp50 juta,
-                                      atau pengurangan kerugian fiskal minimal
-                                      10% dari SPT WP status RTLB.
+                                      Wajib Pajak sesuai segmentasi kegiatan prioritas, di antaranya:
+                                      <ul className="list-disc ml-6 mt-1">
+                                        <li className="text-sm">Wajib Pajak High Wealth Individual (HWI)</li>
+                                        <li className="text-sm">Transaksi afiliasi</li>
+                                        <li className="text-sm">Ekonomi digital</li>
+                                        <li className="text-sm">Pengawasan atas WP orang pribadi non peserta PPS; dan</li>
+                                        <li className="text-sm">Tindak lanjut atas pelaksanaan kegiatan program sinergi dalam rangka optimalisasi
+                                          penerimaan Negara Lintas Eselon I Kementrian Keuangan dan instansi lainnya.</li>
+                                      </ul>
                                     </li>
                                   </ol>
                                 </div>
@@ -825,15 +1256,9 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                 </Dialog>
               )}
             </h1>
-            {/* <h1 className="text-xs mt-2 text-justify text-navy">
-            <span className="font-bold text-dongker">Kunci Data</span>: Data
-            yang dikunci adalah data yang benar-benar diyakini kebenarannya
-            dan tidak dilakukan edit kedepannya, bilamana anda perlu
-            mengeditnya hubungi langsung admin.{" "}
-          </h1> */}
           </div>
           <div className="mt-6 flex items-center justify-between gap-x-6">
-            {step > 1 && (
+            {step > 1 && step === 2 && (
               <button
                 type="submit"
                 onClick={prevStep}
@@ -842,10 +1267,91 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                 Back
               </button>
             )}
-            {step < 3 && (
+            {step < 3 && step === 2 && (
               <button
                 type="submit"
-                // onClick={nextStep}
+                onClick={nextStep2}
+                className="rounded-md bg-navy justify-end px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-navy/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dongker"
+              >
+                Next
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {step == 3 && (
+        <div className="border-b border-white/10 pb-12">
+          <h2 className="text-base/7 font-semibold text-navy">
+            Data Potensi Wajib Pajak
+          </h2>
+          <h1 className="text-bold text-xl text-green-500">
+            {today < quarterOne && today > firstDateOfTheYear
+              ? "Triwulan I"
+              : today < quarterTwo && today > quarterOne
+                ? "Triwulan II"
+                : today < quarterThree && today > quarterTwo
+                  ? "Triwulan III"
+                  : today < quarterFour && today > quarterThree
+                    ? "Triwulan IV"
+                    : ""}
+          </h1>
+          <div className="mt-5 items-center grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
+            <div className="sm:col-span-6">
+              <div className="flex gap-x-5 justify-start">
+                <p className="text-sm font-medium text-navy">NPWP: <span className="font-bold">{npwp || "-"}</span></p>
+                <p className="text-sm font-medium text-navy">Bobot Kegiatan: <span className="font-bold">{bobotKegiatan || "-"}</span></p>
+              </div>
+            </div>
+            <div className="sm:col-span-4">
+              <p className="text-sm font-medium text-navy">Diakui Sebagai IKU: <span className="font-bold">{iku || "-"}</span></p>
+            </div>
+            <div className="sm:col-span-6">
+              <div className="flex gap-x-5 justify-start">
+                <p className="text-sm font-medium text-navy">Nilai Komponen Kuantitas: <span className="font-bold">{realisasiKuantitas || "-"}</span></p>
+                <p className="text-sm font-medium text-navy">Nilai Komponen Kualitas: <span className="font-bold">{totalKomponenKualitas || "-"}</span></p>
+              </div>
+            </div>
+          </div>
+          <div className="mt-10 flex gap-x-5 w-full items-center">
+            <div className="sm:col-span-4">
+              <div className="flex flex-col gap-y-10">
+                <div className="w-full flex flex-col gap-y-3">
+                  <label>Upload Laporan Kegiatan Bedah WP (.pdf):</label>
+                  <input
+                    type="file"
+                    {...register("pdf")}
+                    accept="application/pdf"
+                  />
+                  {errors.pdf && <p>{errors.pdf.message?.toString()}</p>}
+                </div>
+                <div className="flex gap-x-2">
+                  <input
+                    type="checkbox"
+                    checked={key}
+                    onClick={toggleActive}
+                    {...register("kunci")}
+                  />
+                  <h1 className="text-xs text-red-500">
+                    <span className="font-bold text-navy">Kunci Data</span>
+                  </h1>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-6 flex items-center justify-between gap-x-6">
+            {step > 1 && step === 3 && (
+              <button
+                type="submit"
+                onClick={prevStep}
+                className="rounded-md justify-start bg-navy px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-navy/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dongker"
+              >
+                Back
+              </button>
+            )}
+            {step === 3 && (
+              <button
+                type="submit"
                 className="rounded-md bg-navy justify-end px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-navy/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dongker"
               >
                 Submit

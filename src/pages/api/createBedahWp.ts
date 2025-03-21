@@ -71,7 +71,17 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
       peserta,
       kluPenompangPenerimaan,
       potensiTambahan,
-      kesimpulan
+      kesimpulan,
+      bobotKegiatan,
+      masukDpp,
+      analisisLaporanKeuangan,
+      analisisTransferPricing,
+      mirroring,
+      analisisWpGroup,
+      kolaborasiDenganPenilai,
+      pemanfaatanDataEksternal,
+      dataVisit,
+      alket
     } = req.body;
     console.log("Peserta ", peserta);
     const newRecord = await prisma.bedahWPData.create({
@@ -91,23 +101,26 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
         ppn: ppn ? parseFloat(ppn) : undefined,
         pajakLainnya: pajakLainnya ? parseFloat(pajakLainnya) : undefined,
         statusSpt,
-        kesimpulan:kesimpulan ? parseInt(kesimpulan) : undefined,
-        peserta: peserta ? parseFloat(peserta) : undefined,
+        kesimpulan: kesimpulan ? parseInt(kesimpulan) : undefined,
+        peserta: peserta ? parseInt(peserta) : undefined,
         kluPenompangPenerimaan: kluPenompangPenerimaan
-          ? parseFloat(kluPenompangPenerimaan)
+          ? parseInt(kluPenompangPenerimaan)
           : undefined,
         potensiTambahan: potensiTambahan
-          ? parseFloat(potensiTambahan)
+          ? parseInt(potensiTambahan)
           : undefined,
+        dataVisit: dataVisit ? parseInt(dataVisit) : undefined,
+        mirroring: mirroring ? parseInt(mirroring) : undefined,
+        analisisTransferPricing: analisisTransferPricing ? parseInt(analisisTransferPricing) : undefined,
+        analisisLaporanKeuangan: analisisLaporanKeuangan ? parseInt(analisisLaporanKeuangan) : undefined,
+        analisisWpGroup: analisisWpGroup ? parseInt(analisisWpGroup) : undefined,
+        kolaborasiDenganPenilai: kolaborasiDenganPenilai ? parseInt(kolaborasiDenganPenilai) : undefined,
+        pemanfaatanDataEksternal: pemanfaatanDataEksternal ? parseInt(pemanfaatanDataEksternal) : undefined,
         kunci: kunci ? stringToBoolean(kunci) : undefined,
         pdfFile: fileUrl,
-
-        // kluPenompangPenerimaan: kluPenompangPenerimaan ? parseInt(kluPenompangPenerimaan) : undefined,
-        // potensiTambahan: potensiTambahan ? parseInt(potensiTambahan) : undefined,
-        // kesimpulan: kesimpulan ? parseInt(kesimpulan) : undefined,
-        // bobotKegiatan: bobotKegiatan,
-        // peserta: peserta ? parseInt(peserta) : undefined,
-        // masukDpp: masukDpp ? parseInt(masukDpp) : undefined,
+        bobotKegiatan,
+        masukDpp: masukDpp ? parseInt(masukDpp) : undefined,
+        alket: alket ? parseInt(alket) : undefined,
         // analisisLaporanKeuangan: analisisLaporanKeuangan ? parseInt(analisisLaporanKeuangan) : undefined,
         // analisisTransferPricing: analisisTransferPricing ? parseInt(analisisTransferPricing) : undefined,
         // mirroring: mirroring ? parseInt(mirroring) : undefined,
