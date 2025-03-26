@@ -1,47 +1,165 @@
-import prisma from "@/lib/prisma";
-import { z } from "zod";
+//pages/api
 import { NextApiRequest, NextApiResponse } from "next";
-import { bedahWpUpdateSchema } from "@/lib/zod";
+import nextConnect from "next-connect";
+import multer from "multer";
+import prisma from "@/lib/prisma";
+import fs from "fs";
+import path from "path";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === "PUT") {
-    const parseData = await bedahWpUpdateSchema.parseAsync(req.body);
-    const numberId = Number(parseData.id);
-    try {
-      const dataBedahWP = await prisma.bedahWPData.update({
-        where: {
-          id: numberId,
-        },
-        data: {
-          npwpId: parseData.npwpId,
-          klasifikasi: parseData.klasifikasi,
-          tahunPajak: Number(parseData.tahunPajak),
-          pelaksanaanKegiatan: parseData.pelaksanaanKegiatan,
-          pph21: parseData.pph21,
-          pph22: parseData.pph22,
-          pph23: parseData.pph23,
-          pph2529: parseData.pph2529,
-          pph26: parseData.pph26,
-          pphFinal: parseData.pphFinal,
-          pph15: parseData.pph15,
-          kunci: parseData.kunci,
-          ppn: parseData.ppn,
-          pajakLainnya: parseData.pajakLainnya,
-          userId: parseData.userId,
-        },
-      });
-      res.status(200).json({ message: "Data Berhasil di Input", dataBedahWP });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        res.status(400).json({ errors: error.errors });
-      } else {
-        res.status(500).json({ error: "Internal Server Error" });
+//Extend NextApiRequest to include file from Multer
+interface MulterRequest extends NextApiRequest {
+  file: Express.Multer.File;
+}
+function stringToBoolean(str: string): boolean {
+  return str.toLowerCase() === "true";
+}
+//Configure Multer storage and file filter
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      // Use relative path from your WORKDIR or an absolute path if needed
+      cb(null, path.join(process.cwd(), "public/uploads"));
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
+    },
+  }),
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype !== "application/pdf") {
+      return cb(new Error("Only PDF files are allowed") as any, false);
+    }
+    cb(null, true);
+  },
+});
+
+// Create API handler using nextConnect with proper TypeScripts types
+const apiRoute = nextConnect<NextApiRequest, NextApiResponse>({
+  onError(error, req, res) {
+    res.status(501).json({ error: "Something went wrong" });
+  },
+  onNoMatch(req, res) {
+    res.status(405).json({ error: "Method not Allowed" });
+  },
+});
+
+// Use Multer middlaware for a single file
+apiRoute.use(upload.single("file"));
+
+apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    //type assertion so TypeScripts recognizes our extended file property
+    const multerReq = req as MulterRequest;
+    const fileUrl = multerReq ? `/uploads/${multerReq.file.filename}` : undefined;
+
+    //Extract additional fields from the request body
+    const {
+      userId,
+      npwpId,
+      dataId,
+      pelaksanaanKegiatan,
+      tahunPajak,
+      pph21,
+      pph22,
+      pph23,
+      pph2529,
+      pph26,
+      pphFinal,
+      pph15,
+      ppn,
+      pajakLainnya,
+      statusSpt,
+      kunci,
+      peserta,
+      kluPenompangPenerimaan,
+      potensiTambahan,
+      kesimpulan,
+      bobotKegiatan,
+      masukDpp,
+      analisisLaporanKeuangan,
+      analisisTransferPricing,
+      mirroring,
+      analisisWpGroup,
+      kolaborasiDenganPenilai,
+      pemanfaatanDataEksternal,
+      dataVisit,
+      alket
+    } = req.body;
+    console.log("Peserta ", pph21);
+
+    //CheckIfExistingRecord Exists
+    const existingRecord = await prisma.bedahWPData.findUnique({
+      where: {
+        id: Number(dataId),
+      },
+      select: {
+        pdfFile: true
+      }
+    });
+
+    if (!existingRecord) {
+      return res.status(404).json({ error: "Record not found" });
+    }
+
+    if (existingRecord.pdfFile) {
+      const oldfFilePath = path.join(process.cwd(), "public", existingRecord.pdfFile)
+      if (fs.existsSync(oldfFilePath)) {
+        fs.unlinkSync(oldfFilePath) // Delete Old File
       }
     }
-  } else {
-    res.setHeader("Allow", ["PUT"]);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+
+    const newRecord = await prisma.bedahWPData.update({
+      where: {
+        id: Number(dataId)
+      },
+      data: {
+        userId: userId,
+        npwpId: npwpId || undefined,
+        pelaksanaanKegiatan: pelaksanaanKegiatan,
+        tahunPajak: tahunPajak ? parseInt(tahunPajak, 10) : undefined,
+        pph21: pph21 ? parseFloat(pph21) : undefined,
+        pph22: pph22 ? parseFloat(pph22) : undefined,
+        pph23: pph23 ? parseFloat(pph23) : undefined,
+        pph2529: pph2529 ? parseFloat(pph2529) : undefined,
+        pph26: pph26 ? parseFloat(pph26) : undefined,
+        pphFinal: pphFinal ? parseFloat(pphFinal) : undefined,
+        pph15: pph15 ? parseFloat(pph15) : undefined,
+        ppn: ppn ? parseFloat(ppn) : undefined,
+        pajakLainnya: pajakLainnya ? parseFloat(pajakLainnya) : undefined,
+        statusSpt,
+        kesimpulan: kesimpulan ? parseInt(kesimpulan) : undefined,
+        peserta: peserta ? parseInt(peserta) : undefined,
+        kluPenompangPenerimaan: kluPenompangPenerimaan
+          ? parseInt(kluPenompangPenerimaan)
+          : undefined,
+        potensiTambahan: potensiTambahan
+          ? parseInt(potensiTambahan)
+          : undefined,
+        dataVisit: dataVisit ? parseInt(dataVisit) : undefined,
+        mirroring: mirroring ? parseInt(mirroring) : undefined,
+        analisisTransferPricing: analisisTransferPricing ? parseInt(analisisTransferPricing) : undefined,
+        analisisLaporanKeuangan: analisisLaporanKeuangan ? parseInt(analisisLaporanKeuangan) : undefined,
+        analisisWpGroup: analisisWpGroup ? parseInt(analisisWpGroup) : undefined,
+        kolaborasiDenganPenilai: kolaborasiDenganPenilai ? parseInt(kolaborasiDenganPenilai) : undefined,
+        pemanfaatanDataEksternal: pemanfaatanDataEksternal ? parseInt(pemanfaatanDataEksternal) : undefined,
+        kunci: kunci ? stringToBoolean(kunci) : undefined,
+        pdfFile: fileUrl ? fileUrl : undefined,
+        bobotKegiatan,
+        masukDpp: masukDpp ? parseInt(masukDpp) : undefined,
+        alket: alket ? parseInt(alket) : undefined,
+      },
+    });
+    res
+      .status(200)
+      .json({ message: "File uploaded successfully", data: newRecord });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
   }
+});
+// Disable the built-in body parser so Multer can handle multipart/form-data
+export const config = {
+  api: {
+    bodyParser: false,
+  },
 };
 
-export default handler;
+export default apiRoute;

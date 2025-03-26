@@ -11,10 +11,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Query your database for records with a non-null pdfFile field
         const records = await prisma.bedahWPData.findMany({
             where: {
-                pelaksanaanKegiatan: {
-                    lte: quarterTwo,
-                    gte: quarterOne
-                },
+                OR: [
+                    {
+                        pelaksanaanKegiatan: {
+                            lte: quarterTwo,
+                            gte: quarterOne
+                        },
+                    },
+                    {
+                        createdAt: {
+                            lte: quarterTwo,
+                            gte: quarterOne
+                        },
+                    },
+                ],
                 pdfFile: {
                     not: null,
                 },

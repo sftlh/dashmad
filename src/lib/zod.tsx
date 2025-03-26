@@ -40,7 +40,6 @@ export const bedahWpSchema = z
       message: "Waktu Pelaksanaan Kegiatan Harus diisi",
     }),
     statusSpt: z.enum(["Non RTLB", "RTLB"], { message: "Status SPT harus dipilih" }),
-    klasifikasi: z.enum(["1", "2"], { message: "Klasifikasi harus dipilih" }),
     tahunPajak: z.string().min(1, { message: "Tahun tidak boleh Kosong" }),
     peserta: z.string().min(1, { message: "Pilih salah satu opsi" }),
     kluPenompangPenerimaan: z.string().min(1, { message: "Pilih salah satu opsi" }),
@@ -48,12 +47,12 @@ export const bedahWpSchema = z
     kesimpulan: z.string().min(1, { message: "Pilih salah satu opsi" }),
     masukDpp: z.string().min(1, { message: "Pilih salah satu opsi" }),
     analisisLaporanKeuangan: z.string().min(1, { message: "Pilih salah satu opsi" }),
-    analisisTransferPricing:z.string().min(1, { message: "Pilih salah satu opsi" }),
-    mirroring:z.string().min(1, { message: "Pilih salah satu opsi" }),
-    analisisWpGroup:z.string().min(1, { message: "Pilih salah satu opsi" }),
-    kolaborasiDenganPenilai:z.string().min(1, { message: "Pilih salah satu opsi" }),
-    pemanfaatanDataEksternal:z.string().min(1, { message: "Pilih salah satu opsi" }),
-    dataVisit:z.string().min(1, { message: "Pilih salah satu opsi" }),
+    analisisTransferPricing: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    mirroring: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    analisisWpGroup: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    kolaborasiDenganPenilai: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    pemanfaatanDataEksternal: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    dataVisit: z.string().min(1, { message: "Pilih salah satu opsi" }),
     alket: z.string().min(1, { message: "Pilih salah satu opsi" }),
     bobotKegiatan: z.string().min(1, { message: "Pilih salah satu opsi" }),
     pph21: z.coerce.number().optional(),
@@ -106,7 +105,6 @@ export const bedahWpSchema = z
 export type BedahWpSchema = z.infer<typeof bedahWpSchema>;
 
 export const bedahWpUpdateSchema = z.object({
-  id: z.union([z.string(), z.undefined()]).optional(),
   userId: z.string().optional(),
   npwpId: z
     .string()
@@ -115,8 +113,21 @@ export const bedahWpUpdateSchema = z.object({
     message: "Waktu Pelaksanaan Kegiatan Harus diisi",
   }),
   statusSpt: z.enum(["Non RTLB", "RTLB"], { message: "Status SPT harus dipilih" }),
-  klasifikasi: z.enum(["1", "2"], { message: "Klasifikasi harus dipilih" }),
-  tahunPajak: z.string({ message: "harus diisi, Contoh: 2024" }),
+  tahunPajak: z.string().min(1, { message: "Tahun tidak boleh Kosong" }),
+  peserta: z.string().min(1, { message: "Pilih salah satu opsi" }),
+  kluPenompangPenerimaan: z.string().min(1, { message: "Pilih salah satu opsi" }),
+  potensiTambahan: z.string().min(1, { message: "Pilih salah satu opsi" }),
+  kesimpulan: z.string().min(1, { message: "Pilih salah satu opsi" }),
+  masukDpp: z.string().min(1, { message: "Pilih salah satu opsi" }),
+  analisisLaporanKeuangan: z.string().min(1, { message: "Pilih salah satu opsi" }),
+  analisisTransferPricing: z.string().min(1, { message: "Pilih salah satu opsi" }),
+  mirroring: z.string().min(1, { message: "Pilih salah satu opsi" }),
+  analisisWpGroup: z.string().min(1, { message: "Pilih salah satu opsi" }),
+  kolaborasiDenganPenilai: z.string().min(1, { message: "Pilih salah satu opsi" }),
+  pemanfaatanDataEksternal: z.string().min(1, { message: "Pilih salah satu opsi" }),
+  dataVisit: z.string().min(1, { message: "Pilih salah satu opsi" }),
+  alket: z.string().min(1, { message: "Pilih salah satu opsi" }),
+  bobotKegiatan: z.string().min(1, { message: "Pilih salah satu opsi" }),
   pph21: z.coerce.number().optional(),
   pph22: z.coerce.number().optional(),
   pph23: z.coerce.number().optional(),
@@ -127,7 +138,43 @@ export const bedahWpUpdateSchema = z.object({
   ppn: z.coerce.number().optional(),
   pajakLainnya: z.coerce.number().optional(),
   kunci: z.boolean().optional(),
-});
+  dataId: z.string().optional(),
+  pdf: z
+      .any()
+      .refine((files) => files && files.length === 1, { message: 'PDF file is required' })
+      .refine(
+        (files) => files?.[0]?.type === 'application/pdf',
+        { message: 'Only PDF files are accepted' }
+      ),
+})
+  .refine(
+    async (data) => {
+      const response = await fetch(
+        `/api/findNpwpInDb?npwpId=${encodeURIComponent(data.npwpId)}`
+      );
+      const result = await response.json();
+      if (result) {
+        return result.exists;
+      }
+    },
+    { message: "NPWP Tidak Ada Di Database", path: ["npwpId"] }
+  )
+  .refine(
+    async (data) => {
+      const response = await fetch(
+        `/api/findNpwpByUserId?userId=${data.userId}`
+      );
+      const result = await response.json();
+      console.log("Results:", result);
+      return result.exists.some(
+        (val: DatabaseWajibPajak) => val.id === data.npwpId
+      );
+    },
+    {
+      message: "NPWP Wajib Pajak Tidak Dibawah Pengawasan Anda",
+      path: ["npwpId"],
+    }
+  );
 
 export type BedahWpUpdateSchema = z.infer<typeof bedahWpUpdateSchema>;
 

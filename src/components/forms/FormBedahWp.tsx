@@ -97,7 +97,7 @@ const FormBedahWp = ({ id }: { id?: any }) => {
   totalSkorDataVisit = parseInt(validasiDataVisit) * 0.20;
   totalSkorAlket = parseInt(validasiAlket) * 0.15
 
-  totalKomponenKualitas = totalSkorDPP + totalSkorAlk + totalSkorTp + totalSkorMirroring + totalSkorWpGroup + totalSkorPenilai + totalSkorDataEksternal + totalSkorDataVisit + totalSkorAlket;
+  totalKomponenKualitas = (totalSkorDPP + totalSkorAlk + totalSkorTp + totalSkorMirroring + totalSkorWpGroup + totalSkorPenilai + totalSkorDataEksternal + totalSkorDataVisit + totalSkorAlket) * (parseInt(bobotKegiatan) / 100) * parseInt(validasiStatusLengkap);
 
   if (bobotKegiatan !== "0%" && iku === "Data Bisa Diakui Sebagai IKU") {
     realisasiKuantitas = parseInt(validasiStatusLengkap) * 1;
@@ -119,7 +119,6 @@ const FormBedahWp = ({ id }: { id?: any }) => {
     const isValid = await trigger([
       "npwpId",
       "pelaksanaanKegiatan",
-      "klasifikasi",
       "statusSpt",
       "tahunPajak",
     ]); // ✅ Validasi hanya field di Step 1
@@ -169,7 +168,6 @@ const FormBedahWp = ({ id }: { id?: any }) => {
         new Date(data.pelaksanaanKegiatan).toISOString()
       );
     formData.append("statusSpt", data.statusSpt);
-    formData.append("klasifikasi", data.klasifikasi);
     formData.append("bobotKegiatan", data.bobotKegiatan);
     if (data.tahunPajak) formData.append("tahunPajak", data.tahunPajak);
     if (data.peserta) formData.append("peserta", data.peserta.toString());
@@ -263,33 +261,7 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                 register={register}
               />
             </div>
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="klasifikasi"
-                className="block text-sm/6 font-medium text-navy"
-              >
-                Klasifikasi Kegiatan
-              </label>
-              <div className="mt-2 grid grid-cols-1">
-                <select
-                  id="klasifikasi"
-                  {...register("klasifikasi")}
-                  className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
-                >
-                  <option value={"1"} className="text-white">
-                    Kategori Lengkap
-                  </option>
-                  <option value={"2"} className="text-white">
-                    Kategori Biasa
-                  </option>
-                </select>
-                <ChevronDownIcon
-                  aria-hidden="true"
-                  className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-3">
+            <div className="sm:col-span-6">
               <InputField
                 label="Tahun Pajak"
                 name="tahunPajak"
@@ -310,6 +282,9 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                   {...register("statusSpt")}
                   className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-dongker/5 py-1.5 pl-3 pr-8 text-base text-navy outline outline-1 -outline-offset-1 outline-navy/10 *:bg-navy focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-dongker sm:text-sm/6"
                 >
+                  <option value="" disabled>
+                    -- Pilih Status Peserta --
+                  </option>
                   <option value={"Non RTLB"} className="text-white">
                     Non RTLB
                   </option>
@@ -368,8 +343,6 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                 register={register}
               />
             </div>
-
-
             <InputField
               hidden
               label="userId"
@@ -377,189 +350,6 @@ const FormBedahWp = ({ id }: { id?: any }) => {
               defaultValue={user?.id}
               register={register}
             />
-          </div>
-          <div className="mt-10 flex gap-x-5 w-full items-center">
-            <h1 className="text-xs text-justify text-red-500">
-              <a
-                onClick={() => setOpen(true)}
-                className="cursor-pointer px-3 py-2 bg-dongker rounded-md text-sm text-white font-semibold"
-              >
-                Klasifikasi Kegiatan
-              </a>
-              {open && (
-                <Dialog open={open} onClose={setOpen} className="z-10">
-                  <DialogBackdrop
-                    transition
-                    className="fixed inset-0 hidden bg-gray-500/75 z-50 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in md:block"
-                  >
-                    <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                      <div className="flex min-h-full items-stretch justify-center text-center md:items-center md:px-2 lg:px-4">
-                        {/* This element is to trick the browser into centering the modal contents. */}
-                        <span
-                          aria-hidden="true"
-                          className="hidden md:inline-block md:h-screen md:align-middle"
-                        >
-                          &#8203;
-                        </span>
-                        <DialogPanel
-                          transition
-                          className="flex w-full transform text-left text-base transition data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in md:my-8 md:max-w-2xl md:px-4 data-[closed]:md:translate-y-0 data-[closed]:md:scale-95 ld:max-w-4xl"
-                        >
-                          <div className="relative flex w-full items-center rounded-lg overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
-                            <button
-                              type="button"
-                              onClick={() => setOpen(false)}
-                              className="absolute right-4 top-4 text-gray-400 hover:text-gray-500 sm:right-6 sm:top-8 md:right-6 md:top-6 lg:right-8 lg:top-8"
-                            >
-                              <span className="sr-only">Close</span>
-                              <XMarkIcon
-                                aria-hidden="true"
-                                className="size-6"
-                              />
-                            </button>
-                            <div className="items-center">
-                              <div className="flex flex-col gap-y-10">
-                                <div className="">
-                                  <h1 className="font-semibold">
-                                    Kegiatan Bedah Wajib Pajak Strategis yang{" "}
-                                    <span className="text-red-700">
-                                      bersifat lengkap
-                                    </span>{" "}
-                                    harus memenuhi persyaratan akumulatif yang
-                                    terdiri dari:
-                                  </h1>
-                                  <ol className="list-decimal text-justify ml-5 mt-2">
-                                    <li className="text-sm">
-                                      Kegiatan wajib diikuti oleh AR dan Kasi
-                                      Pengawasan pengampu WP yang dibedah,
-                                      Supervisor Fungsional Pemeriksa Pajak,
-                                      Pejabat Fungsional Penilai (jika terdapat
-                                      CRM SR Penilaian), ditambah dengan paling
-                                      sedikit dua peserta lainnya yang dapat
-                                      terdiri dari Kepala KPP, Kasi Pengawasan
-                                      Lainnya, Kepala Seksi Pemeriksaan
-                                      Penagihan dan Penilaian, Kepala Seksi
-                                      Penjaminan Kualitas Data, Fungsional
-                                      Pemeriksa Pajak, Fungsional Penyuluh
-                                      Pajak, Fungsional Penilai Pajak, AR yang
-                                      lain, Jurusita Pajak dan pelaksana lain;
-                                    </li>
-                                    <li className="text-sm mt-2">
-                                      Merupakan WP yang termasuk dalam KLU
-                                      penopang penerimaan KPP; dan
-                                    </li>
-                                    <li className="text-sm mt-2">
-                                      Menghasilkan potensi tambahan dengan nilai
-                                      minimal tertentu berdasarkan segmentasi
-                                      KPP, termasuk Wajib Pajak dengan status
-                                      SPT Rugi Tidak Lebih Bayar (RTLB){" "}
-                                    </li>
-                                  </ol>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </DialogPanel>
-                      </div>
-                    </div>
-                  </DialogBackdrop>
-                </Dialog>
-              )}
-            </h1>
-            <h1 className="text-xs text-justify text-navy">
-              <a
-                onClick={() => setOpenStatusSpt(true)}
-                className="cursor-pointer px-3 py-2 bg-dongker rounded-md text-sm text-white font-semibold"
-              >
-                Penjelasan RTLB
-              </a>
-              {openStatusSpt && (
-                <Dialog
-                  open={openStatusSpt}
-                  onClose={setOpenStatusSpt}
-                  className="z-10"
-                >
-                  <DialogBackdrop
-                    transition
-                    className="fixed inset-0 hidden bg-gray-500/75 z-50 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in md:block"
-                  >
-                    <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                      <div className="flex min-h-full items-stretch justify-center text-center md:items-center md:px-2 lg:px-4">
-                        {/* This element is to trick the browser into centering the modal contents. */}
-                        <span
-                          aria-hidden="true"
-                          className="hidden md:inline-block md:h-screen md:align-middle"
-                        >
-                          &#8203;
-                        </span>
-                        <DialogPanel
-                          transition
-                          className="flex w-full transform text-left text-base transition data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in md:my-8 md:max-w-2xl md:px-4 data-[closed]:md:translate-y-0 data-[closed]:md:scale-95 ld:max-w-4xl"
-                        >
-                          <div className="relative flex w-full items-center rounded-lg overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
-                            <button
-                              type="button"
-                              onClick={() => setOpenStatusSpt(false)}
-                              className="absolute right-4 top-4 text-gray-400 hover:text-gray-500 sm:right-6 sm:top-8 md:right-6 md:top-6 lg:right-8 lg:top-8"
-                            >
-                              <span className="sr-only">Close</span>
-                              <XMarkIcon
-                                aria-hidden="true"
-                                className="size-6"
-                              />
-                            </button>
-                            <div className="items-center">
-                              <div className="flex flex-col gap-y-10">
-                                <div className="">
-                                  <h1 className="font-semibold">
-                                    {" "}
-                                    Wajib Pajak dengan status SPT Rugi Tidak
-                                    Lebih Bayar (RTLB),{" "}
-                                  </h1>
-                                  <ol className="list-decimal text-justify ml-5 mt-2">
-                                    <li className="text-sm">
-                                      WP Strategis KPP Pratama dengan potensi
-                                      tambahan paling sedikit Rp10 juta, atau
-                                      pengurangan kerugian fiskal minimal 10%
-                                      dari SPT WP status RTLB.
-                                    </li>
-                                    <li className="text-sm mt-2">
-                                      WP Strategis KPP Madya dengan potensi
-                                      tambahan paling sedikit Rp50 juta, atau
-                                      pengurangan kerugian fiskal minimal 10%
-                                      dari SPT WP status RTLB.
-                                    </li>
-                                    <li className="text-sm mt-2">
-                                      WP Strategis KPP Wajib Pajak Besar dengan
-                                      potensi tambahan paling sedikit Rp100
-                                      juta, atau pengurangan kerugian fiskal
-                                      minimal 10% dari SPT WP status RTLB. KPP
-                                      Wajib Pajak Besar meliputi KPP yang berada
-                                      di Kanwil DJP Wajib Pajak Besar dan Kanwil
-                                      DJP Jakarta Khusus kecuali untuk WP
-                                      Strategis KPP Badan dan Orang Asing dengan
-                                      potensi tambahan paling sedikit Rp50 juta,
-                                      atau pengurangan kerugian fiskal minimal
-                                      10% dari SPT WP status RTLB.
-                                    </li>
-                                  </ol>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </DialogPanel>
-                      </div>
-                    </div>
-                  </DialogBackdrop>
-                </Dialog>
-              )}
-            </h1>
-            {/* <h1 className="text-xs mt-2 text-justify text-navy">
-              <span className="font-bold text-dongker">Kunci Data</span>: Data
-              yang dikunci adalah data yang benar-benar diyakini kebenarannya
-              dan tidak dilakukan edit kedepannya, bilamana anda perlu
-              mengeditnya hubungi langsung admin.{" "}
-            </h1> */}
           </div>
           <div className="mt-6 flex items-center justify-end gap-x-6">
             {step < 3 && step === 1 && (
@@ -1306,6 +1096,37 @@ const FormBedahWp = ({ id }: { id?: any }) => {
             <div className="sm:col-span-4">
               <p className="text-sm font-medium text-navy">Diakui Sebagai IKU: <span className="font-bold">{iku || "-"}</span></p>
             </div>
+            {
+              iku === "Data Tidak Bisa diakui Sebagai IKU" && (<div className="sm:col-span-4">
+                <p className="text-sm font-medium flex text-navy">Tidak bisa diakui sebagai IKU Karena:</p>
+                <ul className="list-disc list-inside text-sm font-medium text-red-500">
+                  {
+                    kluPenompang === "0" && (
+                      <li className="items-center flex">
+                        - <p className="text-sm font-medium text-red-500"> KLU Penompang:  <span className="font-bold">Bukan KLU Penompang Penerimaan</span></p>
+                      </li>
+
+                    )
+                  }
+                  {
+                    pesertaBedahWp === "0" && (
+                      <li className="items-center flex">
+                        - <p className="text-sm font-medium text-red-500"> Peserta:  <span className="font-bold">Peserta Tidak Sesuai Ketentuan</span></p>
+                      </li>
+
+                    )
+                  }
+                  {
+                    potensiTmbhn === "0" && (
+                      <li className="flex items-center">
+                        - <p className="text-sm font-medium text-red-500"> Potensi Tambahan:  <span className="font-bold">Tidak Ada Potensi Tambahan</span></p>
+                      </li>
+
+                    )
+                  }
+                </ul>
+              </div>)
+            }
             <div className="sm:col-span-6">
               <div className="flex gap-x-5 justify-start">
                 <p className="text-sm font-medium text-navy">Nilai Komponen Kuantitas: <span className="font-bold">{realisasiKuantitas || "-"}</span></p>

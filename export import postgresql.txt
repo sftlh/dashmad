@@ -8,3 +8,8 @@ Cara Import :
 
 Cara Masuk ke PSQL:
 1. docker exec -it container_name psql -U admin -d dashmad
+
+
+Cara agar Uploads bisa diakses setelah docker dinyalakan
+1. docker exec -u root -it dashmad-app sh
+2. chmod -R 777 public/uploads
