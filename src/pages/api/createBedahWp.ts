@@ -82,7 +82,7 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
       dataVisit,
       alket
     } = req.body;
-    console.log("Peserta ", peserta);
+    console.log("Body ", req.body);
     const newRecord = await prisma.bedahWPData.create({
       data: {
         userId: userId,

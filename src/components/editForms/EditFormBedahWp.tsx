@@ -19,6 +19,7 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { useUser } from "@clerk/nextjs";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import path, { basename } from "path";
+import InputFieldNumber from "../InputFieldNumber";
 
 const EditFormBedahWp = ({ data, type, setOpen }: { data?: any, type: "update", setOpen:any; }) => {
   const {
@@ -320,45 +321,48 @@ const EditFormBedahWp = ({ data, type, setOpen }: { data?: any, type: "update", 
             </div>
 
             <div className="sm:col-span-2 sm:col-start-1">
-              <InputField label="PPh 21" defaultValue={data.pph21} name="pph21" register={register} />
+              <InputFieldNumber label="PPh 21" defaultValue={data.pph21} name="pph21" register={register} formatNumber/>
             </div>
             <div className="sm:col-span-2">
-              <InputField label="PPh 22" defaultValue={data.pph22} name="pph22" register={register} />
+              <InputFieldNumber label="PPh 22" defaultValue={data.pph22} name="pph22" register={register} formatNumber/>
             </div>
             <div className="sm:col-span-2">
-              <InputField label="PPh 23" defaultValue={data.pph23} name="pph23" register={register} />
+              <InputFieldNumber label="PPh 23" defaultValue={data.pph23} name="pph23" register={register} formatNumber/>
             </div>
             <div className="sm:col-span-2 sm:col-start-1">
-              <InputField
+              <InputFieldNumber
                 label="PPh 25/29"
                 defaultValue={data.pph2529}
                 name="pph2529"
                 register={register}
+                formatNumber
               />
             </div>
             <div className="sm:col-span-2">
-              <InputField label="PPh 26" defaultValue={data.pph26} name="pph26" register={register} />
+              <InputFieldNumber label="PPh 26" formatNumber defaultValue={data.pph26} name="pph26" register={register} />
             </div>
             <div className="sm:col-span-2">
-              <InputField
+              <InputFieldNumber
                 label="PPh 4 ayat (2)"
                 defaultValue={data.pphFinal}
                 name="pphFinal"
                 register={register}
+                formatNumber
               />
             </div>
             <div className="sm:col-span-2 sm:col-start-1">
-              <InputField label="PPh 15" defaultValue={data.pph15} name="pph15" register={register} />
+              <InputFieldNumber label="PPh 15" formatNumber defaultValue={data.pph15} name="pph15" register={register} />
             </div>
             <div className="sm:col-span-2">
-              <InputField label="PPN" name="ppn" defaultValue={data.ppn} register={register} />
+              <InputFieldNumber label="PPN" formatNumber name="ppn" defaultValue={data.ppn} register={register} />
             </div>
             <div className="sm:col-span-2">
-              <InputField
+              <InputFieldNumber
                 label="Pajak Lainnya"
                 name="pajakLainnya"
                 defaultValue={data.pajakLainnya}
                 register={register}
+                formatNumber
               />
             </div>
 

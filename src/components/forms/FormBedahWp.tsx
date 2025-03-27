@@ -18,6 +18,7 @@ import {
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useUser } from "@clerk/nextjs";
+import InputFieldNumber from "../InputFieldNumber";
 
 const FormBedahWp = ({ id }: { id?: any }) => {
   const {
@@ -36,6 +37,7 @@ const FormBedahWp = ({ id }: { id?: any }) => {
       kesimpulan: "",
     },
   });
+
 
   const { user } = useUser();
   //watch
@@ -202,7 +204,7 @@ const FormBedahWp = ({ id }: { id?: any }) => {
     if (data.kunci) formData.append("kunci", data.kunci.toString());
     formData.append("file", data.pdf[0]);
 
-    console.log("Status NPWP", data.npwpId);
+    console.log("Data Front", formData);
 
     try {
       const response = await fetch("/api/createBedahWp", {
@@ -305,42 +307,46 @@ const FormBedahWp = ({ id }: { id?: any }) => {
             </div>
 
             <div className="sm:col-span-2 sm:col-start-1">
-              <InputField label="PPh 21" name="pph21" register={register} />
+              {/* <InputField label="PPh 21" name="pph21" register={register} /> */}
+              <InputFieldNumber label="PPh21" name="pph21" register={register} formatNumber />
             </div>
             <div className="sm:col-span-2">
-              <InputField label="PPh 22" name="pph22" register={register} />
+              <InputFieldNumber label="PPh 22" name="pph22" register={register} formatNumber/>
             </div>
             <div className="sm:col-span-2">
-              <InputField label="PPh 23" name="pph23" register={register} />
+              <InputFieldNumber label="PPh 23" name="pph23" register={register} formatNumber/>
             </div>
             <div className="sm:col-span-2 sm:col-start-1">
-              <InputField
+              <InputFieldNumber
                 label="PPh 25/29"
                 name="pph2529"
                 register={register}
+                formatNumber
               />
             </div>
             <div className="sm:col-span-2">
-              <InputField label="PPh 26" name="pph26" register={register} />
+              <InputFieldNumber label="PPh 26" name="pph26" register={register} formatNumber/>
             </div>
             <div className="sm:col-span-2">
-              <InputField
+              <InputFieldNumber
                 label="PPh 4 ayat (2)"
                 name="pphFinal"
                 register={register}
+                formatNumber
               />
             </div>
             <div className="sm:col-span-2 sm:col-start-1">
-              <InputField label="PPh 15" name="pph15" register={register} />
+              <InputFieldNumber label="PPh 15" name="pph15" register={register} formatNumber/>
             </div>
             <div className="sm:col-span-2">
-              <InputField label="PPN" name="ppn" register={register} />
+              <InputFieldNumber label="PPN" name="ppn" register={register} formatNumber/>
             </div>
             <div className="sm:col-span-2">
-              <InputField
+              <InputFieldNumber
                 label="Pajak Lainnya"
                 name="pajakLainnya"
                 register={register}
+                formatNumber
               />
             </div>
             <InputField
