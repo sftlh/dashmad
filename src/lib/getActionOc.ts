@@ -11,13 +11,13 @@ export const quarterThree = new Date(todayYear, 10, 10);
 export const quarterFour = new Date(todayYear, 12, 10);
 
 // Get Bedah WP Data Quarter One
-export const getSumOfBedahWpQuarterOne = async (role: string) => {
+export const getSumOfBedahWpQuarterOneOc = async (role: string) => {
   const data = await prisma.bedahWPData.count({
     where: {
       user: {
         role,
       },
-      pelaksanaanKegiatan: {
+      createdAt: {
         lte: quarterOne,
         gte: firstDateOfTheYear,
       },
@@ -27,13 +27,13 @@ export const getSumOfBedahWpQuarterOne = async (role: string) => {
 };
 
 // Get Bedah WP Data Quarter Two
-export const getSumOfBedahWpQuarterTwo = async (role: string) => {
+export const getSumOfBedahWpQuarterTwoOc = async (role: string) => {
   const data = await prisma.bedahWPData.count({
     where: {
       user: {
         role,
       },
-      pelaksanaanKegiatan: {
+      createdAt: {
         lte: quarterTwo,
         gte: quarterOne,
       },
@@ -43,13 +43,13 @@ export const getSumOfBedahWpQuarterTwo = async (role: string) => {
 };
 
 // Get Bedah WP Data Quarter Three
-export const getSumOfBedahWpQuarterThree = async (role: string) => {
+export const getSumOfBedahWpQuarterThreeOc = async (role: string) => {
   const data = await prisma.bedahWPData.count({
     where: {
       user: {
         role,
       },
-      pelaksanaanKegiatan: {
+      createdAt: {
         lte: quarterThree,
         gte: quarterTwo,
       },
@@ -59,13 +59,13 @@ export const getSumOfBedahWpQuarterThree = async (role: string) => {
 };
 
 // Get Bedah WP Data Quarter Four
-export const getSumOfBedahWpQuarterFour = async (role: string) => {
+export const getSumOfBedahWpQuarterFourOc = async (role: string) => {
   const data = await prisma.bedahWPData.count({
     where: {
       user: {
         role,
       },
-      pelaksanaanKegiatan: {
+      createdAt: {
         lte: quarterFour,
         gte: quarterThree,
       },
@@ -75,13 +75,14 @@ export const getSumOfBedahWpQuarterFour = async (role: string) => {
 };
 
 // Get Empowering Data Quarter One
-export const getSumOfEmpoweringQuarterOne = async (role: string) => {
+export const getSumOfEmpoweringQuarterOneOc = async (role: string) => {
   const data = await prisma.empoweringData.count({
     where: {
       user: {
         role,
       },
-      pelaksanaanKegiatan: {
+
+      createdAt: {
         lte: quarterOne,
         gte: firstDateOfTheYear,
       },
@@ -91,13 +92,13 @@ export const getSumOfEmpoweringQuarterOne = async (role: string) => {
 };
 
 // Get Empowering Data Quarter Two
-export const getSumOfEmpoweringQuarterTwo = async (role: string) => {
+export const getSumOfEmpoweringQuarterTwoOc = async (role: string) => {
   const data = await prisma.bedahWPData.count({
     where: {
       user: {
         role,
       },
-      pelaksanaanKegiatan: {
+      createdAt: {
         lte: quarterTwo,
         gte: quarterOne,
       },
@@ -107,13 +108,13 @@ export const getSumOfEmpoweringQuarterTwo = async (role: string) => {
 };
 
 // Get Empowering Data Quarter Three
-export const getSumOfEmpoweringQuarterThree = async (role: string) => {
+export const getSumOfEmpoweringQuarterThreeOc = async (role: string) => {
   const data = await prisma.bedahWPData.count({
     where: {
       user: {
         role,
       },
-      pelaksanaanKegiatan: {
+      createdAt: {
         lte: quarterThree,
         gte: quarterTwo,
       },
@@ -123,13 +124,13 @@ export const getSumOfEmpoweringQuarterThree = async (role: string) => {
 };
 
 // Get Empowering Data Quarter Four
-export const getSumOfEmpoweringQuarterFour = async (role: string) => {
+export const getSumOfEmpoweringQuarterFourOc = async (role: string) => {
   const data = await prisma.bedahWPData.count({
     where: {
       user: {
         role,
       },
-      pelaksanaanKegiatan: {
+      createdAt: {
         lte: quarterFour,
         gte: quarterThree,
       },
@@ -139,7 +140,7 @@ export const getSumOfEmpoweringQuarterFour = async (role: string) => {
 };
 
 //Recent Activity Data
-export const recentBedahWpActivity = async () => {
+export const recentBedahWpActivityOc = async () => {
   const recentData = await prisma.bedahWPData.findMany({
     orderBy: {
       createdAt: "desc",
@@ -154,7 +155,7 @@ export const recentBedahWpActivity = async () => {
   return recentData;
 };
 
-export const recentEmpoweringActivity = async () => {
+export const recentEmpoweringActivityOc = async () => {
   const recentData = await prisma.empoweringData.findMany({
     orderBy: {
       createdAt: "desc",
@@ -169,10 +170,9 @@ export const recentEmpoweringActivity = async () => {
   return recentData;
 };
 
-export const getCountOfBedahWpTriwulanIByUserId = async (userId: string) => {
+export const getCountOfBedahWpTriwulanIByUserIdOc = async () => {
   const data = await prisma.bedahWPData.count({
     where: {
-      userId,
       createdAt: {
         lte: quarterOne,
         gte: firstDateOfTheYear,
@@ -186,10 +186,9 @@ export const getCountOfBedahWpTriwulanIByUserId = async (userId: string) => {
   return data;
 };
 
-export const getCountOfBedahWpTriwulanIIByUserId = async (userId: string) => {
+export const getCountOfBedahWpTriwulanIIByUserIdOc = async () => {
   const data = await prisma.bedahWPData.count({
     where: {
-      userId,
       createdAt: {
         lte: quarterTwo,
         gte: quarterOne,
@@ -203,10 +202,9 @@ export const getCountOfBedahWpTriwulanIIByUserId = async (userId: string) => {
   return data;
 };
 
-export const getCountOfBedahWpTriwulanIIIByUserId = async (userId: string) => {
+export const getCountOfBedahWpTriwulanIIIByUserIdOc = async () => {
   const data = await prisma.bedahWPData.count({
     where: {
-      userId,
       createdAt: {
         lte: quarterThree,
         gte: quarterTwo,
@@ -220,10 +218,9 @@ export const getCountOfBedahWpTriwulanIIIByUserId = async (userId: string) => {
   return data;
 };
 
-export const getCountOfBedahWpTriwulanIVByUserId = async (userId: string) => {
+export const getCountOfBedahWpTriwulanIVByUserIdOc = async () => {
   const data = await prisma.bedahWPData.count({
     where: {
-      userId,
       createdAt: {
         lte: quarterFour,
         gte: quarterThree,
@@ -232,6 +229,7 @@ export const getCountOfBedahWpTriwulanIVByUserId = async (userId: string) => {
         lte: quarterFour,
         gte: quarterThree,
       },
+      
     },
   });
   return data;
@@ -239,7 +237,7 @@ export const getCountOfBedahWpTriwulanIVByUserId = async (userId: string) => {
 
 //Get Sudah Dikirim BedahWP
 
-export const getBedahWpKirimTwI = async (userId: string) => {
+export const getBedahWpKirimTwIOc = async () => {
   try {
     const dataSudahKirim = await prisma.bedahWPData.count({
       where: {
@@ -250,7 +248,6 @@ export const getBedahWpKirimTwI = async (userId: string) => {
         sendingDataToKanwil: {
           statusKirim: "sudah",
         },
-        userId,
       },
     });
     return dataSudahKirim;
@@ -259,7 +256,7 @@ export const getBedahWpKirimTwI = async (userId: string) => {
   }
 };
 
-export const getBedahWpKirimTwII = async (userId: string) => {
+export const getBedahWpKirimTwIIOc = async () => {
   try {
     const dataSudahKirim = await prisma.bedahWPData.count({
       where: {
@@ -270,7 +267,6 @@ export const getBedahWpKirimTwII = async (userId: string) => {
         sendingDataToKanwil: {
           statusKirim: "sudah",
         },
-        userId,
       },
     });
     return dataSudahKirim;
@@ -279,7 +275,7 @@ export const getBedahWpKirimTwII = async (userId: string) => {
   }
 };
 
-export const getBedahWpKirimTwIII = async (userId: string) => {
+export const getBedahWpKirimTwIIIOc = async () => {
   try {
     const dataSudahKirim = await prisma.bedahWPData.count({
       where: {
@@ -290,7 +286,6 @@ export const getBedahWpKirimTwIII = async (userId: string) => {
         sendingDataToKanwil: {
           statusKirim: "sudah",
         },
-        userId,
       },
     });
     return dataSudahKirim;
@@ -299,7 +294,7 @@ export const getBedahWpKirimTwIII = async (userId: string) => {
   }
 };
 
-export const getBedahWpKirimTwIV = async (userId: string) => {
+export const getBedahWpKirimTwIVOc = async () => {
   try {
     const dataSudahKirim = await prisma.bedahWPData.count({
       where: {
@@ -310,7 +305,6 @@ export const getBedahWpKirimTwIV = async (userId: string) => {
         sendingDataToKanwil: {
           statusKirim: "sudah",
         },
-        userId,
       },
     });
     return dataSudahKirim;
@@ -321,7 +315,7 @@ export const getBedahWpKirimTwIV = async (userId: string) => {
 
 //Get Bedah WP Telat
 
-export const getBedahWpTelatTwI = async (userId: string) => {
+export const getBedahWpTelatTwIOc = async () => {
   try {
     const data = await prisma.bedahWPData.count({
       where: {
@@ -333,7 +327,6 @@ export const getBedahWpTelatTwI = async (userId: string) => {
           lte: quarterFour,
           gte: quarterOne,
         },
-        userId,
       },
     });
     return data;
@@ -342,7 +335,7 @@ export const getBedahWpTelatTwI = async (userId: string) => {
   }
 };
 
-export const getBedahWpTelatTwII = async (userId: string) => {
+export const getBedahWpTelatTwIIOc = async () => {
   try {
     const data = await prisma.bedahWPData.count({
       where: {
@@ -354,7 +347,6 @@ export const getBedahWpTelatTwII = async (userId: string) => {
           lte: quarterFour,
           gte: quarterTwo,
         },
-        userId,
       },
     });
     return data;
@@ -363,7 +355,7 @@ export const getBedahWpTelatTwII = async (userId: string) => {
   }
 };
 
-export const getBedahWpTelatTwIII = async (userId: string) => {
+export const getBedahWpTelatTwIIIOc = async () => {
   try {
     const data = await prisma.bedahWPData.count({
       where: {
@@ -375,7 +367,6 @@ export const getBedahWpTelatTwIII = async (userId: string) => {
           lte: quarterFour,
           gte: quarterThree,
         },
-        userId,
       },
     });
     return data;
@@ -384,7 +375,7 @@ export const getBedahWpTelatTwIII = async (userId: string) => {
   }
 };
 
-export const getBedahWpTelatTwIV = async (userId: string) => {
+export const getBedahWpTelatTwIVOc = async () => {
   try {
     const data = await prisma.bedahWPData.count({
       where: {
@@ -396,7 +387,6 @@ export const getBedahWpTelatTwIV = async (userId: string) => {
           lte: quarterFour,
           gte: quarterFour,
         },
-        userId,
       },
     });
     return data;
@@ -405,11 +395,10 @@ export const getBedahWpTelatTwIV = async (userId: string) => {
   }
 };
 
-export const belumKirimTwI = async (userId: string) => {
+export const belumKirimTwIOc = async () => {
   try {
     const data = await prisma.bedahWPData.count({
       where: {
-        userId,
         pelaksanaanKegiatan: {
           lte: quarterOne,
           gte: firstDateOfTheYear,
@@ -418,16 +407,16 @@ export const belumKirimTwI = async (userId: string) => {
       },
     });
     return data;
+    console.log("Data", data)
   } catch (error) {
     console.log(error);
   }
 };
 
-export const belumKirimTwII = async (userId: string) => {
+export const belumKirimTwIIOc = async () => {
   try {
     const data = await prisma.bedahWPData.count({
       where: {
-        userId,
         pelaksanaanKegiatan: {
           lte: quarterTwo,
           gte: quarterOne,
@@ -441,11 +430,10 @@ export const belumKirimTwII = async (userId: string) => {
   }
 };
 
-export const belumKirimTwIII = async (userId: string) => {
+export const belumKirimTwIIIOc = async () => {
   try {
     const data = await prisma.bedahWPData.count({
       where: {
-        userId,
         pelaksanaanKegiatan: {
           lte: quarterThree,
           gte: quarterTwo,
@@ -459,11 +447,10 @@ export const belumKirimTwIII = async (userId: string) => {
   }
 };
 
-export const belumKirimTwIV = async (userId: string) => {
+export const belumKirimTwIVOc = async () => {
   try {
     const data = await prisma.bedahWPData.count({
       where: {
-        userId,
         pelaksanaanKegiatan: {
           lte: quarterFour,
           gte: quarterThree,

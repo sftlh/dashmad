@@ -11,6 +11,7 @@ import {
   SendingDataToKanwil,
   User,
 } from "@prisma/client";
+import Link from "next/link";
 import React from "react";
 
 export type BedahWPList = BedahWPData & { npwp: DatabaseWajibPajak } & {
@@ -37,13 +38,7 @@ const BedahWPViewPage = async ({
         {item.tahunPajak}
       </td>
       <td className="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
-        {item.kunci === true ? (
-          <p className="text-green-600">Data Siap Dikirim</p>
-        ) : item.kunci === false ? (
-          <p className="text-gold">Belum Dikunci</p>
-        ) : (
-          item?.sendingDataToKanwil?.statusKirim
-        )}
+        {item?.sendingDataToKanwil?.nomorNd == null ? <span className="text-red-500">Belum Terkirim</span> : <span className="text-green-500">Sudah Terkirim</span>}
       </td>
       <td className="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
         {new Intl.NumberFormat("id-ID", {
@@ -72,18 +67,18 @@ const BedahWPViewPage = async ({
         }).format(item.createdAt)}
       </td>
       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-          <a
+          <Link
             href={`/bedahwp/view/${item?.id}`}
             className="text-navy hover:text-dongker"
           >
             Detail
-          </a>
+          </Link>
       </td>
-      {item.kunci === true ? (
+      {item.kunci === true || item?.sendingDataToKanwil?.nomorNd != null ? (
         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-6">
-          <a className=" text-red-400 hover:text-red-500 cursor-not-allowed">
+          <p className=" text-red-400 hover:text-red-500 cursor-not-allowed">
             Terkunci
-          </a>
+          </p>
         </td>
       ) : (
         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-6">

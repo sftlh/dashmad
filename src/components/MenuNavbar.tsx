@@ -1,7 +1,14 @@
 import CurrencyDollarIcon from "@heroicons/react/24/outline/CurrencyDollarIcon";
 import HomeIcon from "@heroicons/react/24/outline/HomeIcon";
 import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
-import { PlusCircleIcon, PaperAirplaneIcon, TableCellsIcon, ArrowPathIcon, TrophyIcon } from "@heroicons/react/24/outline";
+import {
+  PlusCircleIcon,
+  PaperAirplaneIcon,
+  TableCellsIcon,
+  ArrowPathIcon,
+  TrophyIcon,
+  ListBulletIcon,
+} from "@heroicons/react/24/outline";
 import React from "react";
 
 const navigation = [
@@ -32,45 +39,77 @@ const navigation = [
     name: "Rank AR",
     href: "/pengawasan/rank",
     icon: TrophyIcon,
-    visible: ["ar_1", "ar_2", "ar_3", "ar_4", "ar_5", "oc", "ar_6", "kasipw2",
+    visible: [
+      "ar_1",
+      "ar_2",
+      "ar_3",
+      "ar_4",
+      "ar_5",
+      "oc",
+      "ar_6",
+      "kasipw2",
       "kasipw1",
       "kasipw3",
       "kasipw4",
       "kasipw5",
       "kasipw6",
-      "kasipkd",],
+      "kasipkd",
+    ],
   },
   {
     name: "PPM By Kdmap per WP",
     href: "/kodemapperwp",
     icon: TableCellsIcon,
-    visible: ["ar_1", "ar_2", "ar_3", "ar_4", "ar_5", "oc", "ar_6", "kasipw2",
+    visible: [
+      "ar_1",
+      "ar_2",
+      "ar_3",
+      "ar_4",
+      "ar_5",
+      "oc",
+      "ar_6",
+      "kasipw2",
       "kasipw1",
       "kasipw3",
       "kasipw4",
       "kasipw5",
       "kasipw6",
-      "kasipkd",],
+      "kasipkd",
+    ],
   },
 
   {
     name: "PKM Per WP",
     href: "/pkmperwp",
     icon: TableCellsIcon,
-    visible: ["ar_1", "ar_2", "ar_3", "ar_4", "ar_5", "oc", "ar_6", "kasipw2",
+    visible: [
+      "ar_1",
+      "ar_2",
+      "ar_3",
+      "ar_4",
+      "ar_5",
+      "oc",
+      "ar_6",
+      "kasipw2",
       "kasipw1",
       "kasipw3",
       "kasipw4",
       "kasipw5",
       "kasipw6",
-      "kasipkd",],
+      "kasipkd",
+    ],
   },
-
   {
     name: "Bedah WP",
     href: "/bedahwp",
     icon: PlusCircleIcon,
     visible: ["ar_1", "ar_2", "ar_3", "ar_4", "ar_5", "admin", "ar_6"],
+  },
+  {
+    name: "Bedah WP OC",
+    href: "/oc/bedahwpoc",
+    icon: ListBulletIcon,
+    visible: ["oc"],
   },
   {
     name: "Pembenahan WP",
@@ -132,26 +171,26 @@ const MenuNavbar = ({ role }: { role: string | undefined }) => {
                     <a
                       href={
                         item.name === "Dashboard" &&
-                          (role === "ar_1" ||
-                            role === "ar_2" ||
-                            role === "ar_3" ||
-                            role === "ar_4" ||
-                            role === "ar_5" ||
-                            role === "ar_6")
+                        (role === "ar_1" ||
+                          role === "ar_2" ||
+                          role === "ar_3" ||
+                          role === "ar_4" ||
+                          role === "ar_5" ||
+                          role === "ar_6")
                           ? "/pengawasan"
                           : item.name === "Dashboard" && role === "admin"
-                            ? "/admin"
-                            : item.name === "Dashboard" &&
-                              (role === "kasipw1" ||
-                                role === "kasipw2" ||
-                                role === "kasipw3" ||
-                                role === "kasipw4" ||
-                                role === "kasipw5" ||
-                                role === "kasipw6")
-                              ? "/kasipengawasan"
-                              : item.name === "Dashboard" && role === "oc"
-                                ? "/oc"
-                                : item.href
+                          ? "/admin"
+                          : item.name === "Dashboard" &&
+                            (role === "kasipw1" ||
+                              role === "kasipw2" ||
+                              role === "kasipw3" ||
+                              role === "kasipw4" ||
+                              role === "kasipw5" ||
+                              role === "kasipw6")
+                          ? "/kasipengawasan"
+                          : item.name === "Dashboard" && role === "oc"
+                          ? "/oc"
+                          : item.href
                       }
                       className="text-white hover:bg-gold hover:text-white group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
                     >

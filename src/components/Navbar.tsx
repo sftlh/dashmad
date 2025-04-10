@@ -90,9 +90,9 @@ const Navbar = ({
                   href="#"
                   className="block font-bold px-4 py-2 text-md text-black data-[focus]:bg-gray-100 data-[focus]:outline-none"
                 >
-                  {capitalizeFirstLatter(user?.firstName as string) +
+                  {capitalizeFirstLatter(user?.firstName as string || "") +
                     " " +
-                    capitalizeFirstLatter(user?.lastName as string)}{" "}
+                    capitalizeFirstLatter(user?.lastName as string || "")}{" "}
                   <br />
                   {user?.publicMetadata.role === "ar_6" ? (
                     <span className="text-sm">Pengawasan VI</span>

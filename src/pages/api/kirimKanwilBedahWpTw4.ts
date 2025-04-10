@@ -9,19 +9,36 @@ export default async function handler(
   if (req.method === "POST") {
     const dataKirim = await prisma.bedahWPData.findMany({
       where: {
-        createdAt: {
-          lte: quarterFour,
-          gte: quarterThree,
-        },
-        sendingDataToKanwilId: null,
+        OR: [
+          {
+            createdAt: {
+              lte: quarterFour,
+              gte: quarterThree,
+            },
+          },
+          {
+            pelaksanaanKegiatan: {
+              lte: quarterFour,
+              gte: quarterThree,
+            },
+          },
+        ],
+        AND: [
+          {
+            sendingDataToKanwilId: null,
+          },
+          {
+            downloaded: "true",
+          },
+        ],
       },
       select: {
         id: true,
       },
     });
-    console.log("Data Kirim", dataKirim)
-    if(!dataKirim || dataKirim.length === 0) {
-        console.log("Tidak Ada Data Empowering !")
+    console.log("Data Kirim", dataKirim);
+    if (!dataKirim || dataKirim.length === 0) {
+      console.log("Tidak Ada Data Empowering !");
     }
     const selectedId = dataKirim.map((item) => item.id);
     let bedahDataConnection = {};
@@ -39,7 +56,7 @@ export default async function handler(
           statusKirim: "sudah",
           ...(selectedId.length > 0 && {
             bedahWpData: bedahDataConnection,
-          })
+          }),
         },
       });
       res.status(201).json({ message: "Data Berhasil di Input", data: data });

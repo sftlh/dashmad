@@ -1,11 +1,6 @@
 import React from "react";
 
-const BoxOfDashboardOc = ({
-  data1,
-}: {
-  data1?: any;
-  data2?: any;
-}) => {
+const BoxOfDashboardOc = ({ data1 }: { data1?: any; data2?: any }) => {
   return (
     <section aria-labelledby="announcement-title">
       <div className="overflow-hidden rounded-lg bg-white shadow">
@@ -35,7 +30,9 @@ const BoxOfDashboardOc = ({
                         {item.title}
                       </div>
                       <div
-                        className={"text-sm font-bold text-balance text-red-200"}
+                        className={
+                          "text-sm font-bold text-balance text-red-200"
+                        }
                       >
                         Jatuh Tempo:{" "}
                         <span className="text-red-500">
@@ -52,12 +49,6 @@ const BoxOfDashboardOc = ({
                   </div>
                   <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm/6">
                     <div className="flex justify-between gap-x-4 py-3">
-                      <dt className="text-gray-500">Total</dt>
-                      <dd className="text-navy font-semibold">
-                        {new Intl.NumberFormat("id-ID").format(item.total)}
-                      </dd>
-                    </div>
-                    <div className="flex justify-between gap-x-4 py-3">
                       <dt className="text-gray-500">Sudah Dikirim</dt>
                       <dd className="text-green-600 font-semibold">
                         {new Intl.NumberFormat("id-ID").format(item.kirim)}
@@ -72,7 +63,13 @@ const BoxOfDashboardOc = ({
                       </dd>
                     </div>
                     <div className="flex justify-between gap-x-4 py-3">
-                      <dt className="text-gray-500">Telat Input</dt>
+                      <dt className="text-gray-500">Input Tepat Waktu</dt>
+                      <dd className="text-navy font-semibold">
+                        {new Intl.NumberFormat("id-ID").format(item.total)}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-x-4 py-3">
+                      <dt className="text-gray-500">Input Telat Waktu</dt>
                       <dd className="text-red-500">
                         {new Intl.NumberFormat("id-ID").format(item.telat)}
                       </dd>

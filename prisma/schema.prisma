@@ -61,7 +61,7 @@ model EmpoweringData {
 }
 
 model BedahWPData {
-  id                       Int                  @id @default(autoincrement())
+  id                       String                  @id @default(uuid())
   npwp                     DatabaseWajibPajak?  @relation(fields: [npwpId], references: [id])
   npwpId                   String?
   pelaksanaanKegiatan      DateTime?
@@ -82,6 +82,7 @@ model BedahWPData {
   pemanfaatanDataEksternal Int?
   dataVisit                Int?
   alket                    Int?
+  downloaded               String?
   createdAt                DateTime             @default(now())
   pph21                    Float?
   pph22                    Float?

@@ -67,14 +67,8 @@ const BoxOfStatusBedahWp = ({
           </p>
         </dt>
         <dd className="ml-16 flex items-baseline pb-6 sm:pb-7">
-          <p className="text-2xl font-semibold text-gray-900">{item.stat}</p>
-          <div className="absolute inset-x-0 bottom-0 bg-gray-50 px-4 py-4 sm:px-6">
-            <div className="text-sm">
-              <a href="" className="font-medium text-navy hover:text-navy/85">
-                View All
-              </a>
-            </div>
-          </div>
+          <p className="text-xl font-semibold text-gray-900">{item.stat} <span className="text-xs">Laporan</span></p>
+          <div className="absolute inset-x-0 bottom-0 bg-gray-50 px-4 py-4 sm:px-6"/>
         </dd>
       </div>
     </Fragment>

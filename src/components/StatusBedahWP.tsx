@@ -182,36 +182,7 @@ const StatusBedahWP = ({ id, status }: { id: any; status: any[] }) => {
               {dataTwI.data.length > 0 ? (
                 <>
                   {dataTwI.data.map(
-                    (item: {
-                      id: number;
-                      name:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      stat:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                    }) => (
+                    (item: any) => (
                       // eslint-disable-next-line react/jsx-key
                       <BoxOfStatusBedahWp
                         item={item}
@@ -230,36 +201,7 @@ const StatusBedahWP = ({ id, status }: { id: any; status: any[] }) => {
               {dataTwII.data.length > 0 ? (
                 <>
                   {dataTwII.data.map(
-                    (item: {
-                      id: number;
-                      name:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      stat:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                    }) => (
+                    (item: any) => (
                       // eslint-disable-next-line react/jsx-key
                       <BoxOfStatusBedahWp
                         item={item}
@@ -278,36 +220,7 @@ const StatusBedahWP = ({ id, status }: { id: any; status: any[] }) => {
               {dataTwIII.data.length > 0 ? (
                 <>
                   {dataTwIII.data.map(
-                    (item: {
-                      id: number;
-                      name:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      stat:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                    }) => (
+                    (item: any) => (
                       // eslint-disable-next-line react/jsx-key
                       <BoxOfStatusBedahWp
                         item={item}
@@ -326,36 +239,7 @@ const StatusBedahWP = ({ id, status }: { id: any; status: any[] }) => {
               {dataTwIV.data.length > 0 ? (
                 <>
                   {dataTwIV.data.map(
-                    (item: {
-                      id: number;
-                      name:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      stat:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                    }) => (
+                    (item: any) => (
                       // eslint-disable-next-line react/jsx-key
                       <BoxOfStatusBedahWp
                         item={item}
@@ -374,36 +258,7 @@ const StatusBedahWP = ({ id, status }: { id: any; status: any[] }) => {
               {dataTwI.data.length > 0 ? (
                 <>
                   {dataTwI.data.map(
-                    (item: {
-                      id: number;
-                      name:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      stat:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                    }) => (
+                    (item: any) => (
                       // eslint-disable-next-line react/jsx-key
                       <BoxOfStatusBedahWp
                         item={item}
@@ -422,36 +277,7 @@ const StatusBedahWP = ({ id, status }: { id: any; status: any[] }) => {
               {dataTwII.data.length > 0 ? (
                 <>
                   {dataTwII.data.map(
-                    (item: {
-                      id: number;
-                      name:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      stat:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                    }) => (
+                    (item: any) => (
                       // eslint-disable-next-line react/jsx-key
                       <BoxOfStatusBedahWp
                         item={item}
@@ -470,36 +296,7 @@ const StatusBedahWP = ({ id, status }: { id: any; status: any[] }) => {
               {dataTwIII.data.length > 0 ? (
                 <>
                   {dataTwIII.data.map(
-                    (item: {
-                      id: number;
-                      name:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      stat:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                    }) => (
+                    (item: any) => (
                       // eslint-disable-next-line react/jsx-key
                       <BoxOfStatusBedahWp
                         item={item}
@@ -518,36 +315,7 @@ const StatusBedahWP = ({ id, status }: { id: any; status: any[] }) => {
               {dataTwIV.data.length > 0 ? (
                 <>
                   {dataTwIV.data.map(
-                    (item: {
-                      id: number;
-                      name:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      stat:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                    }) => (
+                    (item: any) => (
                       // eslint-disable-next-line react/jsx-key
                       <BoxOfStatusBedahWp
                         item={item}
@@ -566,36 +334,7 @@ const StatusBedahWP = ({ id, status }: { id: any; status: any[] }) => {
               {dataTwIV.data.length > 0 ? (
                 <>
                   {dataTwIV.data.map(
-                    (item: {
-                      id: number;
-                      name:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      stat:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                    }) => (
+                    (item: any) => (
                       // eslint-disable-next-line react/jsx-key
                       <BoxOfStatusBedahWp
                         item={item}

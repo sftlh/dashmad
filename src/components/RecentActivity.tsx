@@ -16,8 +16,8 @@ const RecentActivity = ({
     <div className="px-4 sm:px-6 lg:px-8 mt-4">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-base font-semibold text-gray-900">
-            Recent Activity
+          <h1 className="text-center text-sm font-semibold text-gray-400">
+            Riwayat Pelapor
           </h1>
         </div>
       </div>

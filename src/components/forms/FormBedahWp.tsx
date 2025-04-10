@@ -30,7 +30,9 @@ const FormBedahWp = ({ id }: { id?: any }) => {
     formState: { errors },
   } = useForm<BedahWpSchema>({
     resolver: zodResolver(bedahWpSchema),
+    mode: "onBlur",
     defaultValues: {
+      npwpId: "",
       peserta: "",
       kluPenompangPenerimaan: "",
       potensiTambahan: "",
@@ -38,100 +40,23 @@ const FormBedahWp = ({ id }: { id?: any }) => {
     },
   });
 
-
   const { user } = useUser();
-  //watch
-  const npwp = watch("npwpId");
-  const bobotKegiatan = watch("bobotKegiatan");
-  let iku;
-
-  const pesertaBedahWp = watch("peserta");
-  const kluPenompang = watch("kluPenompangPenerimaan");
-  const potensiTmbhn = watch("potensiTambahan");
-
-  const validasiDpp = watch("masukDpp");
-  const validasiAlk = watch("analisisLaporanKeuangan");
-  const validasiTp = watch("analisisTransferPricing");
-  const validasiMirror = watch("mirroring");
-  const validasiGroup = watch("analisisWpGroup");
-  const validasiPenilai = watch("kolaborasiDenganPenilai");
-  const validasiDataEks = watch("pemanfaatanDataEksternal");
-  const validasiDataVisit = watch("dataVisit");
-  const validasiAlket = watch("alket");
-
-
-  let validasiStatusLengkap = "";
-
-  if (pesertaBedahWp === "1" && potensiTmbhn === "1") {
-    validasiStatusLengkap = "1"
-  } else {
-    validasiStatusLengkap = "0"
-  }
-
-  if (pesertaBedahWp === "1" && kluPenompang === "1" && potensiTmbhn === "1") {
-    iku = "Data Bisa Diakui Sebagai IKU"
-  } else {
-    iku = "Data Tidak Bisa diakui Sebagai IKU"
-  }
-
-  let realisasiKuantitas;
-
-
-  let totalSkorDPP;
-  let totalSkorAlk;
-  let totalSkorTp;
-  let totalSkorMirroring;
-  let totalSkorWpGroup;
-  let totalSkorPenilai;
-  let totalSkorDataEksternal;
-  let totalSkorDataVisit;
-  let totalSkorAlket;
-
-  let totalKomponenKualitas;
-
-  totalSkorDPP = parseInt(validasiDpp) * 0.60;
-  totalSkorAlk = parseInt(validasiAlk) * 0.20;
-  totalSkorTp = parseInt(validasiTp) * 0.40;
-  totalSkorMirroring = parseInt(validasiMirror) * 0.10;
-  totalSkorWpGroup = parseInt(validasiGroup) * 0.40;
-  totalSkorPenilai = parseInt(validasiPenilai) * 0.15;
-  totalSkorDataEksternal = parseInt(validasiDataEks) * 0.10;
-  totalSkorDataVisit = parseInt(validasiDataVisit) * 0.20;
-  totalSkorAlket = parseInt(validasiAlket) * 0.15
-
-  totalKomponenKualitas = (totalSkorDPP + totalSkorAlk + totalSkorTp + totalSkorMirroring + totalSkorWpGroup + totalSkorPenilai + totalSkorDataEksternal + totalSkorDataVisit + totalSkorAlket) * (parseInt(bobotKegiatan) / 100) * parseInt(validasiStatusLengkap);
-
-  if (bobotKegiatan !== "0%" && iku === "Data Bisa Diakui Sebagai IKU") {
-    realisasiKuantitas = parseInt(validasiStatusLengkap) * 1;
-    totalKomponenKualitas;
-  } else {
-    realisasiKuantitas = 0;
-    totalKomponenKualitas = 0;
-  }
-
-  const router = useRouter();
-  const [step, setStep] = useState(1);
-  const [key, setKey] = useState<boolean>(false);
-  const [open, setOpen] = useState<boolean>(false);
-  const [openPeserta, setOpenPeserta] = useState<boolean>(false);
-  const [openKlu, setOpenKlu] = useState<boolean>(false);
-  const [openStatusSpt, setOpenStatusSpt] = useState<boolean>(false);
-
   const nextStep1 = async () => {
+    setIsValidating(true);
     const isValid = await trigger([
       "npwpId",
       "pelaksanaanKegiatan",
       "statusSpt",
       "tahunPajak",
-    ]); // ✅ Validasi hanya field di Step 1
+    ]);
+    setIsValidating(false);
 
     if (!isValid) {
-      console.log("Validasi gagal, tidak bisa lanjut ke Step 2");
-      return; // 🚨 Stop, tidak bisa lanjut ke Step 2
+      toast.error("Terdapat isian yang salah mohon ditinjau ulang");
+      return;
     }
     setStep((prev) => prev + 1);
   };
-
 
   const nextStep2 = async () => {
     const isValid = await trigger([
@@ -148,7 +73,7 @@ const FormBedahWp = ({ id }: { id?: any }) => {
       "mirroring",
       "kolaborasiDenganPenilai",
       "pemanfaatanDataEksternal",
-      "dataVisit"
+      "dataVisit",
     ]); // ✅ Validasi hanya field di Step 1
 
     if (!isValid) {
@@ -182,15 +107,32 @@ const FormBedahWp = ({ id }: { id?: any }) => {
       formData.append("potensiTambahan", data.potensiTambahan.toString());
     if (data.kesimpulan)
       formData.append("kesimpulan", data.kesimpulan.toString());
-    if (data.masukDpp) formData.append('masukDpp', data.masukDpp.toString());
-    if (data.analisisLaporanKeuangan) formData.append('analisisLaporanKeuangan', data.analisisLaporanKeuangan.toString());
-    if (data.analisisTransferPricing) formData.append('analisisTransferPricing', data.analisisTransferPricing.toString());
-    if (data.mirroring) formData.append('mirroring', data.mirroring.toString());
-    if (data.analisisWpGroup) formData.append('analisisWpGroup', data.analisisWpGroup.toString());
-    if (data.kolaborasiDenganPenilai) formData.append('kolaborasiDenganPenilai', data.kolaborasiDenganPenilai.toString());
-    if (data.pemanfaatanDataEksternal) formData.append('pemanfaatanDataEksternal', data.pemanfaatanDataEksternal.toString());
-    if (data.dataVisit) formData.append('dataVisit', data.dataVisit.toString());
-    if (data.alket) formData.append('alket', data.alket.toString());
+    if (data.masukDpp) formData.append("masukDpp", data.masukDpp.toString());
+    if (data.analisisLaporanKeuangan)
+      formData.append(
+        "analisisLaporanKeuangan",
+        data.analisisLaporanKeuangan.toString()
+      );
+    if (data.analisisTransferPricing)
+      formData.append(
+        "analisisTransferPricing",
+        data.analisisTransferPricing.toString()
+      );
+    if (data.mirroring) formData.append("mirroring", data.mirroring.toString());
+    if (data.analisisWpGroup)
+      formData.append("analisisWpGroup", data.analisisWpGroup.toString());
+    if (data.kolaborasiDenganPenilai)
+      formData.append(
+        "kolaborasiDenganPenilai",
+        data.kolaborasiDenganPenilai.toString()
+      );
+    if (data.pemanfaatanDataEksternal)
+      formData.append(
+        "pemanfaatanDataEksternal",
+        data.pemanfaatanDataEksternal.toString()
+      );
+    if (data.dataVisit) formData.append("dataVisit", data.dataVisit.toString());
+    if (data.alket) formData.append("alket", data.alket.toString());
     if (data.pph21) formData.append("pph21", data.pph21.toString());
     if (data.pph22) formData.append("pph22", data.pph22.toString());
     if (data.pph23) formData.append("pph23", data.pph23.toString());
@@ -223,6 +165,94 @@ const FormBedahWp = ({ id }: { id?: any }) => {
     }
   };
 
+  //watch
+  const npwp = watch("npwpId");
+  const bobotKegiatan = watch("bobotKegiatan");
+  let iku;
+
+  const pesertaBedahWp = watch("peserta");
+  const kluPenompang = watch("kluPenompangPenerimaan");
+  const potensiTmbhn = watch("potensiTambahan");
+
+  const validasiDpp = watch("masukDpp");
+  const validasiAlk = watch("analisisLaporanKeuangan");
+  const validasiTp = watch("analisisTransferPricing");
+  const validasiMirror = watch("mirroring");
+  const validasiGroup = watch("analisisWpGroup");
+  const validasiPenilai = watch("kolaborasiDenganPenilai");
+  const validasiDataEks = watch("pemanfaatanDataEksternal");
+  const validasiDataVisit = watch("dataVisit");
+  const validasiAlket = watch("alket");
+
+  let validasiStatusLengkap = "";
+
+  if (pesertaBedahWp === "1" && potensiTmbhn === "1") {
+    validasiStatusLengkap = "1";
+  } else {
+    validasiStatusLengkap = "0";
+  }
+
+  if (pesertaBedahWp === "1" && kluPenompang === "1" && potensiTmbhn === "1") {
+    iku = "Data Bisa Diakui Sebagai IKU";
+  } else {
+    iku = "Data Tidak Bisa diakui Sebagai IKU";
+  }
+
+  let realisasiKuantitas;
+
+  let totalSkorDPP;
+  let totalSkorAlk;
+  let totalSkorTp;
+  let totalSkorMirroring;
+  let totalSkorWpGroup;
+  let totalSkorPenilai;
+  let totalSkorDataEksternal;
+  let totalSkorDataVisit;
+  let totalSkorAlket;
+
+  let totalKomponenKualitas;
+
+  totalSkorDPP = parseInt(validasiDpp) * 0.6;
+  totalSkorAlk = parseInt(validasiAlk) * 0.2;
+  totalSkorTp = parseInt(validasiTp) * 0.4;
+  totalSkorMirroring = parseInt(validasiMirror) * 0.1;
+  totalSkorWpGroup = parseInt(validasiGroup) * 0.4;
+  totalSkorPenilai = parseInt(validasiPenilai) * 0.15;
+  totalSkorDataEksternal = parseInt(validasiDataEks) * 0.1;
+  totalSkorDataVisit = parseInt(validasiDataVisit) * 0.2;
+  totalSkorAlket = parseInt(validasiAlket) * 0.15;
+
+  totalKomponenKualitas =
+    (totalSkorDPP +
+      totalSkorAlk +
+      totalSkorTp +
+      totalSkorMirroring +
+      totalSkorWpGroup +
+      totalSkorPenilai +
+      totalSkorDataEksternal +
+      totalSkorDataVisit +
+      totalSkorAlket) *
+    (parseInt(bobotKegiatan) / 100) *
+    parseInt(validasiStatusLengkap);
+  // Round to 2 decimal places and convert back to a number
+  totalKomponenKualitas = parseFloat(totalKomponenKualitas.toFixed(2));
+  if (bobotKegiatan !== "0%" && iku === "Data Bisa Diakui Sebagai IKU") {
+    realisasiKuantitas = parseInt(validasiStatusLengkap) * 1;
+    totalKomponenKualitas;
+  } else {
+    realisasiKuantitas = 0;
+    totalKomponenKualitas = 0;
+  }
+
+  const router = useRouter();
+  const [step, setStep] = useState(1);
+  const [key, setKey] = useState<boolean>(false);
+  const [isValidating, setIsValidating] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [openPeserta, setOpenPeserta] = useState<boolean>(false);
+  const [openKlu, setOpenKlu] = useState<boolean>(false);
+  const [openStatusSpt, setOpenStatusSpt] = useState<boolean>(false);
+
   const toggleActive = () => {
     setKey((prevState) => !prevState);
   };
@@ -238,12 +268,12 @@ const FormBedahWp = ({ id }: { id?: any }) => {
             {today < quarterOne && today > firstDateOfTheYear
               ? "Triwulan I"
               : today < quarterTwo && today > quarterOne
-                ? "Triwulan II"
-                : today < quarterThree && today > quarterTwo
-                  ? "Triwulan III"
-                  : today < quarterFour && today > quarterThree
-                    ? "Triwulan IV"
-                    : ""}
+              ? "Triwulan II"
+              : today < quarterThree && today > quarterTwo
+              ? "Triwulan III"
+              : today < quarterFour && today > quarterThree
+              ? "Triwulan IV"
+              : ""}
           </h1>
           <div className="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-3">
@@ -305,16 +335,30 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                 </p>
               )}
             </div>
-
             <div className="sm:col-span-2 sm:col-start-1">
               {/* <InputField label="PPh 21" name="pph21" register={register} /> */}
-              <InputFieldNumber label="PPh21" name="pph21" register={register} formatNumber />
+              <InputFieldNumber
+                label="PPh21"
+                name="pph21"
+                register={register}
+                formatNumber
+              />
             </div>
             <div className="sm:col-span-2">
-              <InputFieldNumber label="PPh 22" name="pph22" register={register} formatNumber/>
+              <InputFieldNumber
+                label="PPh 22"
+                name="pph22"
+                register={register}
+                formatNumber
+              />
             </div>
             <div className="sm:col-span-2">
-              <InputFieldNumber label="PPh 23" name="pph23" register={register} formatNumber/>
+              <InputFieldNumber
+                label="PPh 23"
+                name="pph23"
+                register={register}
+                formatNumber
+              />
             </div>
             <div className="sm:col-span-2 sm:col-start-1">
               <InputFieldNumber
@@ -325,7 +369,12 @@ const FormBedahWp = ({ id }: { id?: any }) => {
               />
             </div>
             <div className="sm:col-span-2">
-              <InputFieldNumber label="PPh 26" name="pph26" register={register} formatNumber/>
+              <InputFieldNumber
+                label="PPh 26"
+                name="pph26"
+                register={register}
+                formatNumber
+              />
             </div>
             <div className="sm:col-span-2">
               <InputFieldNumber
@@ -336,10 +385,20 @@ const FormBedahWp = ({ id }: { id?: any }) => {
               />
             </div>
             <div className="sm:col-span-2 sm:col-start-1">
-              <InputFieldNumber label="PPh 15" name="pph15" register={register} formatNumber/>
+              <InputFieldNumber
+                label="PPh 15"
+                name="pph15"
+                register={register}
+                formatNumber
+              />
             </div>
             <div className="sm:col-span-2">
-              <InputFieldNumber label="PPN" name="ppn" register={register} formatNumber/>
+              <InputFieldNumber
+                label="PPN"
+                name="ppn"
+                register={register}
+                formatNumber
+              />
             </div>
             <div className="sm:col-span-2">
               <InputFieldNumber
@@ -361,10 +420,11 @@ const FormBedahWp = ({ id }: { id?: any }) => {
             {step < 3 && step === 1 && (
               <button
                 type="submit"
+                disabled={isValidating}
                 onClick={nextStep1}
                 className="rounded-md bg-navy px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-navy/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dongker"
               >
-                Next
+                {isValidating ? "Validating..." : "Next"}
               </button>
             )}
           </div>
@@ -380,12 +440,12 @@ const FormBedahWp = ({ id }: { id?: any }) => {
             {today < quarterOne && today > firstDateOfTheYear
               ? "Triwulan I"
               : today < quarterTwo && today > quarterOne
-                ? "Triwulan II"
-                : today < quarterThree && today > quarterTwo
-                  ? "Triwulan III"
-                  : today < quarterFour && today > quarterThree
-                    ? "Triwulan IV"
-                    : ""}
+              ? "Triwulan II"
+              : today < quarterThree && today > quarterTwo
+              ? "Triwulan III"
+              : today < quarterFour && today > quarterThree
+              ? "Triwulan IV"
+              : ""}
           </h1>
           <div className="mt-5 items-center grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-3">
@@ -551,10 +611,12 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                     WP yang dibedah belum pernah dilakukan kegiatan bedah WP
                   </option>
                   <option value={"75%"} className="text-white">
-                    WP yang dibedah sudah pernah dilakukan kegiatan bedah WP di tahun sebelumnya
+                    WP yang dibedah sudah pernah dilakukan kegiatan bedah WP di
+                    tahun sebelumnya
                   </option>
                   <option value={"0%"} className="text-white">
-                    WP yang dibedah sudah pernah dilakukan kegiatan bedah WP di tahun yang sama
+                    WP yang dibedah sudah pernah dilakukan kegiatan bedah WP di
+                    tahun yang sama
                   </option>
                 </select>
                 <ChevronDownIcon
@@ -819,8 +881,8 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                 htmlFor="dataVisit"
                 className="block text-sm/6 font-medium text-navy"
               >
-                Apakah Terdapat Analisis data & informasi dari hasil kunjungan ke
-                Wajib Pajak ?
+                Apakah Terdapat Analisis data & informasi dari hasil kunjungan
+                ke Wajib Pajak ?
               </label>
               <div className="mt-2 grid grid-cols-1">
                 <select
@@ -833,12 +895,12 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                     -- Pilih Jawaban --
                   </option>
                   <option value={"1"} className="text-white">
-                    Ya terdapat Analisis data & informasi dari hasil kunjungan ke
-                    Wajib Pajak
+                    Ya terdapat Analisis data & informasi dari hasil kunjungan
+                    ke Wajib Pajak
                   </option>
                   <option value={"0"} className="text-white">
-                    Tidak terdapat Analisis data & informasi dari hasil kunjungan ke
-                    Wajib Pajak
+                    Tidak terdapat Analisis data & informasi dari hasil
+                    kunjungan ke Wajib Pajak
                   </option>
                 </select>
                 <ChevronDownIcon
@@ -897,7 +959,11 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                 Peserta ?
               </a>
               {openPeserta && (
-                <Dialog open={openPeserta} onClose={setOpenPeserta} className="z-10">
+                <Dialog
+                  open={openPeserta}
+                  onClose={setOpenPeserta}
+                  className="z-10"
+                >
                   <DialogBackdrop
                     transition
                     className="fixed inset-0 hidden bg-gray-500/75 z-50 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in md:block"
@@ -931,7 +997,8 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                               <div className="flex flex-col gap-y-10">
                                 <div className="">
                                   <h1 className="font-semibold">
-                                    Kegiatan Bedah Wajib Pajak Strategis yang bersifat lengkap harus memenuhi persyaratan
+                                    Kegiatan Bedah Wajib Pajak Strategis yang
+                                    bersifat lengkap harus memenuhi persyaratan
                                     akumulatif yang terdiri dari:
                                   </h1>
                                   <ol className="list-decimal text-justify ml-5 mt-2">
@@ -970,11 +1037,7 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                 Penjelasan KLU Penompang Penerimaan
               </a>
               {openKlu && (
-                <Dialog
-                  open={openKlu}
-                  onClose={setOpenKlu}
-                  className="z-10"
-                >
+                <Dialog open={openKlu} onClose={setOpenKlu} className="z-10">
                   <DialogBackdrop
                     transition
                     className="fixed inset-0 hidden bg-gray-500/75 z-50 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in md:block"
@@ -1008,36 +1071,72 @@ const FormBedahWp = ({ id }: { id?: any }) => {
                               <div className="flex flex-col gap-y-10">
                                 <div className="">
                                   <h1 className="font-semibold">
-                                    Wajib Pajak Strategis yang dibedah adalah Wajib Pajak Orang Pribadi dan/atau Wajib
-                                    Pajak Badan yang termasuk dalam KLU Penopang Penerimaan KPP dan/atau WP dengan kriteria
+                                    Wajib Pajak Strategis yang dibedah adalah
+                                    Wajib Pajak Orang Pribadi dan/atau Wajib
+                                    Pajak Badan yang termasuk dalam KLU Penopang
+                                    Penerimaan KPP dan/atau WP dengan kriteria
                                     sebagai berikut:
                                   </h1>
                                   <ol className="list-decimal text-justify ml-5 mt-2">
                                     <li className="text-sm">
-                                      Wajib Pajak sektoral sesuai prioritas nasional, antara lain :
+                                      Wajib Pajak sektoral sesuai prioritas
+                                      nasional, antara lain :
                                       <ul className="list-disc ml-6 mt-1">
-                                        <li className="text-sm">sektor perdagangan</li>
-                                        <li className="text-sm">sektor pertambangan dan penggalian</li>
-                                        <li className="text-sm">sektor sawit</li>
-                                        <li className="text-sm">sektor industri farmasi</li>
-                                        <li className="text-sm">sektor industri pengolahan non sawit</li>
-                                        <li className="text-sm">sektor informasi dan komunikasi; dan</li>
-                                        <li className="text-sm">sektor jasa kesehatan</li>
+                                        <li className="text-sm">
+                                          sektor perdagangan
+                                        </li>
+                                        <li className="text-sm">
+                                          sektor pertambangan dan penggalian
+                                        </li>
+                                        <li className="text-sm">
+                                          sektor sawit
+                                        </li>
+                                        <li className="text-sm">
+                                          sektor industri farmasi
+                                        </li>
+                                        <li className="text-sm">
+                                          sektor industri pengolahan non sawit
+                                        </li>
+                                        <li className="text-sm">
+                                          sektor informasi dan komunikasi; dan
+                                        </li>
+                                        <li className="text-sm">
+                                          sektor jasa kesehatan
+                                        </li>
                                       </ul>
                                     </li>
                                     <li className="text-sm mt-2">
-                                      Dalam hal tidak memiliki sektor dan KLU prioritas, Kantor Wilayah menentukan sektor dan
-                                      KLU prioritas lainnya guna menjadi bahan kegiatan bedah Wajib Pajak Strategis.
+                                      Dalam hal tidak memiliki sektor dan KLU
+                                      prioritas, Kantor Wilayah menentukan
+                                      sektor dan KLU prioritas lainnya guna
+                                      menjadi bahan kegiatan bedah Wajib Pajak
+                                      Strategis.
                                     </li>
                                     <li className="text-sm mt-2">
-                                      Wajib Pajak sesuai segmentasi kegiatan prioritas, di antaranya:
+                                      Wajib Pajak sesuai segmentasi kegiatan
+                                      prioritas, di antaranya:
                                       <ul className="list-disc ml-6 mt-1">
-                                        <li className="text-sm">Wajib Pajak High Wealth Individual (HWI)</li>
-                                        <li className="text-sm">Transaksi afiliasi</li>
-                                        <li className="text-sm">Ekonomi digital</li>
-                                        <li className="text-sm">Pengawasan atas WP orang pribadi non peserta PPS; dan</li>
-                                        <li className="text-sm">Tindak lanjut atas pelaksanaan kegiatan program sinergi dalam rangka optimalisasi
-                                          penerimaan Negara Lintas Eselon I Kementrian Keuangan dan instansi lainnya.</li>
+                                        <li className="text-sm">
+                                          Wajib Pajak High Wealth Individual
+                                          (HWI)
+                                        </li>
+                                        <li className="text-sm">
+                                          Transaksi afiliasi
+                                        </li>
+                                        <li className="text-sm">
+                                          Ekonomi digital
+                                        </li>
+                                        <li className="text-sm">
+                                          Pengawasan atas WP orang pribadi non
+                                          peserta PPS; dan
+                                        </li>
+                                        <li className="text-sm">
+                                          Tindak lanjut atas pelaksanaan
+                                          kegiatan program sinergi dalam rangka
+                                          optimalisasi penerimaan Negara Lintas
+                                          Eselon I Kementrian Keuangan dan
+                                          instansi lainnya.
+                                        </li>
                                       </ul>
                                     </li>
                                   </ol>
@@ -1085,58 +1184,88 @@ const FormBedahWp = ({ id }: { id?: any }) => {
             {today < quarterOne && today > firstDateOfTheYear
               ? "Triwulan I"
               : today < quarterTwo && today > quarterOne
-                ? "Triwulan II"
-                : today < quarterThree && today > quarterTwo
-                  ? "Triwulan III"
-                  : today < quarterFour && today > quarterThree
-                    ? "Triwulan IV"
-                    : ""}
+              ? "Triwulan II"
+              : today < quarterThree && today > quarterTwo
+              ? "Triwulan III"
+              : today < quarterFour && today > quarterThree
+              ? "Triwulan IV"
+              : ""}
           </h1>
           <div className="mt-5 items-center grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
             <div className="sm:col-span-6">
               <div className="flex gap-x-5 justify-start">
-                <p className="text-sm font-medium text-navy">NPWP: <span className="font-bold">{npwp || "-"}</span></p>
-                <p className="text-sm font-medium text-navy">Bobot Kegiatan: <span className="font-bold">{bobotKegiatan || "-"}</span></p>
+                <p className="text-sm font-medium text-navy">
+                  NPWP: <span className="font-bold">{npwp || "-"}</span>
+                </p>
+                <p className="text-sm font-medium text-navy">
+                  Bobot Kegiatan:{" "}
+                  <span className="font-bold">{bobotKegiatan || "-"}</span>
+                </p>
               </div>
             </div>
             <div className="sm:col-span-4">
-              <p className="text-sm font-medium text-navy">Diakui Sebagai IKU: <span className="font-bold">{iku || "-"}</span></p>
+              <p className="text-sm font-medium text-navy">
+                Diakui Sebagai IKU:{" "}
+                <span className="font-bold">{iku || "-"}</span>
+              </p>
             </div>
-            {
-              iku === "Data Tidak Bisa diakui Sebagai IKU" && (<div className="sm:col-span-4">
-                <p className="text-sm font-medium flex text-navy">Tidak bisa diakui sebagai IKU Karena:</p>
+            {iku === "Data Tidak Bisa diakui Sebagai IKU" && (
+              <div className="sm:col-span-4">
+                <p className="text-sm font-medium flex text-navy">
+                  Tidak bisa diakui sebagai IKU Karena:
+                </p>
                 <ul className="list-disc list-inside text-sm font-medium text-red-500">
-                  {
-                    kluPenompang === "0" && (
-                      <li className="items-center flex">
-                        - <p className="text-sm font-medium text-red-500"> KLU Penompang:  <span className="font-bold">Bukan KLU Penompang Penerimaan</span></p>
-                      </li>
-
-                    )
-                  }
-                  {
-                    pesertaBedahWp === "0" && (
-                      <li className="items-center flex">
-                        - <p className="text-sm font-medium text-red-500"> Peserta:  <span className="font-bold">Peserta Tidak Sesuai Ketentuan</span></p>
-                      </li>
-
-                    )
-                  }
-                  {
-                    potensiTmbhn === "0" && (
-                      <li className="flex items-center">
-                        - <p className="text-sm font-medium text-red-500"> Potensi Tambahan:  <span className="font-bold">Tidak Ada Potensi Tambahan</span></p>
-                      </li>
-
-                    )
-                  }
+                  {kluPenompang === "0" && (
+                    <li className="items-center flex">
+                      -{" "}
+                      <p className="text-sm font-medium text-red-500">
+                        {" "}
+                        KLU Penompang:{" "}
+                        <span className="font-bold">
+                          Bukan KLU Penompang Penerimaan
+                        </span>
+                      </p>
+                    </li>
+                  )}
+                  {pesertaBedahWp === "0" && (
+                    <li className="items-center flex">
+                      -{" "}
+                      <p className="text-sm font-medium text-red-500">
+                        {" "}
+                        Peserta:{" "}
+                        <span className="font-bold">
+                          Peserta Tidak Sesuai Ketentuan
+                        </span>
+                      </p>
+                    </li>
+                  )}
+                  {potensiTmbhn === "0" && (
+                    <li className="flex items-center">
+                      -{" "}
+                      <p className="text-sm font-medium text-red-500">
+                        {" "}
+                        Potensi Tambahan:{" "}
+                        <span className="font-bold">
+                          Tidak Ada Potensi Tambahan
+                        </span>
+                      </p>
+                    </li>
+                  )}
                 </ul>
-              </div>)
-            }
+              </div>
+            )}
             <div className="sm:col-span-6">
               <div className="flex gap-x-5 justify-start">
-                <p className="text-sm font-medium text-navy">Nilai Komponen Kuantitas: <span className="font-bold">{realisasiKuantitas || "-"}</span></p>
-                <p className="text-sm font-medium text-navy">Nilai Komponen Kualitas: <span className="font-bold">{totalKomponenKualitas || "-"}</span></p>
+                <p className="text-sm font-medium text-navy">
+                  Nilai Komponen Kuantitas:{" "}
+                  <span className="font-bold">{realisasiKuantitas || "-"}</span>
+                </p>
+                <p className="text-sm font-medium text-navy">
+                  Nilai Komponen Kualitas:{" "}
+                  <span className="font-bold">
+                    {totalKomponenKualitas || "-"}
+                  </span>
+                </p>
               </div>
             </div>
           </div>
@@ -1144,14 +1273,18 @@ const FormBedahWp = ({ id }: { id?: any }) => {
             <div className="sm:col-span-4">
               <div className="flex flex-col gap-y-10">
                 <div className="w-full flex flex-col gap-y-3">
-                  <label>Upload Laporan Kegiatan Bedah WP (.pdf):</label>
+                  <label className="text-navy text-sm font-semibold">Upload Laporan Kegiatan Bedah WP (.pdf)</label>
+                  <p className="text-sm text-red-700">format file: NAMAWP_NPWP_TAHUNPAJAK.pdf</p>
+                  <p className="text-sm text-red-700">contoh: YULIANAHENGKY_706520228619000_2023.pdf</p>
                   <input
                     type="file"
                     {...register("pdf")}
                     accept="application/pdf"
                   />
                   {errors.pdf && <p>{errors.pdf.message?.toString()}</p>}
+                  <p className="text-xs text-red-700">Pastikan format sudah benar</p>
                 </div>
+               
                 <div className="flex gap-x-2">
                   <input
                     type="checkbox"

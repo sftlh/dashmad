@@ -27,6 +27,17 @@ const upload = multer({
     if (file.mimetype !== "application/pdf") {
       return cb(new Error("Only PDF files are allowed") as any, false);
     }
+    // Validate filename format: NAMA_WP_NPWP_TAHUNPAJAK.pdf
+    const validFilenameRegex = /^[A-Z]+(?:_[A-Z]+)*_[0-9]{15}_[0-9]{4}\.pdf$/i;
+
+    if (!validFilenameRegex.test(file.originalname)) {
+      return cb(
+        new Error(
+          "Filename invalid. Format expected: NAMA_WP_NPWP_TAHUNPAJAK.pdf (e.g., JOHN_DOE_123456789012345_2025.pdf)"
+        ) as any,
+        false
+      );
+    }
     cb(null, true);
   },
 });
@@ -80,7 +91,7 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
       kolaborasiDenganPenilai,
       pemanfaatanDataEksternal,
       dataVisit,
-      alket
+      alket,
     } = req.body;
     console.log("Body ", req.body);
     const newRecord = await prisma.bedahWPData.create({
@@ -109,11 +120,21 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
           : undefined,
         dataVisit: dataVisit ? parseInt(dataVisit) : undefined,
         mirroring: mirroring ? parseInt(mirroring) : undefined,
-        analisisTransferPricing: analisisTransferPricing ? parseInt(analisisTransferPricing) : undefined,
-        analisisLaporanKeuangan: analisisLaporanKeuangan ? parseInt(analisisLaporanKeuangan) : undefined,
-        analisisWpGroup: analisisWpGroup ? parseInt(analisisWpGroup) : undefined,
-        kolaborasiDenganPenilai: kolaborasiDenganPenilai ? parseInt(kolaborasiDenganPenilai) : undefined,
-        pemanfaatanDataEksternal: pemanfaatanDataEksternal ? parseInt(pemanfaatanDataEksternal) : undefined,
+        analisisTransferPricing: analisisTransferPricing
+          ? parseInt(analisisTransferPricing)
+          : undefined,
+        analisisLaporanKeuangan: analisisLaporanKeuangan
+          ? parseInt(analisisLaporanKeuangan)
+          : undefined,
+        analisisWpGroup: analisisWpGroup
+          ? parseInt(analisisWpGroup)
+          : undefined,
+        kolaborasiDenganPenilai: kolaborasiDenganPenilai
+          ? parseInt(kolaborasiDenganPenilai)
+          : undefined,
+        pemanfaatanDataEksternal: pemanfaatanDataEksternal
+          ? parseInt(pemanfaatanDataEksternal)
+          : undefined,
         kunci: kunci ? stringToBoolean(kunci) : undefined,
         pdfFile: fileUrl,
         bobotKegiatan,
@@ -121,6 +142,7 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
         alket: alket ? parseInt(alket) : undefined,
       },
     });
+    console.log("Record", newRecord);
     res
       .status(200)
       .json({ message: "File uploaded successfully", data: newRecord });

@@ -1,8 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
+type ScoreResponse = {
+  totalRealisasiKuantitas: number;
+  totalRealisasiKualitas: number;
+  capaianKuantitas: number;
+  capaianKualitas: number;
+  bobotKuantitas: number;
+  bobotKualitas: number;
+  capaianIKU: number;
+};
 
 const LeftColumnPengawasan = ({
   countPembenahanWPBelum,
@@ -21,20 +32,43 @@ const LeftColumnPengawasan = ({
   countSendingDataToKanwil?: any;
   countPembenahanWPNikGanda?: any;
 }) => {
-  const { user } = useUser();
+  const [ikuBedahWp, setIkuBedahWp] = useState<ScoreResponse | null>(null);
   const router = useRouter();
-  console.log("data", countPembenahanWPCabangBedaEntitas);
+  const { user } = useUser();
 
   const goToPembenahanWp = () => {
     router.push("/pembenahanwp");
   };
+
   const capitalizeFirstLatter = (input: string) => {
     if (input?.length === 0) return input;
     return input?.charAt(0).toUpperCase() + input?.slice(1);
   };
+
   function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
   }
+
+  const fetchIkuBedahWp = async () => {
+    try {
+      const response = await fetch(`/api/getBedahWpScore?userId=${user?.id}`);
+      if (!response.ok) {
+        throw new Error("Error fetching data");
+      }
+      const data = await response.json();
+      console.log("Data Response", data);
+      setIkuBedahWp(data);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchIkuBedahWp();
+    }
+  }, [user?.id]);
+
   return (
     <div className="grid grid-cols-1 gap-4 lg:col-span-2">
       {/* Welcome Panel */}
@@ -61,7 +95,7 @@ const LeftColumnPengawasan = ({
                   </p>
                   <p className="text-xl font-bold text-gray-900 sm:text-2xl">
                     {capitalizeFirstLatter(user?.firstName as string)}{" "}
-                    {capitalizeFirstLatter(user?.lastName as string)}
+                    {capitalizeFirstLatter(user?.lastName as string) || ""}
                   </p>
                   <p className="text-xl font-medium text-gray-600">
                     {user?.publicMetadata?.role === "admin"
@@ -97,7 +131,9 @@ const LeftColumnPengawasan = ({
               </span>
             </div>
             <div className="px-6 py-5 text-center text-sm font-medium">
-              <span className="text-gray-900"></span>{" "}
+              <span className="text-pretty text-blue-900 font-bold">
+                IKU Bedah WP : <span className={(ikuBedahWp?.capaianIKU ?? 0) > 120  ? "text-green-700": "text-red-500"}>{ikuBedahWp?.capaianIKU}%</span> 
+              </span>{" "}
             </div>
             <div className="px-6 py-5 text-center text-sm font-medium">
               <span className="text-gray-900"></span>{" "}
