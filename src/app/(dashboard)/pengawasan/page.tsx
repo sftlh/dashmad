@@ -17,9 +17,13 @@ import {
   getCountOfBedahWpTriwulanIIIByUserId,
   getCountOfBedahWpTriwulanIVByUserId,
   quarterFour,
+  quarterFourLess,
   quarterOne,
+  quarterOneLess,
   quarterThree,
+  quarterThreeLess,
   quarterTwo,
+  quarterTwoLess,
 } from "@/lib/getaction";
 
 import { getUserByUserId } from "@/lib/getById";
@@ -87,7 +91,7 @@ const PengawasanPage = async () => {
   const getBedahWpBelumKirimTwIII = await belumKirimTwIII(userId as string);
   const getBedahWpBelumKirimTwIV = await belumKirimTwIV(userId as string);
 
-  console.log("Belum Kirim TW I", getBedahWpBelumKirimTwI)
+  console.log("Belum Kirim TW I", getBedahWpBelumKirimTwI);
 
   //Jumlah BedahWP Telat Input
   const getBedahWPTelatTwI = await getBedahWpTelatTwI(userId as string);
@@ -104,7 +108,7 @@ const PengawasanPage = async () => {
       kirim: getBedahWpSudahKirimTwI,
       belum: getBedahWpBelumKirimTwI,
       telat: getBedahWPTelatTwI,
-      jt: quarterOne,
+      jt: quarterOneLess,
     },
     {
       id: 2,
@@ -114,7 +118,7 @@ const PengawasanPage = async () => {
       kirim: getBedahWpSudahKirimTwII,
       belum: getBedahWpBelumKirimTwII,
       telat: getBedahWPTelatTwII,
-      jt: quarterTwo,
+      jt: quarterTwoLess,
     },
     {
       id: 3,
@@ -124,7 +128,7 @@ const PengawasanPage = async () => {
       kirim: getBedahWpSudahKirimTwIII,
       belum: getBedahWpBelumKirimTwIII,
       telat: getBedahWPTelatTwIII,
-      jt: quarterThree,
+      jt: quarterThreeLess,
     },
     {
       id: 4,
@@ -134,7 +138,7 @@ const PengawasanPage = async () => {
       kirim: getBedahWpSudahKirimTwIV,
       belum: getBedahWpBelumKirimTwIV,
       telat: getBedahWPTelatTwIV,
-      jt: quarterFour,
+      jt: quarterFourLess,
     },
   ];
 

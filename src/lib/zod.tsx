@@ -1,5 +1,90 @@
 import { z } from "zod";
 import { DatabaseWajibPajak } from "@prisma/client";
+import {
+  quarterOne,
+  quarterThree,
+  firstDateOfTheYear,
+  quarterTwo,
+  quarterFour,
+} from "./getActionOc";
+import {
+  quarterFourLess,
+  quarterOneLess,
+  quarterThreeLess,
+  quarterTwoLess,
+} from "./getaction";
+
+// Get the current year once at runtime.
+const currentYear = new Date().getFullYear();
+const today = new Date();
+
+// Pre-compute the error message based on which quarter today is in.
+let dynamicMessage =
+  "Tanggal kegiatan tidak sesuai dengan rentang yang ditentukan.";
+if (today > quarterOne && today < quarterTwo) {
+  dynamicMessage = `Karena saat ini Q2, tanggal kegiatan harus lebih dari ${new Intl.DateTimeFormat(
+    "id-ID",
+    {
+      hour12: false,
+      year: "numeric",
+      day: "numeric",
+      month: "long",
+    }
+  ).format(quarterOne)} dan kurang dari ${new Intl.DateTimeFormat("id-ID", {
+    hour12: false,
+    year: "numeric",
+    day: "numeric",
+    month: "long",
+  }).format(quarterTwoLess)}.`;
+} else if (today > firstDateOfTheYear && today < quarterOne) {
+  dynamicMessage = `Karena saat ini Q1, tanggal kegiatan harus lebih dari ${new Intl.DateTimeFormat(
+    "id-ID",
+    {
+      hour12: false,
+      year: "numeric",
+      day: "numeric",
+      month: "long",
+    }
+  ).format(firstDateOfTheYear)} dan kurang dari ${new Intl.DateTimeFormat(
+    "id-ID",
+    {
+      hour12: false,
+      year: "numeric",
+      day: "numeric",
+      month: "long",
+    }
+  ).format(quarterOneLess)}.`;
+} else if (today > quarterTwo && today < quarterThree) {
+  dynamicMessage = `Karena saat ini Q3, tanggal kegiatan harus lebih dari ${new Intl.DateTimeFormat(
+    "id-ID",
+    {
+      hour12: false,
+      year: "numeric",
+      day: "numeric",
+      month: "long",
+    }
+  ).format(quarterTwo)} dan kurang dari ${new Intl.DateTimeFormat("id-ID", {
+    hour12: false,
+    year: "numeric",
+    day: "numeric",
+    month: "long",
+  }).format(quarterThreeLess)}.`;
+} else if (today > quarterThree && today < quarterFour) {
+  dynamicMessage = `Karena saat ini Q4, tanggal kegiatan harus lebih dari ${new Intl.DateTimeFormat(
+    "id-ID",
+    {
+      hour12: false,
+      year: "numeric",
+      day: "numeric",
+      month: "long",
+    }
+  ).format(quarterThree)} dan kurang dari ${new Intl.DateTimeFormat("id-ID", {
+    hour12: false,
+    year: "numeric",
+    day: "numeric",
+    month: "long",
+  }).format(quarterFourLess)}.`;
+}
 
 export const userSchema = z.object({
   id: z.string().optional(),
@@ -36,22 +121,61 @@ export const bedahWpSchema = z
     npwpId: z
       .string()
       .refine((val) => val?.length === 15, { message: "NPWP Harus 15 Digit" }),
-    pelaksanaanKegiatan: z.coerce.date({
-      message: "Waktu Pelaksanaan Kegiatan Harus diisi",
+    pelaksanaanKegiatan: z.coerce
+      .date({
+        message: "Waktu Pelaksanaan Kegiatan Harus diisi",
+      })
+      .refine((date) => date.getFullYear() === currentYear, {
+        message: `Tahun kegiatan harus sama dengan ${currentYear}.`,
+      }),
+      // .refine(
+      //   (inputDate) => {
+      //     // When today is in Q2:
+      //     if (today > quarterOne && today < quarterTwoLess) {
+      //       return inputDate > quarterOne && inputDate < quarterTwoLess;
+      //     }
+      //     // When today is in Q1:
+      //     if (today > firstDateOfTheYear && today < quarterOneLess) {
+      //       return inputDate > firstDateOfTheYear && inputDate < quarterOneLess;
+      //     }
+      //     // When today is in Q3:
+      //     if (today > quarterTwo && today < quarterThreeLess) {
+      //       return inputDate > quarterTwo && inputDate < quarterThreeLess;
+      //     }
+      //     // When today is in Q4:
+      //     if (today > quarterThree && today < quarterFourLess) {
+      //       return inputDate > quarterThree && inputDate < quarterFourLess;
+      //     }
+      //     // Otherwise, no additional check is required.
+      //     return true;
+      //   },
+      //   { message: dynamicMessage }
+      // ),
+    statusSpt: z.enum(["Non RTLB", "RTLB"], {
+      message: "Status SPT harus dipilih",
     }),
-    statusSpt: z.enum(["Non RTLB", "RTLB"], { message: "Status SPT harus dipilih" }),
     tahunPajak: z.string().min(1, { message: "Tahun tidak boleh Kosong" }),
     peserta: z.string().min(1, { message: "Pilih salah satu opsi" }),
-    kluPenompangPenerimaan: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    kluPenompangPenerimaan: z
+      .string()
+      .min(1, { message: "Pilih salah satu opsi" }),
     potensiTambahan: z.string().min(1, { message: "Pilih salah satu opsi" }),
     kesimpulan: z.string().min(1, { message: "Pilih salah satu opsi" }),
     masukDpp: z.string().min(1, { message: "Pilih salah satu opsi" }),
-    analisisLaporanKeuangan: z.string().min(1, { message: "Pilih salah satu opsi" }),
-    analisisTransferPricing: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    analisisLaporanKeuangan: z
+      .string()
+      .min(1, { message: "Pilih salah satu opsi" }),
+    analisisTransferPricing: z
+      .string()
+      .min(1, { message: "Pilih salah satu opsi" }),
     mirroring: z.string().min(1, { message: "Pilih salah satu opsi" }),
     analisisWpGroup: z.string().min(1, { message: "Pilih salah satu opsi" }),
-    kolaborasiDenganPenilai: z.string().min(1, { message: "Pilih salah satu opsi" }),
-    pemanfaatanDataEksternal: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    kolaborasiDenganPenilai: z
+      .string()
+      .min(1, { message: "Pilih salah satu opsi" }),
+    pemanfaatanDataEksternal: z
+      .string()
+      .min(1, { message: "Pilih salah satu opsi" }),
     dataVisit: z.string().min(1, { message: "Pilih salah satu opsi" }),
     alket: z.string().min(1, { message: "Pilih salah satu opsi" }),
     bobotKegiatan: z.string().min(1, { message: "Pilih salah satu opsi" }),
@@ -67,11 +191,12 @@ export const bedahWpSchema = z
     kunci: z.boolean().optional(),
     pdf: z
       .any()
-      .refine((files) => files && files.length === 1, { message: 'PDF file is required' })
-      .refine(
-        (files) => files?.[0]?.type === 'application/pdf',
-        { message: 'Only PDF files are accepted' }
-      ),
+      .refine((files) => files && files.length === 1, {
+        message: "PDF file is required",
+      })
+      .refine((files) => files?.[0]?.type === "application/pdf", {
+        message: "Only PDF files are accepted",
+      }),
   })
   .refine(
     async (data) => {
@@ -104,49 +229,63 @@ export const bedahWpSchema = z
 
 export type BedahWpSchema = z.infer<typeof bedahWpSchema>;
 
-export const bedahWpUpdateSchema = z.object({
-  userId: z.string().optional(),
-  npwpId: z
-    .string()
-    .refine((val) => val?.length === 15, { message: "NPWP Harus 15 Digit" }),
-  pelaksanaanKegiatan: z.coerce.date({
-    message: "Waktu Pelaksanaan Kegiatan Harus diisi",
-  }),
-  statusSpt: z.enum(["Non RTLB", "RTLB"], { message: "Status SPT harus dipilih" }),
-  tahunPajak: z.string().min(1, { message: "Tahun tidak boleh Kosong" }),
-  peserta: z.string().min(1, { message: "Pilih salah satu opsi" }),
-  kluPenompangPenerimaan: z.string().min(1, { message: "Pilih salah satu opsi" }),
-  potensiTambahan: z.string().min(1, { message: "Pilih salah satu opsi" }),
-  kesimpulan: z.string().min(1, { message: "Pilih salah satu opsi" }),
-  masukDpp: z.string().min(1, { message: "Pilih salah satu opsi" }),
-  analisisLaporanKeuangan: z.string().min(1, { message: "Pilih salah satu opsi" }),
-  analisisTransferPricing: z.string().min(1, { message: "Pilih salah satu opsi" }),
-  mirroring: z.string().min(1, { message: "Pilih salah satu opsi" }),
-  analisisWpGroup: z.string().min(1, { message: "Pilih salah satu opsi" }),
-  kolaborasiDenganPenilai: z.string().min(1, { message: "Pilih salah satu opsi" }),
-  pemanfaatanDataEksternal: z.string().min(1, { message: "Pilih salah satu opsi" }),
-  dataVisit: z.string().min(1, { message: "Pilih salah satu opsi" }),
-  alket: z.string().min(1, { message: "Pilih salah satu opsi" }),
-  bobotKegiatan: z.string().min(1, { message: "Pilih salah satu opsi" }),
-  pph21: z.coerce.number().optional(),
-  pph22: z.coerce.number().optional(),
-  pph23: z.coerce.number().optional(),
-  pph2529: z.coerce.number().optional(),
-  pph26: z.coerce.number().optional(),
-  pphFinal: z.coerce.number().optional(),
-  pph15: z.coerce.number().optional(),
-  ppn: z.coerce.number().optional(),
-  pajakLainnya: z.coerce.number().optional(),
-  kunci: z.boolean().optional(),
-  dataId: z.string().optional(),
-  pdf: z
+export const bedahWpUpdateSchema = z
+  .object({
+    userId: z.string().optional(),
+    npwpId: z
+      .string()
+      .refine((val) => val?.length === 15, { message: "NPWP Harus 15 Digit" }),
+    pelaksanaanKegiatan: z.coerce.date({
+      message: "Waktu Pelaksanaan Kegiatan Harus diisi",
+    }),
+    statusSpt: z.enum(["Non RTLB", "RTLB"], {
+      message: "Status SPT harus dipilih",
+    }),
+    tahunPajak: z.string().min(1, { message: "Tahun tidak boleh Kosong" }),
+    peserta: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    kluPenompangPenerimaan: z
+      .string()
+      .min(1, { message: "Pilih salah satu opsi" }),
+    potensiTambahan: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    kesimpulan: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    masukDpp: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    analisisLaporanKeuangan: z
+      .string()
+      .min(1, { message: "Pilih salah satu opsi" }),
+    analisisTransferPricing: z
+      .string()
+      .min(1, { message: "Pilih salah satu opsi" }),
+    mirroring: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    analisisWpGroup: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    kolaborasiDenganPenilai: z
+      .string()
+      .min(1, { message: "Pilih salah satu opsi" }),
+    pemanfaatanDataEksternal: z
+      .string()
+      .min(1, { message: "Pilih salah satu opsi" }),
+    dataVisit: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    alket: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    bobotKegiatan: z.string().min(1, { message: "Pilih salah satu opsi" }),
+    pph21: z.coerce.number().optional(),
+    pph22: z.coerce.number().optional(),
+    pph23: z.coerce.number().optional(),
+    pph2529: z.coerce.number().optional(),
+    pph26: z.coerce.number().optional(),
+    pphFinal: z.coerce.number().optional(),
+    pph15: z.coerce.number().optional(),
+    ppn: z.coerce.number().optional(),
+    pajakLainnya: z.coerce.number().optional(),
+    kunci: z.boolean().optional(),
+    dataId: z.string().optional(),
+    pdf: z
       .any()
-      .refine((files) => files && files.length === 1, { message: 'PDF file is required' })
-      .refine(
-        (files) => files?.[0]?.type === 'application/pdf',
-        { message: 'Only PDF files are accepted' }
-      ),
-})
+      .refine((files) => files && files.length === 1, {
+        message: "PDF file is required",
+      })
+      .refine((files) => files?.[0]?.type === "application/pdf", {
+        message: "Only PDF files are accepted",
+      }),
+  })
   .refine(
     async (data) => {
       const response = await fetch(
@@ -358,7 +497,8 @@ export const sendingDataToKanwil = z
       message: "Tidak Ada Daftar Empowering Triwulan II yang Dikirim",
       path: ["nomorNd"],
     }
-  ).refine(
+  )
+  .refine(
     async (data) => {
       if (data.id === "empoweringtw3") {
         const response = await fetch(`/api/findEmpoweringDataTw3`);
@@ -371,7 +511,8 @@ export const sendingDataToKanwil = z
       message: "Tidak Ada Daftar Empowering Triwulan III yang Dikirim",
       path: ["nomorNd"],
     }
-  ).refine(
+  )
+  .refine(
     async (data) => {
       if (data.id === "empoweringtw4") {
         const response = await fetch(`/api/findEmpoweringDataTw4`);
@@ -384,7 +525,8 @@ export const sendingDataToKanwil = z
       message: "Tidak Ada Daftar Empowering Triwulan IV yang Dikirim",
       path: ["nomorNd"],
     }
-  ).refine(
+  )
+  .refine(
     async (data) => {
       if (data.id === "bedahtw1") {
         const response = await fetch(`/api/findBedahDataTw1`);
@@ -397,7 +539,8 @@ export const sendingDataToKanwil = z
       message: "Tidak Ada Daftar Bedah WP Triwulan I yang Dikirim",
       path: ["nomorNd"],
     }
-  ).refine(
+  )
+  .refine(
     async (data) => {
       if (data.id === "bedahtw2") {
         const response = await fetch(`/api/findBedahDataTw2`);
@@ -410,7 +553,8 @@ export const sendingDataToKanwil = z
       message: "Tidak Ada Daftar Bedah WP Triwulan II yang Dikirim",
       path: ["nomorNd"],
     }
-  ).refine(
+  )
+  .refine(
     async (data) => {
       if (data.id === "bedahtw3") {
         const response = await fetch(`/api/findBedahDataTw3`);
@@ -423,7 +567,8 @@ export const sendingDataToKanwil = z
       message: "Tidak Ada Daftar Bedah WP Triwulan III yang Dikirim",
       path: ["nomorNd"],
     }
-  ).refine(
+  )
+  .refine(
     async (data) => {
       if (data.id === "bedahtw4") {
         const response = await fetch(`/api/findBedahDataTw4`);
@@ -436,7 +581,8 @@ export const sendingDataToKanwil = z
       message: "Tidak Ada Daftar Bedah WP Triwulan IV yang Dikirim",
       path: ["nomorNd"],
     }
-  ).refine(
+  )
+  .refine(
     async (data) => {
       if (data.id === "pembenahantw1") {
         const response = await fetch(`/api/findPembenahanDataTw1`);
@@ -449,7 +595,8 @@ export const sendingDataToKanwil = z
       message: "Tidak Ada Daftar Pembenahan MFWP Triwulan I yang Dikirim",
       path: ["nomorNd"],
     }
-  ).refine(
+  )
+  .refine(
     async (data) => {
       if (data.id === "pembenahantw2") {
         const response = await fetch(`/api/findPembenahanDataTw2`);
@@ -462,7 +609,8 @@ export const sendingDataToKanwil = z
       message: "Tidak Ada Daftar Pembenahan MFWP Triwulan II yang Dikirim",
       path: ["nomorNd"],
     }
-  ).refine(
+  )
+  .refine(
     async (data) => {
       if (data.id === "pembenahantw3") {
         const response = await fetch(`/api/findPembenahanDataTw3`);
@@ -475,7 +623,8 @@ export const sendingDataToKanwil = z
       message: "Tidak Ada Daftar Pembenahan MFWP Triwulan III yang Dikirim",
       path: ["nomorNd"],
     }
-  ).refine(
+  )
+  .refine(
     async (data) => {
       if (data.id === "pembenahantw4") {
         const response = await fetch(`/api/findPembenahanDataTw4`);

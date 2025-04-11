@@ -1,5 +1,11 @@
 import OcDashboard from "@/components/dashboard/OcDashboard";
 import {
+  quarterFourLess,
+  quarterOneLess,
+  quarterThreeLess,
+  quarterTwoLess,
+} from "@/lib/getaction";
+import {
   belumKirimTwIIIOc,
   belumKirimTwIIOc,
   belumKirimTwIOc,
@@ -57,7 +63,7 @@ const OcPage = async () => {
       kirim: getBedahWpSudahKirimTwI,
       belum: getBedahWpBelumKirimTwI,
       telat: getBedahWPTelatTwI,
-      jt: quarterOne,
+      jt: quarterOneLess,
     },
     {
       id: 2,
@@ -67,7 +73,7 @@ const OcPage = async () => {
       kirim: getBedahWpSudahKirimTwII,
       belum: getBedahWpBelumKirimTwII,
       telat: getBedahWPTelatTwII,
-      jt: quarterTwo,
+      jt: quarterTwoLess,
     },
     {
       id: 3,
@@ -77,7 +83,7 @@ const OcPage = async () => {
       kirim: getBedahWpSudahKirimTwIII,
       belum: getBedahWpBelumKirimTwIII,
       telat: getBedahWPTelatTwIII,
-      jt: quarterThree,
+      jt: quarterThreeLess,
     },
     {
       id: 4,
@@ -87,7 +93,7 @@ const OcPage = async () => {
       kirim: getBedahWpSudahKirimTwIV,
       belum: getBedahWpBelumKirimTwIV,
       telat: getBedahWPTelatTwIV,
-      jt: quarterFour,
+      jt: quarterFourLess,
     },
   ];
   return (

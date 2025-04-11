@@ -6,9 +6,9 @@ export const firstDateOfTheYear = new Date(todayYear, 0, 0);
 
 export const today = new Date();
 export const quarterOne = new Date(todayYear, 3, 10);
-export const quarterTwo = new Date(todayYear, 7, 10);
-export const quarterThree = new Date(todayYear, 10, 10);
-export const quarterFour = new Date(todayYear, 12, 10);
+export const quarterTwo = new Date(todayYear, 6, 10);
+export const quarterThree = new Date(todayYear, 9, 10);
+export const quarterFour = new Date(todayYear, 11, 10);
 
 // Get Bedah WP Data Quarter One
 export const getSumOfBedahWpQuarterOneOc = async (role: string) => {
