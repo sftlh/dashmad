@@ -7,7 +7,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     const db = await prisma.bedahWPData.findUnique({
       where: {
-        id: Number(dataId),
+        id: dataId as string,
       },
     });
     console.log("DB BedahWP", db);

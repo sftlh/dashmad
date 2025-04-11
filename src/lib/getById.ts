@@ -38,7 +38,7 @@ export const getDatabaseWajibPajakById = async (id: string) => {
 };
 
 // Get Bedah WP By ID
-export const getBedahWpData = async (id: number) => {
+export const getBedahWpData = async (id: string) => {
   try {
     const data = await prisma.bedahWPData.findUnique({
       where: {

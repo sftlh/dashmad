@@ -8,8 +8,7 @@ const BedahWPDetailPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const idNumber = Number(id);
-  const dataById = await getBedahWpData(idNumber);
+  const dataById = await getBedahWpData(id);
   return (
     <div className="p-10">
       <div className="overflow-hidden bg-white shadow sm:rounded-lg">

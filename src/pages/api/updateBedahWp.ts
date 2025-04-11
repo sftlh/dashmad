@@ -89,7 +89,7 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
     //CheckIfExistingRecord Exists
     const existingRecord = await prisma.bedahWPData.findUnique({
       where: {
-        id: Number(dataId),
+        id:dataId,
       },
       select: {
         pdfFile: true
@@ -109,7 +109,7 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
 
     const newRecord = await prisma.bedahWPData.update({
       where: {
-        id: Number(dataId)
+        id: dataId
       },
       data: {
         userId: userId,

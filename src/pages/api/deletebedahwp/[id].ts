@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const deletedProduct = await prisma.bedahWPData.delete({
       where: {
-        id: Number(id),
+        id:id as string,
       },
     });
     return res
