@@ -6,10 +6,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     const db = await prisma.bedahWPData.findMany({
       where: {
-        createdAt: {
-          lte: quarterTwo,
-          gte: quarterOne,
-        },
+        OR: [
+          {
+            createdAt: {
+              lte: quarterTwo,
+              gte: quarterOne,
+            },
+          },
+          {
+            pelaksanaanKegiatan: {
+              lte: quarterTwo,
+              gte: quarterOne,
+            },
+          },
+        ],
         sendingDataToKanwilId: null,
       },
       select: {
